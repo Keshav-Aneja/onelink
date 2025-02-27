@@ -1,8 +1,14 @@
 {
   "name": "@onelink/db",
-  "module": "index.ts",
+  "main": "index.ts",
+  "types": "./src/types/knex.d.ts",
+  "files": [
+    "src",
+    "types",
+    "knex.d.ts"
+  ],
   "scripts": {
-    "db:make": "bun knex -x ts --migrations-directory ./src/migrations migrate:make",
+    "db:make": "bun knex --migrations-directory ./src/migrations migrate:make -x ts",
     "db:latest": "bun knex migrate:latest --knexfile ./src/knexfile.ts",
     "db:up": "bun knex migrate:up --knexfile ./src/knexfile.ts",
     "db:down": "bun knex migrate:down --knexfile ./src/knexfile.ts",
@@ -13,6 +19,9 @@
     "@onelink/typescript-config": "*",
     "@types/bun": "latest",
     "knex": "^3.1.0"
+  },
+  "dependencies": {
+    "@onelink/entities": "*"
   },
   "exports": {
     ".": "./index.ts"

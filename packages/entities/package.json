@@ -1,0 +1,20 @@
+{
+  "name": "@onelink/entities",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@onelink/typescript-config": "*"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "exports": {
+    ".": "./index.ts",
+    "./models": "./src/models/index.ts"
+  },
+  "dependencies": {
+    "zod": "^3.24.2"
+  }
+}

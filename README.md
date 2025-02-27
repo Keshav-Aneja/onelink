@@ -26,16 +26,18 @@
     <li> Redis</li>
     <li> OAuth2.0 </li>
 </ul>
+
 ## Apps & Packages
 
 <p><code>web</code> : a Vite-React App (Frontend)</p>
 <p><code>backend</code> :Express.js server Backend</p>
 <p><code>@onelink/typescript-config</code> : <code>tsconfig.json</code> used throughout the monorepo</p>
 <p><code>@onelink/eslint-config</code> : <code>eslint</code>configurations</p>
-
+<p><code>@onelink/db</code> : For all Database configurations, migrations, schema</p>
+<p><code>@onelink/entities</code> : Contains the types, interfaces, Schemas and error types
 ## Todo
 
 [&nbsp;O&nbsp;] Turbo repo steup<br/> [&nbsp;O&nbsp;] configure tsconfig
 package<br/> [&nbsp;O&nbsp;] Data Modelling <br/> [&nbsp;X&nbsp;] Setup Knex.js
-& Postgresql<br/> [&nbsp;X&nbsp;] Implement Google Authentication<br/>
-[&nbsp;X&nbsp;] Refactor AuthService<br/>
+& Postgresql<br/>[&nbsp;X&nbsp;] Create basic user types<br/> [&nbsp;X&nbsp;]
+Implement Google Authentication<br/> [&nbsp;X&nbsp;] Refactor AuthService<br/>
