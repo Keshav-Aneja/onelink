@@ -35,9 +35,15 @@
 <p><code>@onelink/eslint-config</code> : <code>eslint</code>configurations</p>
 <p><code>@onelink/db</code> : For all Database configurations, migrations, schema</p>
 <p><code>@onelink/entities</code> : Contains the types, interfaces, Schemas and error types
+
 ## Todo
 
-[&nbsp;O&nbsp;] Turbo repo steup<br/> [&nbsp;O&nbsp;] configure tsconfig
-package<br/> [&nbsp;O&nbsp;] Data Modelling <br/> [&nbsp;X&nbsp;] Setup Knex.js
-& Postgresql<br/>[&nbsp;X&nbsp;] Create basic user types<br/> [&nbsp;X&nbsp;]
-Implement Google Authentication<br/> [&nbsp;X&nbsp;] Refactor AuthService<br/>
+<ul style="list-style-type:none">
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Turbo repo setup</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Configure tsconfig package</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Data Modelling</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Setup Knex.js & PostgreSQL</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Create basic user types</li>
+    <li style="color:red"><b>[&nbsp;X&nbsp;]</b> Implement Google Authentication</li>
+    <li style="color:red"><b>[&nbsp;X&nbsp;]</b> Refactor AuthService</li>
+</ul>
