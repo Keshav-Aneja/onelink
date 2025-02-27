@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "@onelink/typescript-config/base.json",
+  "display": "express",
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "target": "ESNext",
+    "allowJs": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    // "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    // "noEmit": true,
+    "noFallthroughCasesInSwitch": true,
+
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": true
+  }
+}
