@@ -1,0 +1,14 @@
+{
+  "extends": "@onelink/typescript-config/base.json",
+  "compilerOptions": {
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
+  },
+  "include": ["**/*.ts"],
+  "exclude": ["node_modules", "build"]
+}

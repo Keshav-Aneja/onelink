@@ -1,1 +1,3 @@
-console.log("Hello via Bun!");
+import db from "@onelink/db";
+
+console.log("HELLO FROM BACKNED");

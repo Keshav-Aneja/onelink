@@ -6,21 +6,21 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "build": "bun build --entry src/index.ts --minify --target=bun --outfile dist/bundle.js",
-    "start": "bun run dist/index.ts",
-    "migrate:make": "bun knex -x ts --migrations-directory ./src/db/migrations migrate:make",
-    "migrate:latest": "bun knex migrate:latest --knexfile ./src/db/knexfile.ts",
-    "migrate:up": "bun knex migrate:up --knexfile ./src/db/knexfile.ts",
-    "migrate:down": "bun knex migrate:down --knexfile ./src/db/knexfile.ts",
-    "migrate:rollback": "bun knex migrate:rollback --knexfile ./src/db/knexfile.ts",
-    "migrate:list": "bun knex migrate:list --knexfile ./src/db/knexfile.ts"
+    "start": "bun run dist/index.ts"
   },
   "devDependencies": {
+    "@onelink/typescript-config": "*",
     "@types/bun": "latest"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
+    "@onelink/db": "*",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
     "body-parser": "^1.20.3",
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",

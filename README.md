@@ -20,6 +20,7 @@
     <li> React 19</li>
     <li> Express</li>
     <li> Typescript</li>
+    <li> TailwindCSS@4 </li>
     <li> Postgresql</li>
     <li> Knex.js</li>
     <li> Redis</li>
@@ -34,9 +35,7 @@
 
 ## Todo
 
-[&nbsp;O&nbsp;] Turbo repo steup<br/>
-[&nbsp;O&nbsp;] configure tsconfig package<br/>
-[&nbsp;O&nbsp;] Data Modelling <br/>
-[&nbsp;X&nbsp;] Setup Knex.js & Postgresql<br/>
-[&nbsp;X&nbsp;] Implement Google Authentication<br/>
+[&nbsp;O&nbsp;] Turbo repo steup<br/> [&nbsp;O&nbsp;] configure tsconfig
+package<br/> [&nbsp;O&nbsp;] Data Modelling <br/> [&nbsp;X&nbsp;] Setup Knex.js
+& Postgresql<br/> [&nbsp;X&nbsp;] Implement Google Authentication<br/>
 [&nbsp;X&nbsp;] Refactor AuthService<br/>
