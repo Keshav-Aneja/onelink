@@ -1,10 +1,10 @@
 import type { User } from "@onelink/entities/models";
 import type { Request, Response } from "express";
 import type { SessionData } from "express-session";
-export interface IAuthenticationService {
+export interface ISessionService {
   createSession(request: Request, data: User): void;
   validateSession(request: Request): Boolean;
-  destroySession(request: Request, response: Response): void;
+  destroySession(request: Request): Boolean;
   getSessionData(request: Request): SessionData;
 }
 
@@ -37,4 +37,20 @@ export interface IAuthenticationService {
  *      b. createSession
  *      c. invalidateSession
  *      d. get user id
+ */
+
+/**
+ * Factory pattern should be checking the params
+ * Based on the params it will return the instance or object of the particular AuthService
+ * this instance will be of type AuthService
+ *
+ * so this way the whole logic of deciding which Oauth method to choose from is encapsulated in the factory
+ * And the controller doesn't even need to know the specifics for the implementation
+ *
+ *
+ * What is factory pattern?
+ * It is just an interface for creating objects in a superclass.
+ * In simpler terms, it's a way to create objects without specifying the exact class of object that will be created
+ * We are doing this because the selection of a particular type of object is decided at runtime
+ * Like in swiggy when we order, the order can be of type take-away, dine-in, or delivery. We have to decide at runtime what type of order has to be created.
  */

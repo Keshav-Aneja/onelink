@@ -9,5 +9,7 @@ declare module "express-session" {
     //For security purposes
     ip: string;
     user_agent: string;
+    code_verifier: string;
+    csrf_token: string;
   }
 }

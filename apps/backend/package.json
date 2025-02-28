@@ -26,6 +26,7 @@
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
+    "crypto": "^1.0.1",
     "google-auth-library": "^9.15.1",
     "pg": "^8.13.3",
     "pkce-challenge": "^4.1.0",

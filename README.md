@@ -44,6 +44,8 @@
     <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Data Modelling</li>
     <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Setup Knex.js & PostgreSQL</li>
     <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Create basic user types</li>
-    <li style="color:red"><b>[&nbsp;X&nbsp;]</b> Implement Google Authentication</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Authentication session service</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> User Repository</li>
+    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Implement Google Authentication</li>
     <li style="color:red"><b>[&nbsp;X&nbsp;]</b> Refactor AuthService</li>
 </ul>

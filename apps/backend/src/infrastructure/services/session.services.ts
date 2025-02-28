@@ -1,10 +1,10 @@
 import type { Request, Response } from "express";
-import type { IAuthenticationService } from "../../application/services/authentication.services.interface";
 import type { User } from "@onelink/entities/models";
 import type { SessionData } from "express-session";
 import { SessionOperationError } from "@onelink/entities/errros";
+import type { ISessionService } from "../../application/services/session.services.interface";
 
-export class AuthenticationService implements IAuthenticationService {
+export class AuthenticationService implements ISessionService {
   /**
    *
    * @param request: Request
@@ -44,15 +44,13 @@ export class AuthenticationService implements IAuthenticationService {
    * Clears the session cookie from the client
    * and destroys the session stored in the sessionStore
    */
-  destroySession(request: Request, response: Response): void {
+  destroySession(request: Request): Boolean {
     request.session.destroy((err) => {
       if (err) {
-        response.status(400).json({
-          success: false,
-        });
+        return false;
       }
-      response.status(200).clearCookie("connect.sid").json({ success: true });
     });
+    return true;
   }
   /**
    *

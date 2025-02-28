@@ -9,3 +9,9 @@ export class SessionOperationError extends Error {
     super(message, options);
   }
 }
+
+export class ValidationError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}
