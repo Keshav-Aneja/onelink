@@ -1,4 +1,12 @@
-export interface IAuthenticationService {}
+import type { User } from "@onelink/entities/models";
+import type { Request, Response } from "express";
+import type { SessionData } from "express-session";
+export interface IAuthenticationService {
+  createSession(request: Request, data: User): void;
+  validateSession(request: Request): Boolean;
+  destroySession(request: Request, response: Response): void;
+  getSessionData(request: Request): SessionData;
+}
 
 // Now based on this I will be implementing different authentication services
 // In the callback
