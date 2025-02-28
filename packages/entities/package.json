@@ -12,7 +12,8 @@
   },
   "exports": {
     ".": "./index.ts",
-    "./models": "./src/models/index.ts"
+    "./models": "./src/models/index.ts",
+    "./errros": "./src/errors/index.ts"
   },
   "dependencies": {
     "zod": "^3.24.2"
