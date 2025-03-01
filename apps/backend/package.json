@@ -10,7 +10,12 @@
   },
   "devDependencies": {
     "@onelink/typescript-config": "*",
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/cookie-parser": "^1.4.8",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^5.0.0",
+    "@types/express-session": "^1.18.1",
+    "@types/morgan": "^1.9.9"
   },
   "peerDependencies": {
     "typescript": "^5"
@@ -18,18 +23,15 @@
   "dependencies": {
     "@onelink/db": "*",
     "@onelink/entities": "*",
-    "@types/cookie-parser": "^1.4.8",
-    "@types/cors": "^2.8.17",
-    "@types/express": "^5.0.0",
-    "@types/express-session": "^1.18.1",
-    "body-parser": "^1.20.3",
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "express": "^4.21.2",
     "google-auth-library": "^9.15.1",
+    "morgan": "^1.10.0",
     "pg": "^8.13.3",
     "pkce-challenge": "^4.1.0",
-    "redis": "^4.7.0"
+    "redis": "^4.7.0",
+    "winston": "^3.17.0"
   }
 }

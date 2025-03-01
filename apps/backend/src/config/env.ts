@@ -11,16 +11,20 @@ const envSchema = z.object({
     .default("development"),
 
   //Authentication variables
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-  GOOGLE_REDIRECT_URL: z.string().url(),
-  GOOGLE_AUTH_URL: z.string().url(),
+  GOOGLE: z.object({
+    GOOGLE_CLIENT_ID: z.string(),
+    GOOGLE_CLIENT_SECRET: z.string(),
+    GOOGLE_REDIRECT_URL: z.string().url(),
+    GOOGLE_AUTH_URL: z.string().url(),
+  }),
 
   //Redis Config
-  REDIS_PASSWORD: z.string(),
-  REDIS_URL: z.string(),
-  REDIS_PORT: z.coerce.number(),
-  REDIS_PREFIX: z.string(),
+  REDIS: z.object({
+    REDIS_PASSWORD: z.string(),
+    REDIS_URL: z.string(),
+    REDIS_PORT: z.coerce.number(),
+    REDIS_PREFIX: z.string(),
+  }),
 
   //Session
   SESS_SECRET: z.string(),
