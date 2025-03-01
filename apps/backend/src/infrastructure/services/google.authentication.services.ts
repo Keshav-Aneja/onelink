@@ -10,6 +10,8 @@ import {
   type User,
 } from "@onelink/entities/models";
 import { UserDTO } from "../dtos/user.dto";
+import type { Session, SessionData } from "express-session";
+
 export class GoogleOAuthService implements IAuthenticationService {
   private readonly CLIENT_ID: string = env.GOOGLE_CLIENT_ID;
   private readonly REDIRECT_URI: string = env.GOOGLE_REDIRECT_URL;
@@ -17,8 +19,6 @@ export class GoogleOAuthService implements IAuthenticationService {
   private readonly CLIENT_SECRET: string = env.GOOGLE_CLIENT_SECRET;
 
   constructor(
-    private readonly request: Request,
-    private readonly response: Response,
     // Injecting the client
     private readonly client: OAuth2Client = new OAuth2Client(
       this.CLIENT_ID,
@@ -29,12 +29,15 @@ export class GoogleOAuthService implements IAuthenticationService {
 
   // -----------------------------------------------------------------------------
 
-  async initiateAuthorizationRequest(): Promise<void> {
+  async initiateAuthorizationRequest(
+    session: Session & Partial<SessionData>,
+  ): Promise<string> {
     const { code_verifier, code_challenge } = await pkceChallenge();
     const csrf_token = crypto.randomUUID();
-    if (this.request.session) {
-      this.request.session.code_verifier = code_verifier;
-      this.request.session.csrf_token = csrf_token;
+
+    if (session) {
+      session.code_verifier = code_verifier;
+      session.csrf_token = csrf_token;
     }
 
     const params = new URLSearchParams({
@@ -47,20 +50,20 @@ export class GoogleOAuthService implements IAuthenticationService {
       code_challenge_method: "S256",
     });
 
-    this.response.redirect(`${this.AUTH_URL}?${params.toString()}`);
+    return `${this.AUTH_URL}?${params.toString()}`;
   }
 
   // -----------------------------------------------------------------------------
 
-  getAuthorizationCode(): string {
-    const { code, state } = this.request.query;
+  getAuthorizationCode(
+    code: unknown,
+    state: unknown,
+    session: Session & Partial<SessionData>,
+  ): string {
     if (typeof code !== "string") {
       throw new AuthenticationError("Authorization code not found");
     }
-    if (
-      !this.request.session?.csrf_token ||
-      this.request.session.csrf_token !== state
-    ) {
+    if (session?.csrf_token || session.csrf_token !== state) {
       throw new AuthenticationError("Invalid state parameter");
     }
     return code;

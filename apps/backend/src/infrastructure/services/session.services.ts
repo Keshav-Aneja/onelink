@@ -5,6 +5,7 @@ import { SessionOperationError } from "@onelink/entities/errros";
 import type { ISessionService } from "../../application/services/session.services.interface";
 
 export class Session implements ISessionService {
+  // PROBLEM: Can't have request here. This will cause a problem during tests, as it will be difficult to replicate it. Instead we should pass the session and the request.ip or whatever else parameters being used from the parent layer. Request/Response object should not be here
   constructor(private request: Request) {}
   /**
    *

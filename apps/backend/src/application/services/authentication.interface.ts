@@ -1,6 +1,6 @@
 import type { Request } from "express";
 import type { User } from "@onelink/entities/models";
-import type { Session } from "express-session";
+import type { Session, SessionData } from "express-session";
 import type { Credentials } from "google-auth-library";
 
 export interface IAuthenticationService {
@@ -9,11 +9,17 @@ export interface IAuthenticationService {
    * This service initiates the google authentication request
    * generates a list of parameters and redirects to the google auth url for prompting the user to login
    */
-  initiateAuthorizationRequest(): Promise<void>;
+  initiateAuthorizationRequest(
+    session: Session & Partial<SessionData>,
+  ): Promise<string>;
   /**
    * The provider returns a code after the authentication process at their side
    */
-  getAuthorizationCode(): string;
+  getAuthorizationCode(
+    code: string,
+    state: string,
+    session: Session & Partial<SessionData>,
+  ): string;
   /**
    *
    * @param code
