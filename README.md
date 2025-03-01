@@ -38,14 +38,15 @@
 
 ## Todo
 
-<ul style="list-style-type:none">
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Turbo repo setup</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Configure tsconfig package</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Data Modelling</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Setup Knex.js & PostgreSQL</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Create basic user types</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Authentication session service</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> User Repository</li>
-    <li style="color:green"><b>[&nbsp;O&nbsp;]</b> Implement Google Authentication</li>
-    <li style="color:red"><b>[&nbsp;X&nbsp;]</b> Refactor AuthService</li>
+<ul>
+    <li><b>[&nbsp;O&nbsp;]</b> Turbo repo setup</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Configure tsconfig package</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Data Modelling</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Setup Knex.js & PostgreSQL</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Create basic user types</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Authentication session service</li>
+    <li><b>[&nbsp;O&nbsp;]</b> User Repository</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Implement Google Authentication</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Refactor AuthService</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Implement Express application loaders</li>
 </ul>
