@@ -1,11 +1,23 @@
 import type { User } from "@onelink/entities/models";
-import type { Request, Response } from "express";
-import type { SessionData } from "express-session";
+import type session from "express-session";
+import type { Session, SessionData } from "express-session";
 export interface ISessionService {
-  createSession(data: User): void;
-  validateSession(): Boolean;
-  destroySession(): Boolean;
-  getSessionData(): SessionData;
+  createSession(
+    data: User,
+    session: Session & Partial<SessionData>,
+    ip: string | undefined,
+    userAgent: string | undefined,
+  ): void;
+  validateSession(
+    session: Session & Partial<SessionData>,
+    ip: string | undefined,
+    userAgent: string | undefined,
+  ): Boolean;
+  destroySession(session: Session & Partial<SessionData>): Boolean;
+  getSessionData(
+    sessionID: string,
+    sessionStore: session.Store & { generate: (req: Request) => void },
+  ): SessionData;
 }
 
 // Now based on this I will be implementing different authentication services

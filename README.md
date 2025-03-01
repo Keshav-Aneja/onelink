@@ -48,5 +48,7 @@
     <li><b>[&nbsp;O&nbsp;]</b> User Repository</li>
     <li><b>[&nbsp;O&nbsp;]</b> Implement Google Authentication</li>
     <li><b>[&nbsp;O&nbsp;]</b> Refactor AuthService</li>
-    <li><b>[&nbsp;X&nbsp;]</b> Implement Express application loaders</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Implement Express application loaders</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Setup Routers</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Auth Middleware</li>
 </ul>

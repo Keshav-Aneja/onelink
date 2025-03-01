@@ -37,4 +37,11 @@ export class UsersRepository implements IUsersRepository {
 
     return user;
   }
+  async getUserByProviderID(providerID: string): Promise<User | undefined> {
+    const [user] = await db("users")
+      .where({ provider_id: providerID })
+      .returning("*");
+
+    return user;
+  }
 }

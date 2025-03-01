@@ -3,6 +3,9 @@ import { asycnHandler } from "../../helpers/async-handler";
 import { GoogleOAuthService } from "../../infrastructure/services/google.authentication.services";
 import { AuthenticationError } from "@onelink/entities/errros";
 import { FRONTEND_URL } from "../../config/constants";
+import { UsersRepository } from "../../infrastructure/repositories/users.repository";
+import { UserService } from "../../infrastructure/services/user.services";
+import { SessionService } from "../../infrastructure/services/session.services";
 /**
  * I can't create an interface for this adaptor class if I want to use these funations as static functions. Why? :::D Because interfaces expects the class instance methods not on the static methods.
  *
@@ -11,7 +14,7 @@ import { FRONTEND_URL } from "../../config/constants";
  * And currently TS doesn't provide an features that implements on the static methods
  */
 
-export class AuthenticationAdaptor {
+export class AuthenticationAdapter {
   /**
    *
    * @param req
@@ -45,8 +48,11 @@ export class AuthenticationAdaptor {
   ): Promise<void> {
     try {
       const authService = new GoogleOAuthService();
+      const userService = new UserService();
+      const sessionService = new SessionService();
       const code_verifier = req.session.code_verifier;
       const { code, state } = req.query;
+
       const authCode = await authService.getAuthorizationCode(
         code,
         state,
@@ -60,11 +66,28 @@ export class AuthenticationAdaptor {
         throw new AuthenticationError("Failed to get google token");
       }
       const data = await authService.getUserDetails(token.id_token);
-      console.log(data);
+
+      const sessionUser = await userService.getOrCreateUser(data);
+
+      sessionService.createSession(
+        sessionUser,
+        req.session,
+        req.ip,
+        req.get("User-Agent"),
+      );
+      console.log(sessionUser);
       res.status(200).redirect(FRONTEND_URL);
     } catch (error: any) {
       console.error(error);
       res.status(400).json({ success: false, error: error.message });
     }
+  }
+  static async terminateSession(req: Request, res: Response): Promise<void> {
+    req.session.destroy((err) => {
+      if (err) {
+        res.status(400).json({ success: false });
+      }
+      res.status(200).clearCookie("connect.sid").json({ success: true });
+    });
   }
 }

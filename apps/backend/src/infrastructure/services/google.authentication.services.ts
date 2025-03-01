@@ -13,10 +13,10 @@ import { UserDTO } from "../dtos/user.dto";
 import type { Session, SessionData } from "express-session";
 
 export class GoogleOAuthService implements IAuthenticationService {
-  private readonly CLIENT_ID: string = env.GOOGLE.GOOGLE_CLIENT_ID;
-  private readonly REDIRECT_URI: string = env.GOOGLE.GOOGLE_REDIRECT_URL;
-  private readonly AUTH_URL: string = env.GOOGLE.GOOGLE_AUTH_URL;
-  private readonly CLIENT_SECRET: string = env.GOOGLE.GOOGLE_CLIENT_SECRET;
+  private readonly CLIENT_ID: string = env.GOOGLE_CLIENT_ID;
+  private readonly REDIRECT_URI: string = env.GOOGLE_REDIRECT_URL;
+  private readonly AUTH_URL: string = env.GOOGLE_AUTH_URL;
+  private readonly CLIENT_SECRET: string = env.GOOGLE_CLIENT_SECRET;
 
   constructor(
     // Injecting the client
@@ -63,7 +63,7 @@ export class GoogleOAuthService implements IAuthenticationService {
     if (typeof code !== "string") {
       throw new AuthenticationError("Authorization code not found");
     }
-    if (session?.csrf_token || session.csrf_token !== state) {
+    if (!session?.csrf_token || session.csrf_token !== state) {
       throw new AuthenticationError("Invalid state parameter");
     }
     return code;

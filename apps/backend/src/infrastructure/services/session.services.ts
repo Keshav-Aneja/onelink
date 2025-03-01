@@ -1,25 +1,27 @@
-import type { Request, Response } from "express";
 import type { User } from "@onelink/entities/models";
-import type { SessionData } from "express-session";
+import type { Session, SessionData } from "express-session";
 import { SessionOperationError } from "@onelink/entities/errros";
 import type { ISessionService } from "../../application/services/session.services.interface";
+import type session from "express-session";
 
-export class Session implements ISessionService {
-  // PROBLEM: Can't have request here. This will cause a problem during tests, as it will be difficult to replicate it. Instead we should pass the session and the request.ip or whatever else parameters being used from the parent layer. Request/Response object should not be here
-  constructor(private request: Request) {}
+export class SessionService implements ISessionService {
   /**
    *
    * @param request: Request
    * @param data: User
    * This helps storing data for the user session
    */
-  createSession(data: User): void {
-    const { session } = this.request;
+  createSession(
+    data: User,
+    session: Session & Partial<SessionData>,
+    ip: string | undefined = "",
+    userAgent: string | undefined = "",
+  ): void {
     session.user_id = data.id;
     session.provider = data.provider;
     session.provider_id = data.provider_id;
-    session.ip = this.request.ip;
-    session.user_agent = this.request.get("User-Agent");
+    session.ip = ip;
+    session.user_agent = userAgent;
   }
   /**
    *
@@ -27,12 +29,15 @@ export class Session implements ISessionService {
    * @returns Boolean
    * used to check if the session is a valid session or not
    */
-  validateSession(): Boolean {
-    const { session } = this.request;
+  validateSession(
+    session: Session & Partial<SessionData>,
+    ip: string | undefined = "",
+    userAgent: string | undefined = "",
+  ): Boolean {
     if (
       session.user_id &&
-      session.ip === this.request.ip &&
-      session.user_agent === this.request.get("User-Agent")
+      session.ip === ip &&
+      session.user_agent === userAgent
     ) {
       return true;
     }
@@ -46,8 +51,8 @@ export class Session implements ISessionService {
    * Clears the session cookie from the client
    * and destroys the session stored in the sessionStore
    */
-  destroySession(): Boolean {
-    this.request.session.destroy((err) => {
+  destroySession(session: Session & Partial<SessionData>): Boolean {
+    session.destroy((err) => {
       if (err) {
         return false;
       }
@@ -60,9 +65,12 @@ export class Session implements ISessionService {
    * @returns SessionData
    * This helps in retrieving all the data stored in the current user session
    */
-  getSessionData(): SessionData {
+  getSessionData(
+    sessionID: string,
+    sessionStore: session.Store & { generate: (req: Request) => void },
+  ): SessionData {
     let sessionData: SessionData | undefined | null;
-    this.request.sessionStore.get(this.request.sessionID, (err, data) => {
+    sessionStore.get(sessionID, (err, data) => {
       if (err) {
         throw new SessionOperationError("Failed to get Session data");
       }

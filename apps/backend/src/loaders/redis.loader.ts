@@ -6,10 +6,10 @@ import env from "../config/env";
 export default async (app: Express) => {
   const redisClient = createClient({
     username: "default",
-    password: env.REDIS.REDIS_PASSWORD,
+    password: env.REDIS_PASSWORD,
     socket: {
-      host: env.REDIS.REDIS_URL,
-      port: env.REDIS.REDIS_PORT,
+      host: env.REDIS_URL,
+      port: env.REDIS_PORT,
     },
   });
 
@@ -18,8 +18,9 @@ export default async (app: Express) => {
   await redisClient.connect();
   let redisStore = new RedisStore({
     client: redisClient,
-    prefix: env.REDIS.REDIS_PREFIX,
+    prefix: env.REDIS_PREFIX,
   });
+
   app.use(
     session({
       store: redisStore,

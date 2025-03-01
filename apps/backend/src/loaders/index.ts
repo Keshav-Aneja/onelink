@@ -4,8 +4,12 @@ import redisLoader from "./redis.loader";
 import loggerLoader from "./logger.loader";
 export default async (app: Express) => {
   console.log("### Processing loaders...");
-  await expressLoader(app);
-  await redisLoader(app);
+  /**
+   * Import in the following order always
+   */
   await loggerLoader(app);
+  await redisLoader(app);
+  await expressLoader(app);
   console.log("### Loaders initiated successfully");
+  return;
 };
