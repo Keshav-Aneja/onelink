@@ -4,20 +4,21 @@ import type { SessionData } from "express-session";
 import { SessionOperationError } from "@onelink/entities/errros";
 import type { ISessionService } from "../../application/services/session.services.interface";
 
-export class AuthenticationService implements ISessionService {
+export class Session implements ISessionService {
+  constructor(private request: Request) {}
   /**
    *
    * @param request: Request
    * @param data: User
    * This helps storing data for the user session
    */
-  createSession(request: Request, data: User): void {
-    const { session } = request;
+  createSession(data: User): void {
+    const { session } = this.request;
     session.user_id = data.id;
     session.provider = data.provider;
     session.provider_id = data.provider_id;
-    session.ip = request.ip;
-    session.user_agent = request.get("User-Agent");
+    session.ip = this.request.ip;
+    session.user_agent = this.request.get("User-Agent");
   }
   /**
    *
@@ -25,12 +26,12 @@ export class AuthenticationService implements ISessionService {
    * @returns Boolean
    * used to check if the session is a valid session or not
    */
-  validateSession(request: Request): Boolean {
-    const { session } = request;
+  validateSession(): Boolean {
+    const { session } = this.request;
     if (
       session.user_id &&
-      session.ip === request.ip &&
-      session.user_agent === request.get("User-Agent")
+      session.ip === this.request.ip &&
+      session.user_agent === this.request.get("User-Agent")
     ) {
       return true;
     }
@@ -44,8 +45,8 @@ export class AuthenticationService implements ISessionService {
    * Clears the session cookie from the client
    * and destroys the session stored in the sessionStore
    */
-  destroySession(request: Request): Boolean {
-    request.session.destroy((err) => {
+  destroySession(): Boolean {
+    this.request.session.destroy((err) => {
       if (err) {
         return false;
       }
@@ -58,9 +59,9 @@ export class AuthenticationService implements ISessionService {
    * @returns SessionData
    * This helps in retrieving all the data stored in the current user session
    */
-  getSessionData(request: Request): SessionData {
+  getSessionData(): SessionData {
     let sessionData: SessionData | undefined | null;
-    request.sessionStore.get(request.sessionID, (err, data) => {
+    this.request.sessionStore.get(this.request.sessionID, (err, data) => {
       if (err) {
         throw new SessionOperationError("Failed to get Session data");
       }

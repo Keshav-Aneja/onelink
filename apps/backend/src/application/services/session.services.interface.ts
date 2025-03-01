@@ -2,10 +2,10 @@ import type { User } from "@onelink/entities/models";
 import type { Request, Response } from "express";
 import type { SessionData } from "express-session";
 export interface ISessionService {
-  createSession(request: Request, data: User): void;
-  validateSession(request: Request): Boolean;
-  destroySession(request: Request): Boolean;
-  getSessionData(request: Request): SessionData;
+  createSession(data: User): void;
+  validateSession(): Boolean;
+  destroySession(): Boolean;
+  getSessionData(): SessionData;
 }
 
 // Now based on this I will be implementing different authentication services

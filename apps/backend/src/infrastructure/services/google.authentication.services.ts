@@ -9,8 +9,7 @@ import {
   UserSchemaWithoutID,
   type User,
 } from "@onelink/entities/models";
-import { Provider } from "@onelink/entities";
-import crypto from "crypto";
+import { UserDTO } from "../dtos/user.dto";
 export class GoogleOAuthService implements IAuthenticationService {
   private readonly CLIENT_ID: string = env.GOOGLE_CLIENT_ID;
   private readonly REDIRECT_URI: string = env.GOOGLE_REDIRECT_URL;
@@ -32,8 +31,7 @@ export class GoogleOAuthService implements IAuthenticationService {
 
   async initiateAuthorizationRequest(): Promise<void> {
     const { code_verifier, code_challenge } = await pkceChallenge();
-    const csrf_token = crypto.randomBytes(32).toString("hex");
-
+    const csrf_token = crypto.randomUUID();
     if (this.request.session) {
       this.request.session.code_verifier = code_verifier;
       this.request.session.csrf_token = csrf_token;
@@ -103,22 +101,10 @@ export class GoogleOAuthService implements IAuthenticationService {
       throw new AuthenticationError("Invalid User from token");
     }
 
-    if (!payload.email || !payload.name) {
-      throw new ValidationError("Email or name is missing from the payload");
-    }
-
-    const user = {
-      provider_id: payload.sub,
-      provider: Provider.Google,
-      email: payload.email,
-      profile_url: payload.picture || "",
-      name: payload.name,
-    };
-
+    const user = UserDTO.fromGoogleAuth(payload);
     const valid = UserSchemaWithoutID.safeParse(user);
-
     if (!valid.success) {
-      throw new ValidationError("Invalid User Data");
+      throw new ValidationError("Incompatible user data from Google Service");
     }
     return user;
   }
