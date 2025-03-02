@@ -1,10 +1,10 @@
-import type { Share, ShareUpdate } from "@onelink/entities/models";
+import type { Share, ShareInsert, ShareUpdate } from "@onelink/entities/models";
 import type { ISharesRepository } from "../../application/repositories/shares.repository.interface";
 import db from "@onelink/db";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 
 export class SharesRepository implements ISharesRepository {
-  async shareCollection(data: Share): Promise<Share> {
+  async shareCollection(data: ShareInsert): Promise<Share> {
     const [shares] = await db("shares").insert(data).returning("*");
     if (!shares) {
       throw new DatabaseOperationError("Failed to share collection");

@@ -10,6 +10,7 @@ export const ShareSchema = z.object({
 });
 
 export type Share = z.infer<typeof ShareSchema>;
+export type ShareInsert = Omit<Share, "id">;
 export type ShareUpdate = Partial<
   Omit<Share, "id" | "shared_by" | "collection_id">
 >;

@@ -1,4 +1,8 @@
-import type { Collection, CollectionUpdate } from "@onelink/entities/models";
+import type {
+  Collection,
+  CollectionInsert,
+  CollectionUpdate,
+} from "@onelink/entities/models";
 import type { ICollectionRepository } from "../../application/repositories/collections.repository.interface";
 import db from "@onelink/db";
 import { DatabaseOperationError } from "@onelink/entities/errros";
@@ -14,7 +18,7 @@ export class CollectionRepository implements ICollectionRepository {
 
     return collection;
   }
-  async createCollection(data: Collection): Promise<Collection> {
+  async createCollection(data: CollectionInsert): Promise<Collection> {
     const [collection] = await db("collections").insert(data).select("*");
     if (!collection) {
       throw new DatabaseOperationError("Cannot create collection");

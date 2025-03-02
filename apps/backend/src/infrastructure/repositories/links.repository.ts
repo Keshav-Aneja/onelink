@@ -1,6 +1,6 @@
 import db from "@onelink/db";
 import type { ILinkRepository } from "../../application/repositories/links.repository.interface";
-import type { Link } from "@onelink/entities/models";
+import type { Link, LinkInsert } from "@onelink/entities/models";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 
 export class LinksRepository implements ILinkRepository {
@@ -24,7 +24,7 @@ export class LinksRepository implements ILinkRepository {
     const links = await db("links").where({ owner_id, parent_id }).select("*");
     return links;
   }
-  async createLink(data: Link): Promise<Link> {
+  async createLink(data: LinkInsert): Promise<Link> {
     const [link] = await db("links").insert(data).returning("*");
     if (!link) {
       throw new DatabaseOperationError("Cannot create link");

@@ -1,7 +1,7 @@
-import type { Link } from "@onelink/entities/models";
+import type { Link, LinkInsert } from "@onelink/entities/models";
 
 export interface ILinkRepository {
-  createLink(data: Link): Promise<Link>;
+  createLink(data: LinkInsert): Promise<Link>;
   getLinkById(link_id: string, owner_id: string): Promise<Link | undefined>;
   getAllLinksOfCollection(
     parent_id: string,

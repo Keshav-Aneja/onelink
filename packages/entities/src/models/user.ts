@@ -2,7 +2,7 @@ import { z } from "zod";
 import { Provider } from "../constants";
 
 export const UserSchema = z.object({
-  id: z.number(),
+  id: z.string().uuid(),
   name: z.string(),
   email: z.string().email(),
   provider: z.enum([Provider.Github, Provider.Google, Provider.Kustom]),
