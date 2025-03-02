@@ -16,6 +16,11 @@ const envSchema = z.object({
   GOOGLE_REDIRECT_URL: z.string().url(),
   GOOGLE_AUTH_URL: z.string().url(),
 
+  GITHUB_CLIENT_ID: z.string(),
+  GITHUB_CLIENT_SECRET: z.string(),
+  GITHUB_REDIRECT_URL: z.string().url(),
+  GITHUB_AUTH_URL: z.string().url(),
+
   //Redis Config
   REDIS_PASSWORD: z.string(),
   REDIS_URL: z.string(),

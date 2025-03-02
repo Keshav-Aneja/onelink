@@ -1,11 +1,9 @@
 import type { Request, Response } from "express";
-import { asycnHandler } from "../../helpers/async-handler";
-import { GoogleOAuthService } from "../../infrastructure/services/google.authentication.services";
-import { AuthenticationError } from "@onelink/entities/errros";
+import { AuthenticationError, RequestError } from "@onelink/entities/errros";
 import { FRONTEND_URL } from "../../config/constants";
-import { UsersRepository } from "../../infrastructure/repositories/users.repository";
 import { UserService } from "../../infrastructure/services/user.services";
 import { SessionService } from "../../infrastructure/services/session.services";
+import AuthenticationFactory from "../factory/authentication.factory";
 /**
  * I can't create an interface for this adaptor class if I want to use these funations as static functions. Why? :::D Because interfaces expects the class instance methods not on the static methods.
  *
@@ -24,7 +22,8 @@ export class AuthenticationAdapter {
    */
   static async authenticateUser(req: Request, res: Response): Promise<void> {
     try {
-      const authService = new GoogleOAuthService();
+      const { provider } = req.params;
+      const authService = AuthenticationFactory(provider);
       const authUrl = await authService.initiateAuthorizationRequest(
         req.session,
       );
@@ -47,7 +46,8 @@ export class AuthenticationAdapter {
     res: Response,
   ): Promise<void> {
     try {
-      const authService = new GoogleOAuthService();
+      const { provider } = req.params;
+      const authService = AuthenticationFactory(provider);
       const userService = new UserService();
       const sessionService = new SessionService();
       const code_verifier = req.session.code_verifier;
@@ -62,10 +62,7 @@ export class AuthenticationAdapter {
         authCode,
         code_verifier,
       );
-      if (!token || !token.id_token) {
-        throw new AuthenticationError("Failed to get google token");
-      }
-      const data = await authService.getUserDetails(token.id_token);
+      const data = await authService.getUserDetails(token);
 
       const sessionUser = await userService.getOrCreateUser(data);
 
@@ -75,13 +72,19 @@ export class AuthenticationAdapter {
         req.ip,
         req.get("User-Agent"),
       );
-      console.log(sessionUser);
       res.status(200).redirect(FRONTEND_URL);
     } catch (error: any) {
       console.error(error);
       res.status(400).json({ success: false, error: error.message });
     }
   }
+  /**
+   *
+   * @param req
+   * @param res
+   *
+   * Logsout the user
+   */
   static async terminateSession(req: Request, res: Response): Promise<void> {
     req.session.destroy((err) => {
       if (err) {

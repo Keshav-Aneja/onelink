@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import { UserService } from "../../infrastructure/services/user.services";
+import { Provider } from "@onelink/entities";
 export const protectedRoute = async (
   req: Request,
   res: Response,
@@ -26,7 +27,26 @@ export const protectedRoute = async (
       next();
     } catch (error) {
       console.error("Protected route error:", error);
-      res.status(500).send("Internal Server Error");
+      return res.status(500).send("Internal Server Error");
     }
   });
+};
+
+const isValidProvider = (provider: string): provider is Provider => {
+  return Object.values(Provider).includes(provider as Provider);
+};
+
+export const validateProvider = (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  const { provider } = req.params;
+
+  if (!provider || !isValidProvider(provider)) {
+    res.status(400).send("Invalid provider");
+    return;
+  }
+
+  next();
 };

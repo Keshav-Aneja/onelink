@@ -1,6 +1,5 @@
 import knex from "knex";
 import config from "./src/knexfile";
-import { env } from "bun";
 
 // TODO:  in prod use dependency injection to create knex instance
 // so db can be mocked for tests
@@ -12,4 +11,4 @@ const knexConfig =
     : config(cn).development;
 const db = knex(knexConfig);
 export default db;
-export * as dbType from "./src/types/knex";
+// export * as dbType from "./src/types/knex";

@@ -2,25 +2,16 @@ import pkceChallenge from "pkce-challenge";
 import type { IAuthenticationService } from "../../application/services/authentication.interface";
 import env from "../../config/env";
 import { AuthenticationError, ValidationError } from "@onelink/entities/errros";
-import { OAuth2Client, type Credentials } from "google-auth-library";
 import { UserSchemaWithoutID, type User } from "@onelink/entities/models";
 import { UserDTO } from "../dtos/user.dto";
 import type { Session, SessionData } from "express-session";
+export class GithubOAuthService implements IAuthenticationService {
+  private readonly CLIENT_ID: string = env.GITHUB_CLIENT_ID;
+  private readonly REDIRECT_URI: string = env.GITHUB_REDIRECT_URL;
+  private readonly AUTH_URL: string = env.GITHUB_AUTH_URL;
+  private readonly CLIENT_SECRET: string = env.GITHUB_CLIENT_SECRET;
 
-export class GoogleOAuthService implements IAuthenticationService {
-  private readonly CLIENT_ID: string = env.GOOGLE_CLIENT_ID;
-  private readonly REDIRECT_URI: string = env.GOOGLE_REDIRECT_URL;
-  private readonly AUTH_URL: string = env.GOOGLE_AUTH_URL;
-  private readonly CLIENT_SECRET: string = env.GOOGLE_CLIENT_SECRET;
-
-  constructor(
-    // Injecting the client
-    private readonly client: OAuth2Client = new OAuth2Client(
-      this.CLIENT_ID,
-      this.CLIENT_SECRET,
-      this.REDIRECT_URI,
-    ),
-  ) {}
+  constructor() {}
 
   // -----------------------------------------------------------------------------
 
@@ -37,12 +28,8 @@ export class GoogleOAuthService implements IAuthenticationService {
 
     const params = new URLSearchParams({
       client_id: this.CLIENT_ID,
-      redirect_uri: this.REDIRECT_URI,
-      response_type: "code",
-      scope: "openid email profile",
+      scope: "user:email",
       state: csrf_token,
-      code_challenge: code_challenge,
-      code_challenge_method: "S256",
     });
 
     return `${this.AUTH_URL}?${params.toString()}`;
@@ -51,19 +38,12 @@ export class GoogleOAuthService implements IAuthenticationService {
   // -----------------------------------------------------------------------------
 
   getAuthorizationCode(
-    code: any,
+    code: string,
     state: any,
     session: Session & Partial<SessionData>,
   ): string {
     if (typeof code !== "string") {
       throw new AuthenticationError("Authorization code not found");
-    }
-    if (
-      !session?.csrf_token ||
-      typeof state !== "string" ||
-      session.csrf_token !== state
-    ) {
-      throw new AuthenticationError("Invalid state parameter");
     }
     return code;
   }
@@ -74,38 +54,45 @@ export class GoogleOAuthService implements IAuthenticationService {
     code: string,
     codeVerifier?: string,
   ): Promise<string> {
-    const { tokens } = await this.client.getToken({
-      code,
-      codeVerifier,
+    const authParams = new URLSearchParams({
+      client_id: this.CLIENT_ID,
+      client_secret: this.CLIENT_SECRET,
       redirect_uri: this.REDIRECT_URI,
+      code,
     });
-    if (!tokens || !tokens.id_token) {
-      throw new AuthenticationError("Failed to get google token");
+    const response = await fetch(
+      `https://github.com/login/oauth/access_token?${authParams}`,
+      {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+        },
+      },
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to fetch access token: ${response.statusText}`);
     }
-    return tokens.id_token;
+
+    const data = await response.json();
+    const accessToken = data.access_token;
+    if (!accessToken) {
+      throw new Error("Access token not found in response");
+    }
+
+    return accessToken;
   }
 
   // -----------------------------------------------------------------------------
 
   async getUserDetails(authToken: string): Promise<Omit<User, "id">> {
-    //Verify ID Token
-    const ticket = await this.client.verifyIdToken({
-      idToken: authToken,
-      audience: this.CLIENT_ID,
+    const userResponse = await fetch("https://api.github.com/user", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
     });
-
-    //Token Payload Validation
-    const payload = ticket.getPayload();
-
-    if (
-      !payload ||
-      (payload.iss !== "accounts.google.com" &&
-        payload.iss !== "https://accounts.google.com")
-    ) {
-      throw new AuthenticationError("Invalid User from token");
-    }
-
-    const user = UserDTO.fromGoogleAuth(payload);
+    const data = await userResponse.json();
+    const user = UserDTO.fromGithubAuth(data);
     const valid = UserSchemaWithoutID.safeParse(user);
     if (!valid.success) {
       throw new ValidationError("Incompatible user data from Google Service");

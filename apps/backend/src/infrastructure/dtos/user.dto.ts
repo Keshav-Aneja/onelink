@@ -64,4 +64,17 @@ export class UserDTO {
       provider_id: data.sub,
     };
   }
+
+  static fromGithubAuth(data: any): UserInsert {
+    return {
+      email:
+        data.email ||
+        `${data.id}+${data.login}@users.noreply.github.com` ||
+        "null@github.com",
+      profile_url: data.avatar_url ?? "",
+      name: data.name,
+      provider: Provider.Github,
+      provider_id: data.id.toString(),
+    };
+  }
 }

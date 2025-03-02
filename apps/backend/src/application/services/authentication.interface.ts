@@ -16,8 +16,8 @@ export interface IAuthenticationService {
    * The provider returns a code after the authentication process at their side
    */
   getAuthorizationCode(
-    code: string,
-    state: string,
+    code: any,
+    state: any,
     session: Session & Partial<SessionData>,
   ): string;
   /**
@@ -29,10 +29,7 @@ export interface IAuthenticationService {
    *
    * NOTE: The type Credentials is for the google-auth-library, we have to confer if this is valid for github also or not
    */
-  getAuthorizationToken(
-    code: string,
-    codeVerifier?: string,
-  ): Promise<Credentials>;
+  getAuthorizationToken(code: string, codeVerifier?: string): Promise<string>;
   /**
    *
    * @param authToken

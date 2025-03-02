@@ -6,7 +6,9 @@ export class UserService implements IUserService {
   constructor(private userRepository = new UsersRepository()) {}
 
   async getOrCreateUser(data: UserInsert): Promise<User> {
-    const user = await this.userRepository.getUserByEmail(data.email);
+    const user = await this.userRepository.getUserByProviderID(
+      data.provider_id,
+    );
     if (!user) {
       const newUser = await this.userRepository.createUser(data);
       return newUser;

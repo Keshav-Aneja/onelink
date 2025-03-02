@@ -15,3 +15,9 @@ export class ValidationError extends Error {
     super(message, options);
   }
 }
+
+export class RequestError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}
