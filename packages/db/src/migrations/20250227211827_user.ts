@@ -1,9 +1,10 @@
 import type { Knex } from "knex";
 // Always use underscores ___ snake case
 export async function up(knex: Knex): Promise<void> {
+  await knex.raw('CREATE EXTENSION IF NOT EXISTS "uuid-ossp"');
   return knex.schema.createTable("users", (table) => {
     //Primary Key
-    table.increments("id").primary();
+    table.uuid("id").primary().defaultTo(knex.raw("uuid_generate_v4()"));
 
     // User Identity
     table.string("email").notNullable().unique();

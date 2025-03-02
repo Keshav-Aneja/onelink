@@ -50,5 +50,9 @@
     <li><b>[&nbsp;O&nbsp;]</b> Refactor AuthService</li>
     <li><b>[&nbsp;O&nbsp;]</b> Implement Express application loaders</li>
     <li><b>[&nbsp;O&nbsp;]</b> Setup Routers</li>
-    <li><b>[&nbsp;X&nbsp;]</b> Auth Middleware</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Auth Middleware</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Github Auth</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Create other model tables</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Create Services for collections & links</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Create services for shares</li>
 </ul>

@@ -10,7 +10,7 @@
   "scripts": {
     "db:make": "bun knex --migrations-directory ./src/migrations migrate:make -x ts",
     "db:latest": "bun knex migrate:latest --knexfile ./src/knexfile.ts",
-    "db:up": "bun knex migrate:up --knexfile ./src/knexfile.ts",
+    "db:up": "bun knex --knexfile ./src/knexfile.ts migrate:up",
     "db:down": "bun knex migrate:down --knexfile ./src/knexfile.ts",
     "db:rollback": "bun knex migrate:rollback --knexfile ./src/knexfile.ts",
     "db:list": "bun knex migrate:list --knexfile ./src/knexfile.ts"
