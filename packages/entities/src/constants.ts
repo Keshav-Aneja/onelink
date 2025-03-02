@@ -3,3 +3,8 @@ export enum Provider {
   Github = "github",
   Kustom = "kustom",
 }
+
+export enum ShareType {
+  Shallow = "SHALLOW",
+  Deep = "DEEP",
+}
