@@ -6,14 +6,15 @@ export interface ICollectionRepository {
     owner_id: string,
   ): Promise<Collection | undefined>;
   createCollection(data: Collection): Promise<Collection>;
-  deleteCollection(
-    collection_id: string,
-    owner_id: string,
-  ): Promise<string | undefined>;
+  deleteCollection(collection_id: string, owner_id: string): Promise<string>;
   updateCollection(
     data: CollectionUpdate,
     collection_id: string,
     owner_id: string,
-  ): Promise<Collection | undefined>;
+  ): Promise<Collection>;
   getAllCollections(owner_id: string): Promise<Collection[] | undefined>;
+  getAllCollectionsOfCollection(
+    parent_collection_id: string,
+    owner_id: string,
+  ): Promise<Collection[] | undefined>;
 }

@@ -24,18 +24,21 @@ export class CollectionRepository implements ICollectionRepository {
   async deleteCollection(
     collection_id: string,
     owner_id: string,
-  ): Promise<string | undefined> {
+  ): Promise<string> {
     const [collection] = await db("collections")
       .where({ id: collection_id, owner_id })
       .delete()
       .returning("id");
-    return collection?.id;
+    if (!collection?.id) {
+      throw new DatabaseOperationError("Cannot delete collection");
+    }
+    return collection.id;
   }
   async updateCollection(
     data: CollectionUpdate,
     collection_id: string,
     owner_id: string,
-  ): Promise<Collection | undefined> {
+  ): Promise<Collection> {
     const [collection] = await db("collections")
       .where({
         owner_id,
@@ -43,11 +46,26 @@ export class CollectionRepository implements ICollectionRepository {
       })
       .update(data)
       .returning("*");
-
+    if (!collection) {
+      throw new DatabaseOperationError("Cannot update collection");
+    }
     return collection;
   }
   async getAllCollections(owner_id: string): Promise<Collection[] | undefined> {
     const collections = await db("collections").where({ owner_id }).select("*");
+    return collections;
+  }
+  async getAllCollectionsOfCollection(
+    parent_collection_id: string,
+    owner_id: string,
+  ): Promise<Collection[] | undefined> {
+    const collections = await db("collections")
+      .where({
+        owner_id,
+        parent_id: parent_collection_id,
+      })
+      .select("*");
+
     return collections;
   }
 }

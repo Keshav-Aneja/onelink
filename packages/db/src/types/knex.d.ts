@@ -1,6 +1,8 @@
 import {
   Collection,
   CollectionUpdate,
+  Link,
+  LinkUpdate,
   User,
   UserInsert,
   UserUpdate,
@@ -20,5 +22,7 @@ declare module "knex/types/tables" {
       Collection,
       CollectionUpdate
     >;
+
+    links: Knex.CompositeTableType<Link, Link, LinkUpdate>;
   }
 }
