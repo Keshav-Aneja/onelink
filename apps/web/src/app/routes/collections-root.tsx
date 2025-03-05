@@ -1,7 +1,11 @@
-import React from "react";
+import CollectionsHeader from "@components/headers/collection-header";
 
 const CollectionsRoot = () => {
-  return <div>CollectionsRoot</div>;
+  return (
+    <main>
+      <CollectionsHeader />
+    </main>
+  );
 };
 
 export default CollectionsRoot;

@@ -2,6 +2,7 @@
   line-height: 1.5;
   font-weight: 400;
   font-family:
+    "kustom",
     Inter,
     Roboto,
     system-ui,
@@ -84,4 +85,9 @@
   inset: 2px;
   background: rgba(13, 15, 19, 0.85);
   border-radius: 50px;
+}
+
+.--auth-background {
+  background-image: url("../assets/images/noise.svg");
+  background-blend-mode: lighten;
 }

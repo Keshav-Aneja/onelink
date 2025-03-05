@@ -1,5 +1,6 @@
 import GlowCard from "@components/cards/glow-card";
-import { ArrowRight } from "lucide-react";
+import { paths } from "@config/paths";
+import { IoMdArrowForward } from "react-icons/io";
 import { Link } from "react-router";
 
 const Hero = () => {
@@ -18,11 +19,11 @@ const Hero = () => {
         style={{ "--color-gradient": "red" }}
       >
         <Link
-          to="/collections"
+          to={paths.collections.root.getHref()}
           className="rounded-full w-full h-full flex items-center justify-center gap-6 cursor-pointer group hover:shadow-lg shadow-white/30  transition-all duration-200 ease-linear text-lg font-medium"
         >
           <span>Get Started</span>
-          <ArrowRight className="bg-primary rounded-full text-white text-xl p-0.5 group-hover:bg-primary/70 transition-all duration-200 ease-linear" />
+          <IoMdArrowForward className="bg-primary rounded-full text-white text-xl p-0.5 group-hover:bg-primary/70 transition-all duration-200 ease-linear" />
         </Link>
       </GlowCard>
       <div className="--bg-pattern relative">

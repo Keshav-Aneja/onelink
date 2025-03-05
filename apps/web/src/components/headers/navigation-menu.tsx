@@ -1,4 +1,5 @@
 import GlowCard from "@components/cards/glow-card";
+import { paths } from "@config/paths";
 import { Link } from "react-router";
 
 const NavigationMenu = () => {
@@ -16,7 +17,10 @@ const NavigationMenu = () => {
           <h3 className="text-xl font-medium">OneLink</h3>
         </div>
         <ul className="flex items-center text-theme_secondary_white/80">
-          <Link to="/auth" className="hover:text-theme_primary_white px-3 py-1">
+          <Link
+            to={paths.auth.getHref()}
+            className="hover:text-theme_primary_white px-3 py-1"
+          >
             Login
           </Link>
           <Link

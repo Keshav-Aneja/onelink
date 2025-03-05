@@ -10,7 +10,7 @@ export const paths = {
   collections: {
     root: {
       path: "/collections",
-      getHref: () => "/collection",
+      getHref: () => "/collections",
     },
     collection: {
       path: "*",

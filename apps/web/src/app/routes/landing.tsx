@@ -1,14 +1,13 @@
-import LandingWrapper from "../../wrappers/landing-wrapper";
 import Hero from "../../sections/hero";
 import NavigationMenu from "../../components/headers/navigation-menu";
-import GlowCard from "@components/cards/glow-card";
+import BaseWrapper from "@wrappers/base-wrapper";
 
 const LandingPage = () => {
   return (
-    <LandingWrapper>
+    <BaseWrapper>
       <NavigationMenu />
       <Hero />
-    </LandingWrapper>
+    </BaseWrapper>
   );
 };
 
