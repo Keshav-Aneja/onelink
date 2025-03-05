@@ -1,0 +1,46 @@
+@import "tailwindcss";
+/*
+* Custom themes
+*/
+@theme base {
+  --color-black: #111111;
+  --color-primary: #dd4e52;
+  --color-primary_text: #ffffff;
+  --color-secondary_text: #7f7f7f;
+  --color-theme_primary_white: #ffffff;
+  --color-theme_secondary_white: #cfcfcf;
+  --color-theme_primary_black: #111111;
+  --color-theme_secondary_black: #2c2c2c;
+  --breakpoint-md: 720px;
+  --breakpoint-xl: 1280px;
+}
+/*
+* Extended utility classes
+*/
+@layer utilities {
+  .max-w-wrapper {
+    width: 2000px;
+  }
+  .kustom {
+    color: blue;
+  }
+  .font-kustom {
+    font-family: "kustom";
+  }
+}
+
+/* 
+    @starting-style feature
+        starting:foucs:opacity-0 when the elemnent is first displayed
+    not-* variant
+        not-hover:opacity-75
+    @supports
+        not-supports-hanging-punctuation:px-4
+    nth-* variant
+    in-* variant which is a lot like group-* without the need for the group class
+    support for popover:open
+    **:data-avatar:size-12 will apply to all the descendant elements not just the direct descendants
+    Stack variants
+        *:first:pt-0 *:last:py-0
+    outline-none X --> outline-hidden
+*/

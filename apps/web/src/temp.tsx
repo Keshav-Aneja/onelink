@@ -1,4 +1,8 @@
+import { RefObject, useRef } from "react";
+
 function App() {
+  const refnew = useRef(null);
+
   async function handleAuth() {
     try {
       window.location.href = "http://localhost:8080/api/auth/google";
@@ -29,29 +33,38 @@ function App() {
     }
   }
   return (
-    <div className="bg-[#0f0f0b] w-full h-screen text-white text-5xl font-semibold flex flex-col items-center justify-center gap-4">
+    <div
+      ref={(node) => {
+        if (node) {
+          node?.focus();
+        }
+      }}
+      className="bg-[#0f0f0b] w-full h-screen text-primary text-5xl font-semibold flex flex-col items-center justify-center gap-4 max-w-wrapper mx-auto "
+    >
       OneLink
       <br />
-      <p className="text-xl font-normal text-blue-300">Coming Soon!</p>
+      <p className="text-xl font-normal text-blue-300 text-secondary">
+        Coming Soon!
+      </p>
       <div className="w-full flex items-center justify-center">
         <button
           onClick={handleAuth}
-          className="text-lg bg-white px-12 py-3 rounded-full rounded-r-none text-black cursor-pointer border border-white min-w-48"
+          className="text-lg bg-white px-12 py-3 rounded-full rounded-r-none text-black cursor-pointer border border-white min-w-1/2 text-primary"
         >
           Google Auth
         </button>
         <button
           onClick={handleProtected}
-          className="text-lg bg-white px-12 py-3  text-black cursor-pointer border border-white border-x-0 min-w-48"
+          className="text-lg bg-white px-12 py-3  text-black cursor-pointer border border-white border-x-0 min-w-1/2"
         >
           Protected
         </button>
-        <button
+        {/* <button
           onClick={handleLogout}
           className="text-lg bg-white px-12 py-3 rounded-full rounded-l-none text-black cursor-pointer border border-white min-w-48"
         >
           Logout
-        </button>
+        </button> */}
       </div>
     </div>
   );
