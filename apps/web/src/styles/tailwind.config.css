@@ -13,6 +13,7 @@
   --color-theme_secondary_black: #2c2c2c;
   --breakpoint-md: 720px;
   --breakpoint-xl: 1280px;
+  --breakpoint-xxl: 1540px;
 }
 /*
 * Extended utility classes

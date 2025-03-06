@@ -27,10 +27,13 @@ type ContentProps = {
 export function ProfileContent({ className }: ContentProps) {
   return (
     <div className={className}>
-      <div className="bg-theme_secondary_black rounded-md p-2 text-lg text-center font-medium truncate">
+      <div className="bg-theme_secondary_black rounded-md p-2 text-sm xxl:text-lg text-center font-medium truncate">
         Keshav Aneja
       </div>
-      <Button Icon={IoLogOutSharp} className="w-full rounded-md">
+      <Button
+        Icon={IoLogOutSharp}
+        className="w-full text-sm xxl:text-base rounded-md"
+      >
         Logout
       </Button>
     </div>
@@ -52,7 +55,7 @@ export function ProfileTrigger({ profileImage }: TriggerProps) {
           className="w-full h-full object-cover rounded-full"
         />
       ) : (
-        <RiUserFill className="text-2xl" />
+        <RiUserFill className="text-xl xxl:text-2xl" />
       )}
     </CircularButton>
   );

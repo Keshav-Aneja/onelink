@@ -21,8 +21,10 @@ const AuthenticationPage = () => {
       <div className="w-full h-full flex justify-center items-center font-kustom">
         <section className="h-full w-1/3 flex flex-col justify-center gap-6">
           <span>
-            <h1 className="text-4xl font-semibold">Welcome back</h1>
-            <p className="text-lg text-theme_secondary_white">
+            <h1 className="text-3xl xxl:text-4xl font-semibold">
+              Welcome back
+            </h1>
+            <p className="text-sm xxl:text-lg text-theme_secondary_white">
               Access your account now to effortlessly save pages you want to
               revisit.
             </p>
@@ -48,7 +50,7 @@ const AuthenticationPage = () => {
             </Button>
           </div>
         </section>
-        <div className="text-8xl font-semibold fixed bottom-12 left-12 text-theme_secondary_white">
+        <div className="text-7xl xxl:text-8xl font-semibold fixed bottom-12 left-12 text-theme_secondary_white">
           OneLink.
         </div>
       </div>
