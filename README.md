@@ -55,4 +55,7 @@
     <li><b>[&nbsp;O&nbsp;]</b> Create other model tables</li>
     <li><b>[&nbsp;X&nbsp;]</b> Create Services for collections & links</li>
     <li><b>[&nbsp;X&nbsp;]</b> Create services for shares</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Landing Page UI</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Auth Page UI</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Basic Components UI</li>
 </ul>

@@ -27,6 +27,9 @@
   .font-kustom {
     font-family: "kustom";
   }
+  .h-card-xl {
+    height: 15rem;
+  }
 }
 
 /* 

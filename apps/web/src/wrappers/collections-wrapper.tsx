@@ -17,7 +17,9 @@ const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
       <CollectionContentWrapper>
         <CollectionsHeader />
         <Breadcrumbs />
-        <div className="px-3 pb-3 w-full h-full">{children}</div>
+        <div className="px-3 pb-3 w-full h-full flex flex-col gap-3">
+          {children}
+        </div>
       </CollectionContentWrapper>
     </main>
   );
