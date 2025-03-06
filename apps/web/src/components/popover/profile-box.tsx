@@ -3,6 +3,8 @@ import CircularButton from "@components/buttons/circular-button";
 import { IoLogOutSharp } from "react-icons/io5";
 import { RiUserFill } from "react-icons/ri";
 import Popover from "./popover";
+import { useSelector } from "react-redux";
+import { selectUser } from "@store/slices/user-slice";
 interface ProfileBoxProps {
   profileImage?: string;
 }
@@ -25,10 +27,11 @@ type ContentProps = {
   className?: string;
 };
 export function ProfileContent({ className }: ContentProps) {
+  const user = useSelector(selectUser);
   return (
     <div className={className}>
       <div className="bg-theme_secondary_black rounded-md p-2 text-sm xxl:text-lg text-center font-medium truncate">
-        Keshav Aneja
+        {user.name}
       </div>
       <Button
         Icon={IoLogOutSharp}

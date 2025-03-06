@@ -14,7 +14,7 @@ const AuthenticationPage = () => {
       //Please provide a valid provider
       return;
     }
-    window.location.href = `${BACKEND_URL}/api/auth/${provider}`;
+    window.location.href = `${BACKEND_URL}/auth/${provider}`;
   }
   return (
     <BaseWrapper className="--auth-background">

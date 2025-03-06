@@ -15,7 +15,8 @@
       "@config/*": ["src/config/*"],
       "@styles/*": ["src/styles/*"],
       "@hooks/*": ["src/hooks/*"],
-      "@wrappers/*": ["src/wrappers/*"]
+      "@wrappers/*": ["src/wrappers/*"],
+      "@store/*": ["src/store/*"]
     },
 
     /* Bundler mode */

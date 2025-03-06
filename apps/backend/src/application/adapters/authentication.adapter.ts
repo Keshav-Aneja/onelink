@@ -4,6 +4,8 @@ import { FRONTEND_URL } from "../../config/constants";
 import { UserService } from "../../infrastructure/services/user.services";
 import { SessionService } from "../../infrastructure/services/session.services";
 import AuthenticationFactory from "../factory/authentication.factory";
+import { UsersRepository } from "../../infrastructure/repositories/users.repository";
+import ActionResponse from "../../lib/action-response";
 /**
  * I can't create an interface for this adaptor class if I want to use these funations as static functions. Why? :::D Because interfaces expects the class instance methods not on the static methods.
  *
@@ -52,7 +54,6 @@ export class AuthenticationAdapter {
       const sessionService = new SessionService();
       const code_verifier = req.session.code_verifier;
       const { code, state } = req.query;
-
       const authCode = await authService.getAuthorizationCode(
         code,
         state,
@@ -65,7 +66,6 @@ export class AuthenticationAdapter {
       const data = await authService.getUserDetails(token);
 
       const sessionUser = await userService.getOrCreateUser(data);
-
       sessionService.createSession(
         sessionUser,
         req.session,
@@ -92,5 +92,21 @@ export class AuthenticationAdapter {
       }
       res.status(200).clearCookie("connect.sid").json({ success: true });
     });
+  }
+  // TODO: Delete this afterwards
+  static async getUserDetails(req: Request, res: Response): Promise<void> {
+    try {
+      const userService = new UsersRepository();
+      if (req.session.provider_id) {
+        const response = await userService.getUserByProviderID(
+          req.session.provider_id,
+        );
+        ActionResponse.success(res, response, 200);
+      } else {
+        throw new Error("Invalid Provider ID");
+      }
+    } catch (error: any) {
+      ActionResponse.error(res, 400, error);
+    }
   }
 }

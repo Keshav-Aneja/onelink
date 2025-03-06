@@ -6,12 +6,12 @@ export const protectedRoute = async (
   res: Response,
   next: NextFunction,
 ) => {
-  req.sessionStore.get(req.sessionID, async (err, sessionData) => {
+  req.sessionStore.get(req.session.id, async (err, sessionData) => {
     try {
       if (err) {
         return res.status(401).send("Unauthenticated request");
       }
-
+      console.log(sessionData);
       if (!sessionData?.provider_id) {
         return res.status(401).send("Invalid Session");
       }

@@ -1,9 +1,12 @@
 import GlowCard from "@components/cards/glow-card";
 import { paths } from "@config/paths";
+import { selectUser } from "@store/slices/user-slice";
+import { useAppSelector } from "@store/store";
 import { IoMdArrowForward } from "react-icons/io";
 import { Link } from "react-router";
 
 const Hero = () => {
+  const user = useAppSelector(selectUser);
   return (
     <>
       <h1 className="text-[2.5rem] md:text-[3.5rem] xl:text-[4rem] xxl-text-[5rem] leading-[2.5rem] md:leading-[3.5rem] xl:leading-[4rem] xxl:leading-[5rem]  text-center xl:max-w-[55vw] xxl:max-w-[50vw] font-semibold text-primary_text">
@@ -19,7 +22,11 @@ const Hero = () => {
         style={{ "--color-gradient": "red" }}
       >
         <Link
-          to={paths.collections.root.getHref()}
+          to={
+            user.id.length > 0
+              ? paths.collections.root.getHref()
+              : paths.auth.getHref()
+          }
           className="rounded-full w-full h-full flex items-center justify-center gap-6 cursor-pointer group hover:shadow-lg shadow-white/30  transition-all duration-200 ease-linear text-lg font-medium"
         >
           <span>Get Started</span>
