@@ -1,7 +1,5 @@
-import React from "react";
-
 const CollectionsPage = () => {
-  return <div>CollectionsPage</div>;
+  return <div className="w-full h-full text-white">CollectionsPage</div>;
 };
 
 export default CollectionsPage;

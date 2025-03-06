@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { ReactElement, useCallback, useRef, useState } from "react";
+import { useEffect } from "react";
+import { ReactElement, useRef, useState } from "react";
 interface PopoverProps {
   Trigger: () => ReactElement;
   Content: (props: { className?: string }) => ReactElement;

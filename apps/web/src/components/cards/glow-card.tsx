@@ -6,7 +6,7 @@ interface GlowCardProps {
   className?: string;
   style?: Record<string, any>;
   containerClassName?: string;
-  props: any;
+  props?: any;
 }
 export default function GlowCard({
   children,
