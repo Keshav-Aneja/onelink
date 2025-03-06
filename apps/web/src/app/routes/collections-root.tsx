@@ -1,10 +1,10 @@
-import CollectionsHeader from "@components/headers/collection-header";
+import CollectionWrapper from "@wrappers/collections-wrapper";
 
 const CollectionsRoot = () => {
   return (
-    <main>
-      <CollectionsHeader />
-    </main>
+    <CollectionWrapper>
+      <div className="w-full h-full"></div>
+    </CollectionWrapper>
   );
 };
 
