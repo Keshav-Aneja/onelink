@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@onelink/entities": "*",
+    "@onelink/action": "*",
     "@reduxjs/toolkit": "^2.6.0",
     "@tailwindcss/vite": "^4.0.9",
     "@tanstack/react-query": "^5.67.1",
@@ -24,8 +25,7 @@
     "redux-persist": "^6.0.0",
     "tailwind-merge": "^3.0.2",
     "tailwindcss": "^4.0.9",
-    "zod": "^3.24.2",
-    "@onelink/action": "*"
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.21.0",

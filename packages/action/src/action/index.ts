@@ -7,7 +7,6 @@ import { IAction } from "../interfaces/action.interface";
 import mergeConfig from "./modules/config";
 import buildOptions from "./modules/options-builder";
 import request from "./modules/create-request";
-import { merge } from "../utils/merge";
 
 export class Action implements IAction {
   private readonly config: IActionConfig;

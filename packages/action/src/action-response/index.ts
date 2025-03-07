@@ -12,7 +12,6 @@ import {
   ValidationError,
 } from "@onelink/entities/errros";
 import type { Response } from "express";
-import { SERVER_ERROR } from "../../../../apps/backend/src/config/constants";
 
 export class ActionResponse<T = unknown> {
   public readonly response: Response;
@@ -206,7 +205,7 @@ export class ActionResponse<T = unknown> {
       });
     } else {
       statusCode = 500;
-      err = SERVER_ERROR;
+      err = "";
     }
 
     return response

@@ -15,14 +15,15 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/express-session": "^1.18.1",
-    "@types/morgan": "^1.9.9"
+    "@types/morgan": "^1.9.9",
+    "@types/node": "^22.13.9"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "@onelink/db": "*",
     "@onelink/action": "*",
+    "@onelink/db": "*",
     "@onelink/entities": "*",
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",

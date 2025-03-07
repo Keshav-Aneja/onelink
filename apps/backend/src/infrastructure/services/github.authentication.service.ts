@@ -91,8 +91,16 @@ export class GithubOAuthService implements IAuthenticationService {
         Authorization: `Bearer ${authToken}`,
       },
     });
+    const userEmail = await fetch("https://api.github.com/user/emails", {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
     const data = await userResponse.json();
-    const user = UserDTO.fromGithubAuth(data);
+    const emails = await userEmail.json();
+    const email = emails[0].email;
+    const user = UserDTO.fromGithubAuth({ ...data, email });
     const valid = UserSchemaWithoutID.safeParse(user);
     if (!valid.success) {
       throw new ValidationError("Incompatible user data from Google Service");

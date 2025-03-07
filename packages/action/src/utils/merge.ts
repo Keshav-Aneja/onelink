@@ -1,5 +1,4 @@
-/**
- *
+/*
  * @param args (Takes in any number of objects and merges them)
  * @returns (An Object with merged key fields of the arguments object)
  * In case of common keys, the latter one takes preference
