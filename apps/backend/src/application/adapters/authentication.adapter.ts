@@ -5,7 +5,7 @@ import { UserService } from "../../infrastructure/services/user.services";
 import { SessionService } from "../../infrastructure/services/session.services";
 import AuthenticationFactory from "../factory/authentication.factory";
 import { UsersRepository } from "../../infrastructure/repositories/users.repository";
-import ActionResponse from "../../lib/action-response";
+import { ActionResponse } from "@onelink/action";
 import { asyncHandler } from "../../helpers/async-handler";
 /**
  * I can't create an interface for this adaptor class if I want to use these funations as static functions. Why? :::D Because interfaces expects the class instance methods not on the static methods.

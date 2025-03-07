@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { AuthenticationAdapter } from "../../application/adapters/authentication.adapter";
 import { middlewares } from "../middleware";
-import ActionResponse from "../../lib/action-response";
+import { ActionResponse } from "@onelink/action";
 
 const route = Router();
 

@@ -6,7 +6,7 @@ import { apiPrefix, FRONTEND_URL } from "../config/constants";
 import env from "../config/env";
 import Routes from "../api";
 import type { Request, Response, NextFunction, Errback } from "express";
-import ActionResponse from "../lib/action-response";
+import { ActionResponse } from "@onelink/action";
 export default async (app: Express) => {
   app.use(cors({ origin: FRONTEND_URL, credentials: true }));
   app.use(express.json());

@@ -74,7 +74,6 @@ export class GithubOAuthService implements IAuthenticationService {
     }
 
     const data = await response.json();
-    console.log(data);
     const accessToken = data.access_token;
     if (!accessToken) {
       throw new Error("Access token not found in response");
