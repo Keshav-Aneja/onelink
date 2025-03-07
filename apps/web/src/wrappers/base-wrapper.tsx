@@ -1,23 +1,18 @@
-import { BACKEND_URL } from "@config/constants";
 import { cn } from "@lib/tailwind-utils";
 import { ReactNode, useEffect } from "react";
-import { User } from "@onelink/entities/models";
-import { useAppDispatch, useAppSelector } from "@store/store";
-import { addUser, selectUser } from "@store/slices/user-slice";
-import Action from "@lib/fetch-action";
+// import { useAppDispatch, useAppSelector } from "@store/store";
+import action from "@config/action";
 type WrapperProps = {
   children: ReactNode;
   className?: string;
 };
 const BaseWrapper = ({ children, className }: WrapperProps) => {
-  const dispatch = useAppDispatch();
-  const api = new Action(BACKEND_URL, "api", {
-    credentials: "include",
-  });
-  const user = useAppSelector(selectUser);
+  // const dispatch = useAppDispatch();
+
+  // const user = useAppSelector(selectUser);
   const fetchUser = async () => {
     try {
-      const response = await api.get("auth/me");
+      const response = await action.get("auth/me");
       console.log("USER", response);
     } catch (error: any) {
       console.log("ERROR", error.message);
