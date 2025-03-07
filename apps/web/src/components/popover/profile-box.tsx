@@ -27,6 +27,17 @@ type ContentProps = {
   className?: string;
 };
 export function ProfileContent({ className }: ContentProps) {
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   const user = useSelector(selectUser);
   return (
     <div className={className}>
@@ -36,6 +47,7 @@ export function ProfileContent({ className }: ContentProps) {
       <Button
         Icon={IoLogOutSharp}
         className="w-full text-sm xxl:text-base rounded-md"
+        onClick={handleLogout}
       >
         Logout
       </Button>

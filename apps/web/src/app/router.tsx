@@ -30,6 +30,7 @@ export const createAppRouter = (queryClient: QueryClient) => {
       element: <CollectionsRoot />,
       children: [
         {
+          index: true,
           path: paths.collections.collection.path,
           lazy: () => import("./routes/collections").then(convert(queryClient)),
         },

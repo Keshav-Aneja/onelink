@@ -21,3 +21,9 @@ export class RequestError extends Error {
     super(message, options);
   }
 }
+
+export class ApiError extends Error {
+  constructor(message: string, options?: ErrorOptions) {
+    super(message, options);
+  }
+}

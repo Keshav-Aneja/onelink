@@ -1,7 +1,5 @@
 import GlowCard from "@components/cards/glow-card";
 import { paths } from "@config/paths";
-import { selectUser } from "@store/slices/user-slice";
-import { useSelector } from "react-redux";
 import { Link } from "react-router";
 
 const NavigationMenu = () => {

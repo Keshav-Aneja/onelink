@@ -181,40 +181,42 @@ export default class ActionResponse<T = unknown> {
 
   public static error(
     response: Response,
-    status: number,
     error: any,
+    status: number,
     message?: string,
   ) {
     let err = "";
     let errCause = "";
-    if (
-      error instanceof DatabaseOperationError ||
+    let statusCode = status;
+    if (error instanceof DatabaseOperationError) {
+      statusCode = 500;
+      err = error.message;
+    } else if (
       error instanceof ValidationError ||
       error instanceof RequestError
     ) {
+      statusCode = 400;
       err = error.message;
-      errCause = typeof error.cause === "string" ? error.cause : "";
     } else if (
       error instanceof AuthenticationError ||
       error instanceof SessionOperationError
     ) {
-      return response.redirect(`${env.FRONTEND_URL}/auth`);
-    } else if (error instanceof Error) {
-      err =
-        process.env.NODE_ENV === "production" ? SERVER_ERROR : error.message;
-      errCause =
-        process.env.NODE_ENV === "production"
-          ? ""
-          : typeof error.cause === "string"
-            ? error.cause
-            : "";
+      statusCode = 401;
+      return response.status(400).clearCookie("connect.sid").json({
+        success: false,
+        redirect: true,
+      });
+    } else {
+      statusCode = 500;
+      err = SERVER_ERROR;
     }
+
     return response
       .status(status)
       .json(
         new ActionResponse<null>(
           response,
-          status,
+          statusCode,
           null,
           message || "Error",
           err,

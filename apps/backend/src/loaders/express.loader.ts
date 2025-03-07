@@ -5,7 +5,8 @@ import cors from "cors";
 import { apiPrefix, FRONTEND_URL } from "../config/constants";
 import env from "../config/env";
 import Routes from "../api";
-
+import type { Request, Response, NextFunction, Errback } from "express";
+import ActionResponse from "../lib/action-response";
 export default async (app: Express) => {
   app.use(cors({ origin: FRONTEND_URL, credentials: true }));
   app.use(express.json());
@@ -18,6 +19,10 @@ export default async (app: Express) => {
   });
 
   app.use(apiPrefix, Routes());
-
+  app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
+    // Error handler
+    // console.error("ERROR: ", err);
+    ActionResponse.error(res, err, 400);
+  });
   return app;
 };
