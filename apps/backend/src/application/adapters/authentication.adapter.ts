@@ -26,6 +26,9 @@ export class AuthenticationAdapter {
   static async authenticateUser(req: Request, res: Response): Promise<void> {
     try {
       const { provider } = req.params;
+      const { redirectTo } = req.query;
+      req.session.redirect_to =
+        typeof redirectTo === "string" ? redirectTo : "";
       const authService = AuthenticationFactory(provider);
       const authUrl = await authService.initiateAuthorizationRequest(
         req.session,
@@ -50,6 +53,7 @@ export class AuthenticationAdapter {
   ): Promise<void> {
     try {
       const { provider } = req.params;
+      const redirectTo = req.session.redirect_to;
       const authService = AuthenticationFactory(provider);
       const userService = new UserService();
       const sessionService = new SessionService();
@@ -65,7 +69,6 @@ export class AuthenticationAdapter {
         code_verifier,
       );
       const data = await authService.getUserDetails(token);
-
       const sessionUser = await userService.getOrCreateUser(data);
       sessionService.createSession(
         sessionUser,
@@ -73,7 +76,9 @@ export class AuthenticationAdapter {
         req.ip,
         req.get("User-Agent"),
       );
-      res.status(200).redirect(FRONTEND_URL);
+      res
+        .status(200)
+        .redirect(`${FRONTEND_URL}${redirectTo ? redirectTo : ""}`);
     } catch (error: any) {
       console.error(error);
       res.status(400).json({ success: false, error: error.message });
@@ -89,14 +94,14 @@ export class AuthenticationAdapter {
   static async terminateSession(req: Request, res: Response): Promise<void> {
     req.session.destroy((err) => {
       if (err) {
-        res.status(400).json({ success: false });
+        ActionResponse.error(res, {}, 400, { success: false, redirect: false });
       }
       res
         .clearCookie("connect.sid", {
           path: "/",
           httpOnly: true,
         })
-        .redirect(302, "frontend.com/auth");
+        .json({ success: true, redirect: true });
     });
   }
   // TODO: Delete this afterwards

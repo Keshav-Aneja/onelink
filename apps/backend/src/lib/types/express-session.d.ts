@@ -5,7 +5,7 @@ declare module "express-session" {
     user_id: string;
     provider: string;
     provider_id: string;
-
+    redirect_to: string;
     //For security purposes
     ip: string;
     user_agent: string;

@@ -19,6 +19,7 @@ export default defineConfig({
       "@hooks": path.resolve(__dirname, "./src/hooks"),
       "@wrappers": path.resolve(__dirname, "./src/wrappers"),
       "@store": path.resolve(__dirname, "./src/store"),
+      "@features": path.resolve(__dirname, "./src/features"),
     },
   },
 });

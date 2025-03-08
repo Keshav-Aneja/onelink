@@ -57,7 +57,7 @@ export class GithubOAuthService implements IAuthenticationService {
     const authParams = new URLSearchParams({
       client_id: this.CLIENT_ID,
       client_secret: this.CLIENT_SECRET,
-      redirect_uri: this.REDIRECT_URI,
+      redirect_uri: `${this.REDIRECT_URI}`,
       code,
     });
     const response = await fetch(

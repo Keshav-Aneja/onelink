@@ -6,14 +6,12 @@ interface GlowCardProps {
   className?: string;
   style?: Record<string, any>;
   containerClassName?: string;
-  props?: any;
 }
 export default function GlowCard({
   children,
   className,
   containerClassName,
   style,
-  props,
 }: GlowCardProps) {
   const cardRef = useMouseMovement();
   return (
@@ -25,7 +23,6 @@ export default function GlowCard({
       tabIndex={0}
       ref={cardRef}
       style={style}
-      {...props}
     >
       <div
         className={cn(

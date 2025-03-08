@@ -7,3 +7,8 @@ export const queryConfig = {
     retry: false,
   },
 } satisfies DefaultOptions;
+
+export type QueryConfig<T extends (...args: any[]) => any> = Omit<
+  ReturnType<T>,
+  "queryFn" | "queryKey"
+>;

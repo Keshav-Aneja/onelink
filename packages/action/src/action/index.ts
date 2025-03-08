@@ -34,7 +34,7 @@ export class Action implements IAction {
 
   async post<T = any>(
     url: string,
-    data: any,
+    data?: any,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse> {
@@ -49,7 +49,7 @@ export class Action implements IAction {
 
   async patch<T = any>(
     url: string,
-    data: any,
+    data?: any,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse> {

@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import { paths } from "../config/paths";
 import { useMemo } from "react";
 import CollectionsRoot from "./routes/collections-root";
+import ProtectedRoute from "./protected";
 
 const convert = (queryClient: QueryClient) => (m: any) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
@@ -27,7 +28,11 @@ export const createAppRouter = (queryClient: QueryClient) => {
     },
     {
       path: paths.collections.root.path,
-      element: <CollectionsRoot />,
+      element: (
+        <ProtectedRoute>
+          <CollectionsRoot />
+        </ProtectedRoute>
+      ),
       children: [
         {
           index: true,

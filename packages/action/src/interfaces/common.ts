@@ -13,10 +13,10 @@ export interface IActionConfig {
   headers?: HeadersInit;
 }
 
-export interface IActionResponse {
+export interface IActionResponse<T = any> {
   success: boolean;
   status: number;
-  data: any;
+  data: T;
   message: string;
   error?: string;
   cause?: string;

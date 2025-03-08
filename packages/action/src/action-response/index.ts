@@ -180,6 +180,7 @@ export class ActionResponse<T = unknown> {
     response: Response,
     error: any,
     status: number,
+    data: any = null,
     message?: string,
   ) {
     let err = "";
@@ -204,7 +205,7 @@ export class ActionResponse<T = unknown> {
         redirect: true,
       });
     } else {
-      statusCode = 500;
+      statusCode = statusCode ?? 500;
       err = "";
     }
 
@@ -214,7 +215,7 @@ export class ActionResponse<T = unknown> {
         new ActionResponse<null>(
           response,
           statusCode,
-          null,
+          data,
           message || "Error",
           err,
           errCause,

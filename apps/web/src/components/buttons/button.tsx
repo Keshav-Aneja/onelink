@@ -1,13 +1,19 @@
 import { cn } from "@lib/tailwind-utils";
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { IconType } from "react-icons";
 type ButtonProps = {
   children: ReactNode;
   Icon?: IconType;
   className?: string;
   onClick?: () => void;
-};
-const Button = ({ children, className, onClick, Icon }: ButtonProps) => {
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+const Button = ({
+  children,
+  className,
+  onClick,
+  Icon,
+  ...props
+}: ButtonProps) => {
   return (
     <button
       className={cn(
@@ -15,6 +21,7 @@ const Button = ({ children, className, onClick, Icon }: ButtonProps) => {
         className,
       )}
       onClick={onClick}
+      {...props}
     >
       {Icon ? <Icon className="text-xl xxl:text-2xl" /> : ""}
       {children}

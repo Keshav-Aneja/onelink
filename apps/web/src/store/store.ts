@@ -9,14 +9,16 @@ import storage from "redux-persist/lib/storage";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "@store/slices/user-slice";
 import collectionReducer from "@store/slices/collections-slice";
+import appReducer from "@store/slices/application-slice";
 const persistConfig = {
-  key: "roo",
+  key: "onelink",
   storage,
 };
 
 const rootReducer = combineReducers({
   user: userReducer,
   collection: collectionReducer,
+  app: appReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

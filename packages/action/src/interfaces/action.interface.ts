@@ -13,13 +13,13 @@ export interface IAction {
   ): Promise<IActionResponse>;
   post<T>(
     url: string,
-    data: any,
+    data?: any,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse>;
   patch<T>(
     url: string,
-    data: any,
+    data?: any,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse>;

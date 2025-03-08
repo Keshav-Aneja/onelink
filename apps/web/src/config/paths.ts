@@ -5,7 +5,9 @@ export const paths = {
   },
   auth: {
     path: "/auth",
-    getHref: () => "/auth",
+    getHref: (redirectTo?: string | null | undefined) => {
+      return `/auth${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`;
+    },
   },
   collections: {
     root: {

@@ -5,6 +5,14 @@ import { RiUserFill } from "react-icons/ri";
 import Popover from "./popover";
 import { useSelector } from "react-redux";
 import { selectUser } from "@store/slices/user-slice";
+import {
+  useLogoutUser,
+  useLogoutUserMutation,
+} from "@features/users/logout-user";
+import { useState } from "react";
+import { useLocation, useNavigate } from "react-router";
+import { useMutation } from "@tanstack/react-query";
+import { ImSpinner2 } from "react-icons/im";
 interface ProfileBoxProps {
   profileImage?: string;
 }
@@ -27,18 +35,19 @@ type ContentProps = {
   className?: string;
 };
 export function ProfileContent({ className }: ContentProps) {
+  const location = useLocation();
+  const user = useSelector(selectUser);
+  const [mutex, setMutex] = useState(false);
+  const { mutateAsync } = useLogoutUserMutation();
+  const navigate = useNavigate();
   const handleLogout = async () => {
-    try {
-      const response = await fetch("http://localhost:8080/api/auth/logout", {
-        method: "POST",
-        credentials: "include",
-      });
-      console.log(response);
-    } catch (error) {
-      console.error(error);
+    setMutex(true);
+    const response = await mutateAsync();
+    setMutex(false);
+    if (response && response.success) {
+      navigate(`/auth?redirectTo=${encodeURIComponent(location.pathname)}`);
     }
   };
-  const user = useSelector(selectUser);
   return (
     <div className={className}>
       <div className="bg-theme_secondary_black rounded-md p-2 text-sm xxl:text-lg text-center font-medium truncate">
@@ -48,8 +57,10 @@ export function ProfileContent({ className }: ContentProps) {
         Icon={IoLogOutSharp}
         className="w-full text-sm xxl:text-base rounded-md"
         onClick={handleLogout}
+        disabled={mutex}
+        aria-disabled={mutex}
       >
-        Logout
+        {mutex ? <ImSpinner2 className=" animate-spin" /> : "Logout"}
       </Button>
     </div>
   );

@@ -4,17 +4,19 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Provider } from "@onelink/entities";
 import { BACKEND_URL } from "@config/constants";
+import { useSearchParams } from "react-router";
 const AuthenticationPage = () => {
+  //TODO: Check the redirectTO and after authentication redirect them to that URL
+  const [params] = useSearchParams();
+  const redirectTo = params.get("redirectTo");
   function handleAuthentication(provider: Provider) {
     if (
       !provider ||
       !(provider === Provider.Github || provider === Provider.Google)
     ) {
-      //Notification Message
-      //Please provide a valid provider
       return;
     }
-    window.location.href = `${BACKEND_URL}/api/auth/${provider}`;
+    window.location.href = `${BACKEND_URL}/api/auth/${provider}${redirectTo ? `?redirectTo=${redirectTo}` : ""}`;
   }
   return (
     <BaseWrapper className="--auth-background">
