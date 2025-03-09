@@ -2,9 +2,9 @@ import { z } from "zod";
 
 export const LinkSchema = z.object({
   id: z.string().uuid().nonempty(),
-  name: z.string(),
+  name: z.string().optional(),
   description: z.string().optional(),
-  fingerprint: z.string().nanoid(),
+  fingerprint: z.string(),
   link: z.string().url(),
   open_graph: z.string().optional(),
 

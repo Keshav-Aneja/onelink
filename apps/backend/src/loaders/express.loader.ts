@@ -21,7 +21,7 @@ export default async (app: Express) => {
   app.use(apiPrefix, Routes());
   app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
     // Error handler
-    // console.error("ERROR: ", err);
+    console.error("ERROR: ", err);
     ActionResponse.error(res, err, 400);
   });
   return app;

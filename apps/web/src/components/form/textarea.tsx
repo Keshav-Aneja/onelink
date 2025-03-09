@@ -1,27 +1,27 @@
-import { CreateCollection } from "@components/cards/create-collection-card";
 import { cn } from "@lib/tailwind-utils";
 import React from "react";
 import { FieldError, Path, UseFormRegister } from "react-hook-form";
 import FormError from "./form-error";
 
-type TextareaProps = {
-  label: Path<CreateCollection>;
-  register: UseFormRegister<CreateCollection>;
+type TextareaProps<T extends Record<string, any>> = {
+  label: Path<T>;
+  register: UseFormRegister<T>;
   required?: boolean;
   error?: FieldError;
 } & React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
-const Textarea = ({
+const Textarea = <T extends Record<string, any>>({
   label,
   register,
   required = false,
   error,
   ...props
-}: TextareaProps) => {
+}: TextareaProps<T>) => {
   return (
     <div className="flex flex-col gap-1">
       <label className=" first-letter:uppercase text-theme_secondary_white font-medium text-base">
         {label}
+        {required && <span className="text-primary text-lg">*</span>}
       </label>
       <textarea
         {...register(label, { required })}

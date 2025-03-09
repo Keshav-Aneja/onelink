@@ -77,7 +77,7 @@ const CreateCollectionCard = ({
           Create Collection
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <Input
+          <Input<CreateCollection>
             label="name"
             required={true}
             register={register}
@@ -85,18 +85,18 @@ const CreateCollectionCard = ({
             focus={true}
             error={errors.name}
           />
-          <Textarea
+          <Textarea<CreateCollection>
             label="description"
             register={register}
             placeholder="Ex: Collection for research papers"
           />
-          <Checkbox
+          <Checkbox<CreateCollection>
             label="is_protected"
             falseLabel="Enable Password Protection"
             register={register}
           />
           {watch("is_protected") ? (
-            <Input
+            <Input<CreateCollection>
               label="password"
               required={watch("is_protected")}
               register={register}

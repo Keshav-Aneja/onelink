@@ -10,6 +10,8 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import userReducer from "@store/slices/user-slice";
 import collectionReducer from "@store/slices/collections-slice";
 import appReducer from "@store/slices/application-slice";
+import linkReducer from "./slices/links-slice";
+
 const persistConfig = {
   key: "onelink",
   storage,
@@ -18,6 +20,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   user: userReducer,
   collection: collectionReducer,
+  link: linkReducer,
   app: appReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);

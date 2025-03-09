@@ -3,21 +3,21 @@ import React from "react";
 import { FieldError, Path, UseFormRegister } from "react-hook-form";
 import FormError from "./form-error";
 
-type CheckboxProps = {
-  label: Path<CreateCollection>;
-  register: UseFormRegister<CreateCollection>;
+type CheckboxProps<T extends Record<string, any>> = {
+  label: Path<T>;
+  register: UseFormRegister<T>;
   required?: boolean;
   falseLabel?: string;
   error?: FieldError;
 } & React.InputHTMLAttributes<HTMLInputElement>;
-const Checkbox = ({
+const Checkbox = <T extends Record<string, any>>({
   register,
   required,
   error,
   falseLabel,
   label,
   ...props
-}: CheckboxProps) => {
+}: CheckboxProps<T>) => {
   const labelInput = label.split("_").join(" ");
   return (
     <div className="flex  gap-2">

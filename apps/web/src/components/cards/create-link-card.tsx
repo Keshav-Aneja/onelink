@@ -6,37 +6,36 @@ import Input from "@components/form/Input";
 import Button from "@components/buttons/button";
 import { FaPlus } from "react-icons/fa";
 import Textarea from "@components/form/textarea";
-import { IoMdClose } from "react-icons/io";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CollectionSchema } from "@onelink/entities/models";
-import { getRandomColor } from "@lib/utils/get-random-color";
-import Checkbox from "@components/form/checkbox";
-import { useCreateCollection } from "@features/collections/create-collection";
+import { LinkSchema } from "@onelink/entities/models";
 import { getParentIdFromPath } from "@lib/utils/get-paths";
 import CloseButton from "@components/buttons/close-button";
-interface CreateCollectionCardProps {
+import { nanoid } from "@reduxjs/toolkit";
+import { useCreateLink } from "@features/links/create-link";
+interface CreateLinkCardProps {
   className?: string;
   closeModal?: () => void;
 }
-const collectionSchema = CollectionSchema.omit({
+
+const linkSchema = LinkSchema.omit({
+  name: true,
   id: true,
-  parent_id: true,
   owner_id: true,
+  parent_id: true,
+  open_graph: true,
+  fingerprint: true,
 });
-export type CreateCollection = z.infer<typeof collectionSchema>;
-const CreateLinkCard = ({
-  className,
-  closeModal,
-}: CreateCollectionCardProps) => {
+export type CreateLink = z.infer<typeof linkSchema>;
+const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   const pathId = getParentIdFromPath();
   if (pathId === undefined) {
     return null;
   }
-  const createCollectionMutation = useCreateCollection({
+  const createLinkMutation = useCreateLink({
     parentId: pathId,
     mutationConfig: {
       onSuccess: () => {
-        console.log("Collection added successfull");
+        console.log("Link added successfull");
         closeModal && closeModal();
       },
     },
@@ -46,22 +45,20 @@ const CreateLinkCard = ({
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
-  } = useForm<CreateCollection>({
-    resolver: zodResolver(collectionSchema),
+  } = useForm<CreateLink>({
+    resolver: zodResolver(linkSchema),
     defaultValues: {
-      name: "",
       description: "",
-      color: getRandomColor(),
-      is_protected: false,
-      password: "",
+      link: "",
     },
     mode: "onChange",
   });
-  const onSubmit: SubmitHandler<CreateCollection> = (data) => {
-    const collectionData = { ...data, parent_id: pathId };
-    createCollectionMutation.mutate(collectionData);
+  const onSubmit: SubmitHandler<CreateLink> = (data) => {
+    console.log("SUBMITTING");
+    const linkData = { ...data, parent_id: pathId, fingerprint: nanoid(10) };
+    console.log(linkData);
+    createLinkMutation.mutate(linkData);
   };
 
   return (
@@ -77,45 +74,29 @@ const CreateLinkCard = ({
           Add new link
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
-          <Input
-            label="name"
+          <Input<CreateLink>
+            label="link"
             required={true}
             register={register}
-            placeholder="Ex: Blogs"
+            placeholder="Ex: https://kustom.cc"
             focus={true}
-            error={errors.name}
+            error={errors.link}
           />
-          <Textarea
+          <Textarea<CreateLink>
             label="description"
             register={register}
             placeholder="Ex: Collection for research papers"
           />
-          <Checkbox
-            label="is_protected"
-            falseLabel="Enable Password Protection"
-            register={register}
-          />
-          {watch("is_protected") ? (
-            <Input
-              label="password"
-              required={watch("is_protected")}
-              register={register}
-              placeholder="Enter a secure password"
-              error={errors.password}
-            />
-          ) : (
-            ""
-          )}
           <Button
             type="submit"
             className="w-full rounded-md"
             Icon={FaPlus}
             iconSize="sm"
-            disabled={createCollectionMutation.isPending}
-            aria-disabled={createCollectionMutation.isPending}
-            loading={createCollectionMutation.isPending}
+            disabled={createLinkMutation.isPending}
+            aria-disabled={createLinkMutation.isPending}
+            loading={createLinkMutation.isPending}
           >
-            Add Collection
+            Add Link
           </Button>
         </form>
       </div>

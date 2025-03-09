@@ -4,7 +4,7 @@ export interface ILinkRepository {
   createLink(data: LinkInsert): Promise<Link>;
   getLinkById(link_id: string, owner_id: string): Promise<Link | undefined>;
   getAllLinksOfCollection(
-    parent_id: string,
+    parent_id: string | null,
     owner_id: string,
   ): Promise<Link[] | undefined>;
   getAllLinks(owner_id: string): Promise<Link[] | undefined>;

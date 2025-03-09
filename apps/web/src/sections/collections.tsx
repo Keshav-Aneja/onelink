@@ -1,11 +1,41 @@
 import CollectionCard from "@components/cards/collection-card";
-import { Collection } from "@onelink/entities/models";
-import { Fragment } from "react";
-
+import { useCollections } from "@features/collections/get-collections";
+import { useStoredCollections } from "@hooks/collections";
+import { addMultipleCollections } from "@store/slices/collections-slice";
+import { useAppDispatch } from "@store/store";
+import { Fragment, useEffect, useState } from "react";
+import Loader from "../app/loader";
 interface CollectionsContent {
-  collections: Collection[];
+  pathId: string | null;
 }
-const CollectionsContent = ({ collections }: CollectionsContent) => {
+const CollectionsContent = ({ pathId }: CollectionsContent) => {
+  const collections = useStoredCollections(pathId);
+  const dispatch = useAppDispatch();
+
+  const [shouldFetchCollections, setShouldFetchCollections] = useState<boolean>(
+    !collections || collections.length === 0,
+  );
+  const collectionsQuery = useCollections(shouldFetchCollections, pathId);
+
+  useEffect(() => {
+    setShouldFetchCollections(!collections || collections.length === 0);
+  }, [pathId]);
+
+  useEffect(() => {
+    if (collectionsQuery.isSuccess && collectionsQuery.data?.data) {
+      setShouldFetchCollections(false);
+      if (!collections) {
+        dispatch(addMultipleCollections(collectionsQuery.data.data));
+      }
+    }
+  }, [collectionsQuery.isSuccess, collectionsQuery.data, dispatch]);
+
+  if (collectionsQuery.isLoading) {
+    return <Loader />;
+  }
+  if (!collections) {
+    return <p>No stored collections found</p>;
+  }
   return (
     <Fragment>
       {collections.length === 0 && (

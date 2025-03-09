@@ -18,7 +18,7 @@ export class LinksRepository implements ILinkRepository {
     return links;
   }
   async getAllLinksOfCollection(
-    parent_id: string,
+    parent_id: string | null,
     owner_id: string,
   ): Promise<Link[] | undefined> {
     const links = await db("links").where({ owner_id, parent_id }).select("*");
