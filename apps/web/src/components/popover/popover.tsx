@@ -6,7 +6,10 @@ import { IoMdClose } from "react-icons/io";
 interface PopoverProps {
   modal?: boolean;
   Trigger: ReactElement;
-  Content: (props: { className?: string }) => ReactElement;
+  Content: (props: {
+    className?: string;
+    closeModal?: () => void;
+  }) => ReactElement;
 }
 const Popover = ({ Trigger, Content, modal = false }: PopoverProps) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -15,6 +18,10 @@ const Popover = ({ Trigger, Content, modal = false }: PopoverProps) => {
 
   const toggleVisibility = () => {
     setIsVisible((visibility) => !visibility);
+  };
+
+  const closeModal = () => {
+    setIsVisible(false);
   };
 
   useEffect(() => {
@@ -33,12 +40,6 @@ const Popover = ({ Trigger, Content, modal = false }: PopoverProps) => {
         setIsVisible(false);
       }
     };
-    const closeBtn = document
-      .getElementById("--ol-modal-close-btn")
-      ?.addEventListener("click", () => {
-        setIsVisible(false);
-      });
-
     document.addEventListener("keydown", handleKeyPress);
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
@@ -66,6 +67,7 @@ const Popover = ({ Trigger, Content, modal = false }: PopoverProps) => {
         {Content({
           className:
             "w-60 absolute top-16 right-0 p-2 bg-black border-1 border-white/40 rounded-lg flex flex-col gap-2",
+          closeModal,
         })}
       </div>
     </div>

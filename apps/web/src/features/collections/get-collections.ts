@@ -29,12 +29,18 @@ type UseCollectionsQueryOptions = {
   queryConfig?: QueryConfig<typeof getCollectionsQueryOptions>;
 };
 
-export const useCollections = ({
-  queryConfig,
-}: UseCollectionsQueryOptions = {}) => {
-  const parentPath = getParentPath();
+export const useCollections = (
+  enabled: boolean,
+  pathId: string | null | undefined,
+  { queryConfig }: UseCollectionsQueryOptions = {},
+) => {
+  const parentPath = pathId !== undefined ? pathId : null;
+  console.log("ENABLED", enabled);
+  console.log("FETCH TIME PARENT ID", parentPath);
+  console.log("WILL FETCH", pathId !== undefined && enabled);
   return useQuery({
     ...getCollectionsQueryOptions(parentPath),
     ...queryConfig,
+    enabled: pathId !== undefined && enabled,
   });
 };

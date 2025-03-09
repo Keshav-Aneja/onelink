@@ -2,25 +2,27 @@ import { createSlice } from "@reduxjs/toolkit";
 
 interface IApplicationConfig {
   redirectTo: string;
+  parent_id: string | null;
 }
 
 const initialState: IApplicationConfig = {
   redirectTo: "",
+  parent_id: null,
 };
 
 export const applicationSlice = createSlice({
   name: "app",
   initialState,
   reducers: {
-    setRedirectPath: (state, action: { payload: string }) => {
-      state.redirectTo = action.payload;
+    setParentId: (state, action: { payload: string | null }) => {
+      state.parent_id = action.payload;
     },
   },
   selectors: {
-    getRedirectPath: (state) => state.redirectTo,
+    getParentId: (state) => state.parent_id,
   },
 });
 
-export const { setRedirectPath } = applicationSlice.actions;
-export const { getRedirectPath } = applicationSlice.selectors;
+export const { setParentId } = applicationSlice.actions;
+export const { getParentId } = applicationSlice.selectors;
 export default applicationSlice.reducer;

@@ -1,5 +1,7 @@
+import { getParentPath } from "@lib/utils/get-paths";
 import { Collection } from "@onelink/entities/models";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { getParentId } from "./application-slice";
 
 const initialState: Collection[] = [];
 
@@ -28,14 +30,11 @@ const collectionSlice = createSlice({
   selectors: {
     getCollection: (state: Collection[], index: number) => state[index],
     getAllCollections: (state: Collection[]) => state,
-    getCollectionByParent: (state: Collection[], parent_id: string | null) => {
-      return state.filter((collection) => collection.parent_id === parent_id);
-    },
   },
 });
 
-export const { getCollection, getAllCollections, getCollectionByParent } =
-  collectionSlice.selectors;
+export const { getCollection, getAllCollections } = collectionSlice.selectors;
+
 export const {
   setCollectionName,
   addCollection,

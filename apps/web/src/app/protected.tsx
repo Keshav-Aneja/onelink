@@ -1,7 +1,7 @@
 import { paths } from "@config/paths";
 import { useUser } from "@features/users/get-user";
 import { useCheckSession, useStoredUser } from "@hooks/user";
-import { Fragment, ReactNode, useState } from "react";
+import { Fragment, ReactNode, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router";
 import Loader from "./loader";
 import Cookies from "js-cookie";
@@ -23,6 +23,12 @@ const ProtectedRoute = ({ children }: AuthProps) => {
 
   // Only fetch when needed
   const userQuery = useUser(shouldFetchUser);
+  useEffect(() => {
+    if (shouldFetchUser && userQuery.data && userQuery.data.success) {
+      dispatch(addUser(userQuery.data.data));
+      setShouldFetchUser(false);
+    }
+  }, [userQuery.data, shouldFetchUser, dispatch]);
 
   // Handle session check
   if (!sessionExists) {
@@ -46,13 +52,11 @@ const ProtectedRoute = ({ children }: AuthProps) => {
     }
 
     if (userQuery.data) {
-      dispatch(addUser(userQuery.data.data));
-      setShouldFetchUser(false);
       return <Fragment>{children}</Fragment>;
     }
   }
 
-  return null; // Fallback
+  return null;
 };
 
 export default ProtectedRoute;

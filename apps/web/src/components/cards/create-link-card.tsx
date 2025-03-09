@@ -24,7 +24,7 @@ const collectionSchema = CollectionSchema.omit({
   owner_id: true,
 });
 export type CreateCollection = z.infer<typeof collectionSchema>;
-const CreateCollectionCard = ({
+const CreateLinkCard = ({
   className,
   closeModal,
 }: CreateCollectionCardProps) => {
@@ -74,7 +74,7 @@ const CreateCollectionCard = ({
       >
         <CloseButton close={closeModal} />
         <h1 className="text-2xl xxl:text-3xl border-b-1 border-theme_secondary_white/40 pb-3 mb-4">
-          Create Collection
+          Add new link
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">
           <Input
@@ -123,4 +123,4 @@ const CreateCollectionCard = ({
   );
 };
 
-export default CreateCollectionCard;
+export default CreateLinkCard;

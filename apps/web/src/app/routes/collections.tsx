@@ -1,12 +1,41 @@
-import React, { Fragment } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import CollectionCard from "@components/cards/collection-card";
 import LinkCard from "@components/cards/link-card";
 import { useCollections } from "@features/collections/get-collections";
 import { useAppDispatch } from "@store/store";
 import { addMultipleCollections } from "@store/slices/collections-slice";
 import { useStoredCollections } from "@hooks/collections";
+import { getParentIdFromPath } from "@lib/utils/get-paths";
+
 const CollectionsPage = () => {
-  const storedCollections = useStoredCollections();
+  //TODO: handle the case for pathId undefined;
+  const pathId = getParentIdFromPath();
+  console.log("PATH ID", pathId);
+  const storedCollections = useStoredCollections(pathId);
+  console.log("STORED COLLECTIONS", storedCollections);
+  const dispatch = useAppDispatch();
+
+  const [shouldFetchCollections, setShouldFetchCollections] = useState<boolean>(
+    !storedCollections || storedCollections.length === 0,
+  );
+  const collectionsQuery = useCollections(shouldFetchCollections, pathId);
+
+  useEffect(() => {
+    setShouldFetchCollections(
+      !storedCollections || storedCollections.length === 0,
+    );
+  }, [pathId]);
+
+  useEffect(() => {
+    if (collectionsQuery.isSuccess && collectionsQuery.data?.data) {
+      console.log("FETCH COMPLETE");
+      setShouldFetchCollections(false);
+      if (!storedCollections || storedCollections.length === 0) {
+        dispatch(addMultipleCollections(collectionsQuery.data.data));
+      }
+    }
+  }, [collectionsQuery.isSuccess, collectionsQuery.data, dispatch]);
+
   if (storedCollections) {
     return (
       <Fragment>
@@ -18,8 +47,6 @@ const CollectionsPage = () => {
       </Fragment>
     );
   }
-  const collectionsQuery = useCollections();
-  const dispatch = useAppDispatch();
 
   if (collectionsQuery.isLoading) {
     return <div>Loading</div>;
@@ -38,9 +65,6 @@ const CollectionsPage = () => {
     );
   }
   const collections = collectionsQuery.data.data;
-  if (collectionsQuery.isSuccess) {
-    dispatch(addMultipleCollections(collections));
-  }
   if (!collections || collections.length === 0) {
     return <p className="text-center">No Collections found</p>;
   }

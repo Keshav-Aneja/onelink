@@ -18,8 +18,11 @@ export class CollectionAdapter {
 
   static getCollections = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
+      const { id } = req.params;
+      const collectionId = id ? id : null;
       const collectionsService = new CollectionsService();
-      const collections = await collectionsService.getAllCollections(
+      const collections = await collectionsService.getAllChildCollections(
+        collectionId,
         req.session.user_id ?? "",
       );
       ActionResponse.success(

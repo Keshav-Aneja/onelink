@@ -7,8 +7,8 @@ const CreateCollection = () => {
   return (
     <Popover
       Trigger={<CollectionTrigger />}
-      Content={({ className }) => (
-        <CreateCollectionCard className={className} />
+      Content={({ className, closeModal }) => (
+        <CreateCollectionCard className={className} closeModal={closeModal} />
       )}
       modal={true}
     />
