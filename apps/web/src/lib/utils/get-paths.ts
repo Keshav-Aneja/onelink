@@ -32,7 +32,8 @@ export function getParentPath(): string | null {
 
 // /collections/test/app/hello
 
-export function getParentIdFromPath(): string | null | undefined {
+//TODO: memoize this function later
+export const getParentIdFromPath = (): string | null | undefined => {
   const paths = getPaths();
   const collections = useAppSelector(getAllCollections);
   if (paths.length === 1 && paths[0] === ROOT_PATH) {
@@ -79,4 +80,4 @@ export function getParentIdFromPath(): string | null | undefined {
     }
   }
   return finalPathId;
-}
+};

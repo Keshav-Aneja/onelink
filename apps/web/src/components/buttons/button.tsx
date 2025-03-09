@@ -22,7 +22,7 @@ const Button = ({
   return (
     <button
       className={cn(
-        "w-fit px-6 py-2 rounded-full border-2 border-white/20 bg-black hover:bg-theme_secondary_black/50 transition-all duration-200 ease-linear flex items-center gap-4 justify-center cursor-pointer text-base xxl:text-lg font-medium text-nowrap",
+        "w-fit px-6 py-2 rounded-full border-2 border-white/20 bg-black hover:bg-theme_secondary_black/50 transition-all duration-200 ease-linear flex items-center gap-4 justify-center cursor-pointer text-base xxl:text-lg font-medium text-nowrap disabled:opacity-50",
         className,
       )}
       onClick={onClick}

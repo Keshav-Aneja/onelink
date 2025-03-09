@@ -1,11 +1,18 @@
-import getPaths, { getPath } from "@lib/utils/get-paths";
+import { cn } from "@lib/tailwind-utils";
+import getPaths, { getParentIdFromPath, getPath } from "@lib/utils/get-paths";
 import { IoFolderOpen } from "react-icons/io5";
 import { Link } from "react-router";
 
 const Breadcrumbs = () => {
   const paths = getPaths();
+  const pathId = getParentIdFromPath();
   return (
-    <div className="w-full px-3 flex items-center gap-2">
+    <div
+      className={cn(
+        "w-full px-3 flex items-center gap-2",
+        pathId === undefined && "pointer-events-none opacity-50",
+      )}
+    >
       {paths.length > 6
         ? paths.slice(-6).map((path, _i) => <Crumb label={path} key={_i} />)
         : paths.map((path, _i) => <Crumb label={path} key={_i} />)}
