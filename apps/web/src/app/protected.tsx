@@ -1,7 +1,7 @@
 import { paths } from "@config/paths";
 import { useUser } from "@features/users/get-user";
 import { useCheckSession, useStoredUser } from "@hooks/user";
-import { Fragment, ReactNode } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Navigate, useLocation } from "react-router";
 import Loader from "./loader";
 import Cookies from "js-cookie";
@@ -13,37 +13,46 @@ interface AuthProps {
 const ProtectedRoute = ({ children }: AuthProps) => {
   const location = useLocation();
   const dispatch = useAppDispatch();
-  /**
-   * Check if the session exists or not. If not redirect the user
-   */
   const sessionExists = useCheckSession();
+  const user = useStoredUser();
+
+  // Use a state to control whether to fetch user
+  const [shouldFetchUser, setShouldFetchUser] = useState<boolean>(
+    !user && sessionExists,
+  );
+
+  // Only fetch when needed
+  const userQuery = useUser(shouldFetchUser);
+
+  // Handle session check
   if (!sessionExists) {
     return <Navigate to={paths.auth.getHref(location.pathname)} replace />;
   }
-  const user = useStoredUser();
-  /**
-   * If session exists, but the user details are stored already then continue with the rest of the application
-   */
+
+  // If user exists, render children
   if (user) {
     return <Fragment>{children}</Fragment>;
   }
-  /**
-   * If the stored user does not exists, then fetch the user again
-   */
-  const userQuery = useUser();
-  if (userQuery.isLoading) {
-    return <Loader />;
-  }
-  if (!userQuery.data || !userQuery.data?.success) {
-    Cookies.remove("connect.sid");
-    return;
-  }
-  if (userQuery.data) {
-    console.log("ADDING USER");
-    dispatch(addUser(userQuery.data.data));
+
+  // Handle user fetching states
+  if (shouldFetchUser) {
+    if (userQuery.isLoading) {
+      return <Loader />;
+    }
+
+    if (!userQuery.data || !userQuery.data?.success) {
+      Cookies.remove("connect.sid");
+      return <Navigate to={paths.auth.getHref(location.pathname)} replace />;
+    }
+
+    if (userQuery.data) {
+      dispatch(addUser(userQuery.data.data));
+      setShouldFetchUser(false);
+      return <Fragment>{children}</Fragment>;
+    }
   }
 
-  return <Fragment>{children}</Fragment>;
+  return null; // Fallback
 };
 
 export default ProtectedRoute;

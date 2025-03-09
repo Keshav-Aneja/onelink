@@ -12,7 +12,7 @@ import {
   ValidationError,
 } from "@onelink/entities/errros";
 import type { Response } from "express";
-
+import { z } from "zod";
 export class ActionResponse<T = unknown> {
   public readonly response: Response;
   /** Indicates whether the request was successful. */
@@ -186,7 +186,10 @@ export class ActionResponse<T = unknown> {
     let err = "";
     let errCause = "";
     let statusCode = status;
-    if (error instanceof DatabaseOperationError) {
+    if (error instanceof z.ZodError) {
+      statusCode = 400;
+      err = JSON.stringify(error.errors.map((error) => error.message));
+    } else if (error instanceof DatabaseOperationError) {
       statusCode = 500;
       err = error.message;
     } else if (
@@ -202,6 +205,7 @@ export class ActionResponse<T = unknown> {
       statusCode = 401;
       return response.status(400).clearCookie("connect.sid").json({
         success: false,
+        message: "Invalid Session. Please login again",
         redirect: true,
       });
     } else {

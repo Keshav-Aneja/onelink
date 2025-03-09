@@ -3,7 +3,7 @@ import { z } from "zod";
 export const CollectionSchema = z.object({
   id: z.string().uuid().nonempty(),
   name: z.string().nonempty(),
-  color: z.string().length(9),
+  color: z.string().length(7),
   description: z.string().optional(),
   is_protected: z.boolean().default(false),
   password: z.string().optional(),

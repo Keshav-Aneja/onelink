@@ -1,10 +1,13 @@
 import { cn } from "@lib/tailwind-utils";
 import React, { ReactNode } from "react";
 import { IconType } from "react-icons";
+import { ImSpinner2 } from "react-icons/im";
 type ButtonProps = {
   children: ReactNode;
   Icon?: IconType;
+  iconSize?: "sm" | "lg" | "xl";
   className?: string;
+  loading?: boolean;
   onClick?: () => void;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 const Button = ({
@@ -12,6 +15,8 @@ const Button = ({
   className,
   onClick,
   Icon,
+  loading = false,
+  iconSize = "xl",
   ...props
 }: ButtonProps) => {
   return (
@@ -23,8 +28,18 @@ const Button = ({
       onClick={onClick}
       {...props}
     >
-      {Icon ? <Icon className="text-xl xxl:text-2xl" /> : ""}
-      {children}
+      {Icon && !loading ? (
+        <Icon
+          className={cn(
+            iconSize === "sm" && "text-sm xxl:text-lg",
+            iconSize === "lg" && "text-lg xxl:text-xl",
+            iconSize === "xl" && "text-xl xxl:text-2xl",
+          )}
+        />
+      ) : (
+        ""
+      )}
+      {loading ? <ImSpinner2 className="animate-spin" /> : children}
     </button>
   );
 };

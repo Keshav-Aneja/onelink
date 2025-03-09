@@ -1,28 +1,30 @@
-import { ReactNode } from "react";
+import React, { ReactNode } from "react";
 import { cn } from "@lib/tailwind-utils";
 import { useMouseMovement } from "@components/use-movement";
-interface GlowCardProps {
+type GlowCardProps = {
   children: ReactNode;
   className?: string;
   style?: Record<string, any>;
   containerClassName?: string;
-}
+} & React.HTMLAttributes<HTMLDivElement>;
 export default function GlowCard({
   children,
   className,
   containerClassName,
   style,
+  ...props
 }: GlowCardProps) {
   const cardRef = useMouseMovement();
   return (
     <div
       className={cn(
-        "--glow-card min-h-12 w-full rounded-full shadow-sm  relative after:rounded-[50px] overflow-hidden",
+        "--glow-card isolate min-h-12 w-full rounded-full shadow-sm  relative after:rounded-[50px] overflow-hidden",
         className,
       )}
       tabIndex={0}
       ref={cardRef}
       style={style}
+      {...props}
     >
       <div
         className={cn(

@@ -6,6 +6,7 @@ import type {
 import type { ICollectionRepository } from "../../application/repositories/collections.repository.interface";
 import db from "@onelink/db";
 import { DatabaseOperationError } from "@onelink/entities/errros";
+import { CollectionDTO } from "../dtos/collections.dto";
 
 export class CollectionRepository implements ICollectionRepository {
   async getCollectionById(
@@ -19,7 +20,7 @@ export class CollectionRepository implements ICollectionRepository {
     return collection;
   }
   async createCollection(data: CollectionInsert): Promise<Collection> {
-    const [collection] = await db("collections").insert(data).select("*");
+    const [collection] = await db("collections").insert(data).returning("*");
     if (!collection) {
       throw new DatabaseOperationError("Cannot create collection");
     }
@@ -60,7 +61,7 @@ export class CollectionRepository implements ICollectionRepository {
     return collections;
   }
   async getAllCollectionsOfCollection(
-    parent_collection_id: string,
+    parent_collection_id: string | null,
     owner_id: string,
   ): Promise<Collection[] | undefined> {
     const collections = await db("collections")

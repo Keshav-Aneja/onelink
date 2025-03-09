@@ -18,7 +18,7 @@ export interface ICollectionRepository {
   ): Promise<Collection>;
   getAllCollections(owner_id: string): Promise<Collection[] | undefined>;
   getAllCollectionsOfCollection(
-    parent_collection_id: string,
+    parent_collection_id: string | null,
     owner_id: string,
   ): Promise<Collection[] | undefined>;
 }

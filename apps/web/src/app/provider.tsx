@@ -5,6 +5,7 @@ import { queryConfig } from "../lib/react-query";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@store/store";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 type GlobalAppProviderProps = {
   children: ReactNode;
 };
@@ -19,6 +20,7 @@ export const GlobalAppProvider = ({ children }: GlobalAppProviderProps) => {
         <PersistGate loading={null} persistor={persistor}>
           <QueryClientProvider client={queryClient}>
             {children}
+            <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </PersistGate>
       </Provider>

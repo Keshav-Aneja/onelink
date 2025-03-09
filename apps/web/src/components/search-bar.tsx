@@ -8,6 +8,7 @@ const Searchbar = () => {
         placeholder="Search for your links..."
         name="link_search"
         className="w-full h-full outline-hidden border-0 px-6 pl-12"
+        autoFocus
       />
     </div>
   );

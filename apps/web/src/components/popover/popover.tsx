@@ -1,10 +1,14 @@
+import { cn } from "@lib/tailwind-utils";
 import { useEffect } from "react";
 import { ReactElement, useRef, useState } from "react";
+import { FaCross } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
 interface PopoverProps {
-  Trigger: () => ReactElement;
+  modal?: boolean;
+  Trigger: ReactElement;
   Content: (props: { className?: string }) => ReactElement;
 }
-const Popover = ({ Trigger, Content }: PopoverProps) => {
+const Popover = ({ Trigger, Content, modal = false }: PopoverProps) => {
   const [isVisible, setIsVisible] = useState(false);
   const triggerRef = useRef<HTMLDivElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
@@ -24,17 +28,36 @@ const Popover = ({ Trigger, Content }: PopoverProps) => {
         setIsVisible(false);
       }
     };
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsVisible(false);
+      }
+    };
+    const closeBtn = document
+      .getElementById("--ol-modal-close-btn")
+      ?.addEventListener("click", () => {
+        setIsVisible(false);
+      });
 
+    document.addEventListener("keydown", handleKeyPress);
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleKeyPress);
     };
   }, []);
 
   return (
     <div className="relative">
+      {modal && isVisible && (
+        <div
+          className={cn(
+            "w-full h-full fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[90] bg-black/20 backdrop-blur-md",
+          )}
+        ></div>
+      )}
       <div className="" ref={triggerRef} onClick={toggleVisibility}>
-        {Trigger()}
+        {Trigger}
       </div>
       <div
         style={{ contentVisibility: isVisible ? "visible" : "hidden" }}

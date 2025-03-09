@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { ImSpinner2 } from "react-icons/im";
+import { cn } from "@lib/tailwind-utils";
 interface ProfileBoxProps {
   profileImage?: string;
 }
@@ -22,7 +23,7 @@ const ProfileBox = ({ profileImage }: ProfileBoxProps) => {
       {/* Instead of doing conditional rendering, and again and again mounting and unmounting the container, this will cache the component once it's rendered. so better performance */}
       <Popover
         key={2}
-        Trigger={() => <ProfileTrigger profileImage={profileImage} />}
+        Trigger={<ProfileTrigger profileImage={profileImage} />}
         Content={({ className }) => <ProfileContent className={className} />}
       />
     </section>
@@ -45,11 +46,12 @@ export function ProfileContent({ className }: ContentProps) {
     const response = await mutateAsync();
     setMutex(false);
     if (response && response.success) {
+      localStorage.removeItem("persist:onelink");
       navigate(`/auth?redirectTo=${encodeURIComponent(location.pathname)}`);
     }
   };
   return (
-    <div className={className}>
+    <div className={cn(className, "z-[100]")}>
       <div className="bg-theme_secondary_black rounded-md p-2 text-sm xxl:text-lg text-center font-medium truncate">
         {user.name}
       </div>
@@ -59,8 +61,9 @@ export function ProfileContent({ className }: ContentProps) {
         onClick={handleLogout}
         disabled={mutex}
         aria-disabled={mutex}
+        loading={mutex}
       >
-        {mutex ? <ImSpinner2 className=" animate-spin" /> : "Logout"}
+        Logout
       </Button>
     </div>
   );

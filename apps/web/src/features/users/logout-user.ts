@@ -30,5 +30,6 @@ export const useLogoutUser = () => {
 export const useLogoutUserMutation = () => {
   return useMutation({
     mutationFn: logoutUser,
+    gcTime: 0,
   });
 };

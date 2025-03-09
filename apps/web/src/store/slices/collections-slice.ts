@@ -1,18 +1,7 @@
 import { Collection } from "@onelink/entities/models";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialState: Collection[] = [
-  {
-    id: "",
-    name: "",
-    color: "",
-    is_protected: false,
-    parent_id: "",
-    owner_id: "",
-    description: "",
-    password: "",
-  },
-];
+const initialState: Collection[] = [];
 
 const collectionSlice = createSlice({
   name: "collection",
@@ -24,14 +13,33 @@ const collectionSlice = createSlice({
     ) => {
       state[action.payload.index].name = action.payload.name;
     },
+    addCollection: (state, action: { payload: Collection }) => {
+      state.push(action.payload);
+    },
+    deleteAllCollections: () => {
+      return [];
+    },
+    addMultipleCollections: (state, action: { payload: Collection[] }) => {
+      action.payload.forEach((collection) => {
+        state.push(collection);
+      });
+    },
   },
   selectors: {
-    getCollection: (state, action: PayloadAction<number>) =>
-      state[action.payload],
+    getCollection: (state: Collection[], index: number) => state[index],
+    getAllCollections: (state: Collection[]) => state,
+    getCollectionByParent: (state: Collection[], parent_id: string | null) => {
+      return state.filter((collection) => collection.parent_id === parent_id);
+    },
   },
 });
 
-export const { setCollectionName } = collectionSlice.actions;
-export const { getCollection } = collectionSlice.selectors;
-
+export const { getCollection, getAllCollections, getCollectionByParent } =
+  collectionSlice.selectors;
+export const {
+  setCollectionName,
+  addCollection,
+  deleteAllCollections,
+  addMultipleCollections,
+} = collectionSlice.actions;
 export default collectionSlice.reducer;

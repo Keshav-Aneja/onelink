@@ -2,7 +2,7 @@ import { Provider } from "@onelink/entities";
 import type { User, UserInsert } from "@onelink/entities/models";
 
 export class UserDTO {
-  private _id: number;
+  private _id: string;
   private _name: string;
   private _email: string;
   private _provider: Provider;
@@ -10,7 +10,7 @@ export class UserDTO {
   private _profile_url: string;
 
   constructor(
-    id: number,
+    id: string,
     name: string,
     email: string,
     provider: Provider,

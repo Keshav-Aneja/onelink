@@ -4,6 +4,7 @@ import NavigationSidebar from "@components/headers/navigation-sidebar";
 import CollectionContentWrapper from "./collections-content-wrapper";
 import CollectionsHeader from "@components/headers/collection-header";
 import Breadcrumbs from "@components/bread-crumbs";
+import ActionHeader from "@components/headers/actions-header";
 
 type CollectionWrapperProps = {
   children: ReactNode;
@@ -17,6 +18,7 @@ const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
       <CollectionContentWrapper>
         <CollectionsHeader />
         <Breadcrumbs />
+        <ActionHeader />
         <div className="px-3 pb-3 w-full h-full flex flex-col gap-3">
           {children}
         </div>

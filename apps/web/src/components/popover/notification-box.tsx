@@ -9,7 +9,7 @@ const NotificationBox = () => {
     <section className="relative">
       <Popover
         key={1}
-        Trigger={() => <NotificationTrigger />}
+        Trigger={<NotificationTrigger />}
         Content={({ className }) => (
           <NotificaitonContent className={className} />
         )}
@@ -25,7 +25,7 @@ type ContentProps = {
 };
 export function NotificaitonContent({ className }: ContentProps) {
   return (
-    <div className={cn(className, "w-88 xxl:w-100 p-3 xxl:p-4")}>
+    <div className={cn(className, "w-88 xxl:w-100 p-3 xxl:p-4 z-[100]")}>
       <span className="w-full text-left text-lg xxl:text-xl  tracking-wide truncate font-semibold border-b-1 border-b-white/40 pb-2">
         Notifiations
       </span>
@@ -37,10 +37,6 @@ export function NotificaitonContent({ className }: ContentProps) {
   );
 }
 
-// type TriggerProps = {
-//   //   ref: React.Ref<HTMLButtonElement> | undefined;
-//   //   onClick: () => void;
-// };
 export function NotificationTrigger() {
   return (
     <CircularButton>

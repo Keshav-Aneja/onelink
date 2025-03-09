@@ -8,8 +8,7 @@ export function useStoredUser() {
   }
   return user;
 }
-
-export function useCheckSession(): Boolean {
+export function useCheckSession(): boolean {
   const cookie = Cookies.get("connect.sid");
   if (!cookie) {
     return false;

@@ -19,9 +19,13 @@ type UseUserQueryOptions = {
   queryConfig?: QueryConfig<typeof getUserQueryOptions>;
 };
 
-export const useUser = ({ queryConfig }: UseUserQueryOptions = {}) => {
+export const useUser = (
+  enabled: boolean,
+  { queryConfig }: UseUserQueryOptions = {},
+) => {
   return useQuery({
     ...getUserQueryOptions(),
     ...queryConfig,
+    enabled,
   });
 };

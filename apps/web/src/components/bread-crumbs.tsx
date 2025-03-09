@@ -6,9 +6,9 @@ const Breadcrumbs = () => {
   const paths = getPaths();
   return (
     <div className="w-full px-3 flex items-center gap-2">
-      {paths.map((path, _i) => (
-        <Crumb label={path} key={_i} />
-      ))}
+      {paths.length > 6
+        ? paths.slice(-6).map((path, _i) => <Crumb label={path} key={_i} />)
+        : paths.map((path, _i) => <Crumb label={path} key={_i} />)}
     </div>
   );
 };
