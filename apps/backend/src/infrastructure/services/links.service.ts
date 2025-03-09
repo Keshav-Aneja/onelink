@@ -7,7 +7,7 @@ import type ILinksService from "../../application/services/links.interface";
 import { LinksRepository } from "../repositories/links.repository";
 import { LinkDTO } from "../dtos/links.dto";
 import { DatabaseOperationError } from "@onelink/entities/errros";
-
+import { Scraper } from "@onelink/scraper";
 export default class LinkService implements ILinksService {
   constructor(private readonly linkRepository = new LinksRepository()) {}
 
@@ -34,11 +34,13 @@ export default class LinkService implements ILinksService {
   }
 
   async createLink(link: LinkInsert): Promise<Link> {
-    console.log(link);
+    const scraper = new Scraper(link.link);
     const data = LinkSchema.omit({ id: true }).parse(link);
-
-    const newLink = await this.linkRepository.createLink(LinkDTO.toDB(data));
-
+    const content = await scraper.scrape();
+    const metadata = await scraper.extractMetadata(content);
+    const newLink = await this.linkRepository.createLink(
+      LinkDTO.toDB(data, metadata),
+    );
     if (!newLink) {
       throw new DatabaseOperationError("Cannot create link");
     }

@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@onelink/action": "*",
+    "@onelink/scraper": "*",
     "@onelink/db": "*",
     "@onelink/entities": "*",
     "connect-redis": "^8.0.1",

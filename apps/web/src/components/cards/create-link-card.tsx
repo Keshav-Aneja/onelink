@@ -17,14 +17,7 @@ interface CreateLinkCardProps {
   closeModal?: () => void;
 }
 
-const linkSchema = LinkSchema.omit({
-  name: true,
-  id: true,
-  owner_id: true,
-  parent_id: true,
-  open_graph: true,
-  fingerprint: true,
-});
+const linkSchema = LinkSchema.pick({ description: true, link: true });
 export type CreateLink = z.infer<typeof linkSchema>;
 const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   const pathId = getParentIdFromPath();

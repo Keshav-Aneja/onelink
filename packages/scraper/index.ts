@@ -1,6 +1,5 @@
-import { Scraper } from "./module/scraper";
-
 export * from "./module/index";
+export * from "./extractors/metadata";
 
 /**
  * 

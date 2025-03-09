@@ -1,4 +1,5 @@
 import type { Link, LinkInsert } from "@onelink/entities/models";
+import type { WebsiteMetadata } from "@onelink/scraper";
 
 export class LinkDTO {
   private readonly _id: string;
@@ -9,6 +10,10 @@ export class LinkDTO {
   private readonly _open_graph: string;
   private readonly _parent_id: string | null;
   private readonly _owner_id: string;
+  private readonly _site_description: string;
+  private readonly _keywords: string;
+  private readonly _author: string;
+  private readonly _rss: string;
 
   constructor(
     id: string,
@@ -19,6 +24,10 @@ export class LinkDTO {
     link: string,
     parentId: string | null,
     ownerId: string,
+    site_description: string,
+    keywords: string,
+    author: string,
+    rss: string,
   ) {
     this._id = id;
     this._name = name;
@@ -28,6 +37,10 @@ export class LinkDTO {
     this._open_graph = open_graph;
     this._parent_id = parentId;
     this._owner_id = ownerId;
+    this._site_description = site_description;
+    this._author = author;
+    this._keywords = keywords;
+    this._rss = rss;
   }
 
   get id(): string {
@@ -62,15 +75,44 @@ export class LinkDTO {
     return this._open_graph;
   }
 
-  public static toDB(obj: LinkInsert) {
+  get siteDescription(): string {
+    return this._site_description;
+  }
+
+  get author(): string {
+    return this._author;
+  }
+
+  get rss(): string {
+    return this._rss;
+  }
+
+  get keywords(): string {
+    return this._keywords;
+  }
+
+  public static toDB(obj: LinkInsert, metadata: WebsiteMetadata) {
     return {
-      name: obj.name ?? "",
-      description: obj.description ?? "",
+      name: metadata.title || metadata.applicationName || "",
+      description: obj.description ?? metadata.description,
       fingerprint: obj.fingerprint,
       parent_id: obj.parent_id,
       owner_id: obj.owner_id,
       link: obj.link,
-      open_graph: obj.open_graph ?? "",
+      open_graph:
+        metadata.ogImage ||
+        metadata.twitterImage ||
+        metadata.favicon?.includes("http")
+          ? `${metadata.favicon}`
+          : `${obj.link}${metadata.favicon}` || "",
+      site_description:
+        metadata.description ||
+        metadata.ogDescription ||
+        metadata.twitterDescription ||
+        "",
+      keywords: metadata.keywords || "",
+      author: metadata.author || "",
+      rss: metadata.rssLink || "",
     };
   }
 
@@ -84,6 +126,10 @@ export class LinkDTO {
       obj.link,
       obj.parent_id,
       obj.owner_id,
+      obj.site_description,
+      obj.keywords,
+      obj.author,
+      obj.rss,
     );
   }
 
@@ -97,6 +143,10 @@ export class LinkDTO {
       owner_id: this._owner_id,
       parent_id: this.parentId,
       fingerprint: this._fingerprint,
+      site_description: this._site_description,
+      author: this._author,
+      rss: this._rss,
+      keywords: this._keywords,
     };
   }
 }

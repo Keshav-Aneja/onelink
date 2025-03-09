@@ -1,6 +1,100 @@
 import type { CheerioAPI } from "cheerio";
 
-export default function metadataExtractor($: CheerioAPI) {
+// Define the geo positioning interface
+interface GeoPositioning {
+  position: string | undefined;
+  placename: string | undefined;
+  region: string | undefined;
+}
+
+// Define the metadata interface
+export interface WebsiteMetadata {
+  // Basic metadata
+  title: string;
+  description: string | undefined;
+  keywords: string | undefined;
+  author: string | undefined;
+  viewport: string | undefined;
+  charset: string | undefined;
+  language: string | undefined;
+
+  // Canonical and alternate URLs
+  canonical: string | undefined;
+  ampHtml: string | undefined;
+
+  // Open Graph protocol (Facebook, LinkedIn)
+  ogTitle: string | undefined;
+  ogType: string | undefined;
+  ogUrl: string | undefined;
+  ogImage: string | undefined;
+  ogImageWidth: string | undefined;
+  ogImageHeight: string | undefined;
+  ogImageAlt: string | undefined;
+  ogDescription: string | undefined;
+  ogSiteName: string | undefined;
+  ogLocale: string | undefined;
+
+  // Twitter Card metadata
+  twitterCard: string | undefined;
+  twitterSite: string | undefined;
+  twitterCreator: string | undefined;
+  twitterTitle: string | undefined;
+  twitterDescription: string | undefined;
+  twitterImage: string | undefined;
+  twitterImageAlt: string | undefined;
+
+  // Article specific metadata
+  articlePublishedTime: string | undefined;
+  articleModifiedTime: string | undefined;
+  articleAuthor: string | undefined;
+  articleSection: string | undefined;
+  articleTag: string | undefined;
+
+  // Dublin Core metadata
+  dcTitle: string | undefined;
+  dcCreator: string | undefined;
+  dcDescription: string | undefined;
+  dcPublisher: string | undefined;
+  dcDate: string | undefined;
+
+  // Favicon and Apple touch icons
+  favicon: string | undefined;
+  appleTouchIcon: string | undefined;
+
+  // Structured data
+  jsonLd: string | null;
+
+  // Robots directives
+  robots: string | undefined;
+  googlebot: string | undefined;
+
+  // Pagination
+  prevPage: string | undefined;
+  nextPage: string | undefined;
+
+  // RSS/Atom feeds
+  rssLink: string | undefined;
+  atomLink: string | undefined;
+
+  // Verification codes
+  googleSiteVerification: string | undefined;
+  bingSiteVerification: string | undefined;
+  yandexVerification: string | undefined;
+
+  // Mobile app related
+  appleMobileWebAppCapable: string | undefined;
+  appleMobileWebAppTitle: string | undefined;
+  appleMobileWebAppStatusBarStyle: string | undefined;
+  applicationName: string | undefined;
+  msapplicationTileColor: string | undefined;
+  msapplicationTileImage: string | undefined;
+  themeColor: string | undefined;
+
+  // Geo positioning
+  geo: GeoPositioning;
+}
+
+export default function metadataExtractor($: CheerioAPI): WebsiteMetadata {
   return {
     // Basic metadata
     title: $("title").text(),

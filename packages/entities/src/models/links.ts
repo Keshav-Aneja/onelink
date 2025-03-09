@@ -7,7 +7,10 @@ export const LinkSchema = z.object({
   fingerprint: z.string(),
   link: z.string().url(),
   open_graph: z.string().optional(),
-
+  rss: z.string().optional(),
+  author: z.string().optional(),
+  site_description: z.string().optional(),
+  keywords: z.string().optional(),
   owner_id: z.string().uuid().nonempty(),
   parent_id: z.string().nullable(),
 });
