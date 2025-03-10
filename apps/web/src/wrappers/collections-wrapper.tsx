@@ -19,7 +19,7 @@ const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
         <CollectionsHeader />
         <Breadcrumbs />
         <ActionHeader />
-        <div className="px-3 pb-3 w-full h-full flex flex-col gap-3">
+        <div className="px-3 pb-3 w-full h-full flex flex-col gap-3 overflow-y-auto">
           {children}
         </div>
       </CollectionContentWrapper>
