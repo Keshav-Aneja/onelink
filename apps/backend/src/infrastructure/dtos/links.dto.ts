@@ -91,6 +91,24 @@ export class LinkDTO {
     return this._keywords;
   }
 
+  static formatLink(link: string, path: string | undefined) {
+    if (!path) {
+      return;
+    }
+
+    const url = new URL(link);
+    const origin = url.origin;
+
+    if (/^https?:\/\//.test(path)) {
+      return path;
+    }
+
+    // Ensure path starts with a single "/"
+    const formattedPath = path.startsWith("/") ? path : `/${path}`;
+
+    return `${origin}${formattedPath}`;
+  }
+
   public static toDB(obj: LinkInsert, metadata: WebsiteMetadata) {
     return {
       name: metadata.title || metadata.applicationName || "",
@@ -100,11 +118,9 @@ export class LinkDTO {
       owner_id: obj.owner_id,
       link: obj.link,
       open_graph:
-        metadata.ogImage ||
-        metadata.twitterImage ||
-        metadata.favicon?.includes("http")
-          ? `${metadata.favicon}`
-          : `${obj.link}${metadata.favicon}` || "",
+        this.formatLink(obj.link, metadata.ogImage) ||
+        this.formatLink(obj.link, metadata.twitterImage) ||
+        this.formatLink(obj.link, metadata.favicon),
       site_description:
         metadata.description ||
         metadata.ogDescription ||

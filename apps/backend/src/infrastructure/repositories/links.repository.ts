@@ -41,4 +41,14 @@ export class LinksRepository implements ILinkRepository {
     }
     return link.id;
   }
+  async getRSSLinks(
+    owner_id: string,
+  ): Promise<Array<Pick<Link, "rss" | "link">> | undefined> {
+    const rssLinks = await db("links")
+      .where({ owner_id })
+      .whereNot("rss", "")
+      .select("rss", "link");
+
+    return rssLinks;
+  }
 }

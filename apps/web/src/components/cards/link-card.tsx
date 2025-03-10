@@ -17,7 +17,7 @@ const LinkCard = ({ data }: LinkCardProps) => {
       <div className="w-full flex flex-col gap-2">
         <section className="w-full aspect-[1.91]  rounded-md overflow-hidden bg-theme_secondary_black relative flex items-center justify-center select-none">
           {open_graph && open_graph.length > 0 ? (
-            <img src={open_graph} alt="" />
+            <img src={open_graph} alt="" loading="lazy" />
           ) : (
             <RiFileMarkedFill className="text-4xl" />
           )}

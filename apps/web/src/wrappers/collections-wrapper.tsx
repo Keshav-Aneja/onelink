@@ -1,15 +1,22 @@
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 import SidebarWrapper from "./sidebar-wrapper";
 import NavigationSidebar from "@components/headers/navigation-sidebar";
 import CollectionContentWrapper from "./collections-content-wrapper";
 import CollectionsHeader from "@components/headers/collection-header";
 import Breadcrumbs from "@components/bread-crumbs";
 import ActionHeader from "@components/headers/actions-header";
+import action from "@config/action";
 
 type CollectionWrapperProps = {
   children: ReactNode;
 };
 const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
+  useEffect(() => {
+    (async () => {
+      const feed = await action.post("/links/feed", { sinceDays: 100 });
+      console.log(feed);
+    })();
+  }, []);
   return (
     <main className="w-full h-svh flex font-kustom overflow-hidden">
       <SidebarWrapper>

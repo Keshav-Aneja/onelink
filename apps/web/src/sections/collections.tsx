@@ -12,13 +12,12 @@ const CollectionsContent = ({ pathId }: CollectionsContent) => {
   const collections = useStoredCollections(pathId);
   const dispatch = useAppDispatch();
 
-  const [shouldFetchCollections, setShouldFetchCollections] = useState<boolean>(
-    !collections || collections.length === 0,
-  );
+  const [shouldFetchCollections, setShouldFetchCollections] =
+    useState<boolean>(!collections);
   const collectionsQuery = useCollections(shouldFetchCollections, pathId);
 
   useEffect(() => {
-    setShouldFetchCollections(!collections || collections.length === 0);
+    setShouldFetchCollections(!collections);
   }, [pathId]);
 
   useEffect(() => {

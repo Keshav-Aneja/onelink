@@ -1,6 +1,5 @@
 export * from "./module/index";
 export * from "./extractors/metadata";
-
 /**
  * 
  * How to use?

@@ -1,5 +1,6 @@
 import {
   LinkSchema,
+  RSSInputSchema,
   type Link,
   type LinkInsert,
 } from "@onelink/entities/models";
@@ -8,6 +9,8 @@ import { LinksRepository } from "../repositories/links.repository";
 import { LinkDTO } from "../dtos/links.dto";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 import { Scraper } from "@onelink/scraper";
+import { RSS, type RSSFeed } from "@onelink/scraper/rss";
+import { RSSDTO } from "../dtos/rss.dto";
 export default class LinkService implements ILinksService {
   constructor(private readonly linkRepository = new LinksRepository()) {}
 
@@ -38,6 +41,11 @@ export default class LinkService implements ILinksService {
     const data = LinkSchema.omit({ id: true }).parse(link);
     const content = await scraper.scrape();
     const metadata = await scraper.extractMetadata(content);
+    let rssLink = "";
+    if (!metadata.rssLink || metadata.rssLink.length == 0) {
+      const rss = new RSS(data.link);
+      metadata.rssLink = await rss.findValidRSS();
+    }
     const newLink = await this.linkRepository.createLink(
       LinkDTO.toDB(data, metadata),
     );
@@ -46,5 +54,29 @@ export default class LinkService implements ILinksService {
     }
     const linkDTO = LinkDTO.fromObject(newLink);
     return linkDTO.toObject();
+  }
+  async getRSSFeed(
+    sinceDays: number,
+    owner_id: string,
+  ): Promise<RSSFeed[] | undefined> {
+    const parsed = RSSInputSchema.parse({ owner_id, sinceDays });
+    const rssLinks = await this.linkRepository.getRSSLinks(parsed.owner_id);
+
+    if (!rssLinks) {
+      return undefined;
+    }
+
+    const rssPromises = rssLinks.map(async (link) => {
+      const rss = new RSS(link.link, link.rss);
+      return rss.scrapeRSS(parsed.sinceDays);
+    });
+
+    const results = await Promise.allSettled(rssPromises);
+
+    const rssData: RSSFeed[] = results
+      .filter((result) => result.status === "fulfilled" && result.value)
+      .flatMap((result) => (result as PromiseFulfilledResult<RSSFeed[]>).value);
+
+    return rssData.map((rss) => RSSDTO.fromObject(rss).toObject());
   }
 }

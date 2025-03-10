@@ -24,4 +24,15 @@ export default class LinkAdapter {
     );
     ActionResponse.success(res, links, 200, "Links fetched successfully");
   });
+
+  static getUpdatedFeed = asyncHandler(async (req: Request, res: Response) => {
+    const { sinceDays } = req.body;
+    const linkService = new LinkService();
+    const feed = await linkService.getRSSFeed(
+      sinceDays,
+      req.session.user_id ?? "",
+    );
+    console.log(feed);
+    ActionResponse.success(res, feed, 200, "New feed fetched successfully");
+  });
 }

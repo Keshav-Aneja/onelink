@@ -1,6 +1,6 @@
 import * as cheerio from "cheerio";
 
-type RSSFeed = {
+export type RSSFeed = {
   title?: string;
   published_date?: string;
   link?: string;
@@ -68,8 +68,11 @@ export class RSS {
           },
           // User from path
           async () => {
-            if (firstPath && !firstPath.includes("@")) {
-              const feedURL = `https://www.youtube.com/feeds/videos.xml?user=${firstPath}`;
+            if (firstPath) {
+              const username = firstPath.includes("@")
+                ? firstPath.slice(1)
+                : firstPath;
+              const feedURL = `https://www.youtube.com/feeds/videos.xml?user=${username}`;
               if (await this.checkIfValid(feedURL)) return feedURL;
             }
             return null;
@@ -144,9 +147,13 @@ export class RSS {
       "/atom.xml",
       "/feeds/posts/default",
       "/rss2",
+      "/feed/rss",
+      "/rss/index.xml",
       "/?feed=rss",
       "/?feed=rss2",
       "/?feed=atom",
+      "/all.xml",
+      "index.rss",
     ];
 
     try {
@@ -173,17 +180,18 @@ export class RSS {
           }
         }
       }
-      return null;
+      return undefined;
     } catch (error) {
       console.error(error);
-      return null;
+      return undefined;
     }
   }
 
   async scrapeRSS(days: number = 1) {
     try {
       const now = new Date();
-      const daysAgo = new Date(now.getDate() - days);
+      const daysAgo = new Date();
+      daysAgo.setDate(now.getDate() - days);
       const rssURL = await this.findValidRSS();
       if (!rssURL) {
         return null;

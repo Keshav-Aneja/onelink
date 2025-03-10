@@ -38,6 +38,7 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<CreateLink>({
     resolver: zodResolver(linkSchema),
@@ -48,12 +49,13 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
     mode: "onChange",
   });
   const onSubmit: SubmitHandler<CreateLink> = (data) => {
-    console.log("SUBMITTING");
     const linkData = { ...data, parent_id: pathId, fingerprint: nanoid(10) };
-    console.log(linkData);
     createLinkMutation.mutate(linkData);
   };
-
+  if (createLinkMutation.isSuccess) {
+    setValue("link", "");
+    setValue("description", "");
+  }
   return (
     <Fragment>
       <div
