@@ -39,23 +39,9 @@
 ## Todo
 
 <ul>
-    <li><b>[&nbsp;O&nbsp;]</b> Turbo repo setup</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Configure tsconfig package</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Data Modelling</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Setup Knex.js & PostgreSQL</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Create basic user types</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Authentication session service</li>
-    <li><b>[&nbsp;O&nbsp;]</b> User Repository</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Implement Google Authentication</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Refactor AuthService</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Implement Express application loaders</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Setup Routers</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Auth Middleware</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Github Auth</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Create other model tables</li>
-    <li><b>[&nbsp;X&nbsp;]</b> Create Services for collections & links</li>
-    <li><b>[&nbsp;X&nbsp;]</b> Create services for shares</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Landing Page UI</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Auth Page UI</li>
-    <li><b>[&nbsp;O&nbsp;]</b> Basic Components UI</li>
+    <li><b>[&nbsp;O&nbsp;]</b> ...</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Integrate RSS Feeds</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Details component for links and repository</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Setup search functionality</li>
+    <li><b>[&nbsp;X&nbsp;]</b> Remove response object dependency from the ActionResponse package</li>
 </ul>

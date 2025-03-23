@@ -1,14 +1,19 @@
-import { useAppDispatch } from "@store/store";
+import { useAppDispatch, useAppSelector } from "@store/store";
 import { Fragment, useEffect, useState } from "react";
 import Loader from "../app/loader";
 import { useStoredLinks } from "@hooks/links";
 import LinkCard from "@components/cards/link-card";
 import { useLinks } from "@features/links/get-links";
 import { addMultipleLinks } from "@store/slices/links-slice";
+import LinkCardSuspense from "@components/cards/link-card-suspense";
+import Mascot from "@components/mascot";
+
+import { useStoredCollections } from "@hooks/collections";
 interface LinksContent {
   pathId: string | null;
 }
 const LinksContent = ({ pathId }: LinksContent) => {
+  const collections = useStoredCollections(pathId);
   const links = useStoredLinks(pathId);
   const dispatch = useAppDispatch();
 
@@ -31,14 +36,28 @@ const LinksContent = ({ pathId }: LinksContent) => {
   }, [linkQuery.isSuccess, linkQuery.data, dispatch]);
 
   if (linkQuery.isLoading) {
-    return <Loader />;
+    return (
+      <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <LinkCardSuspense key={i} />
+        ))}
+      </div>
+    );
   }
+
+  if (
+    (!links || links.length === 0) &&
+    (!collections || collections.length === 0)
+  ) {
+    return <Mascot>No Collections or links found</Mascot>;
+  }
+
   if (!links) {
-    return <p>No stored links found</p>;
+    return null;
   }
+
   return (
     <Fragment>
-      {links.length === 0 && <p className="text-center">No links found</p>}
       <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
         {links.map((link) => (
           <LinkCard data={link} key={link.id} />

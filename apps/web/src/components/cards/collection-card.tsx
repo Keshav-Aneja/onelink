@@ -15,12 +15,6 @@ const CollectionCard = ({ data }: CollectionCardProps) => {
       onDoubleClick={() => {
         navigate(data.name);
       }}
-
-      // props={[
-      //   (ondblclick = () => {
-      //     navigate("/collections/web/material/react/nextjs/frontend");
-      //   }),
-      // ]}
     >
       <BiSolidFolder className="text-7xl xxl:text-8xl text-theme_secondary_white" />
       <p className="text-base xxl:text-lg select-none">{data.name}</p>
