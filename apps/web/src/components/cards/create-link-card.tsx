@@ -12,12 +12,17 @@ import { getParentIdFromPath } from "@lib/utils/get-paths";
 import CloseButton from "@components/buttons/close-button";
 import { nanoid } from "@reduxjs/toolkit";
 import { useCreateLink } from "@features/links/create-link";
+import Checkbox from "@components/form/checkbox";
 interface CreateLinkCardProps {
   className?: string;
   closeModal?: () => void;
 }
 
-const linkSchema = LinkSchema.pick({ description: true, link: true });
+const linkSchema = LinkSchema.pick({ description: true, link: true }).and(
+  z.object({
+    notification: z.boolean().default(false),
+  }),
+);
 export type CreateLink = z.infer<typeof linkSchema>;
 const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   const pathId = getParentIdFromPath();
@@ -45,16 +50,20 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
     defaultValues: {
       description: "",
       link: "",
+      notification: false,
     },
     mode: "onChange",
   });
-  const onSubmit: SubmitHandler<CreateLink> = (data) => {
+  const onSubmit: SubmitHandler<CreateLink> = async (data) => {
     const linkData = { ...data, parent_id: pathId, fingerprint: nanoid(10) };
+    console.log(linkData);
     createLinkMutation.mutate(linkData);
+    // await createLink(linkData);
   };
   if (createLinkMutation.isSuccess) {
     setValue("link", "");
     setValue("description", "");
+    setValue("notification", false);
   }
   return (
     <Fragment>
@@ -81,6 +90,11 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
             label="description"
             register={register}
             placeholder="Ex: Collection for research papers"
+          />
+          <Checkbox<CreateLink>
+            label="notification"
+            falseLabel="Get notified of updates from this website (new articles, posts, etc.)."
+            register={register}
           />
           <Button
             type="submit"

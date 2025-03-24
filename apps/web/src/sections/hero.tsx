@@ -1,14 +1,10 @@
 import GlowCard from "@components/cards/glow-card";
-import { paths } from "@config/paths";
-import { selectUser } from "@store/slices/user-slice";
-import { useAppSelector } from "@store/store";
 import { IoMdArrowForward } from "react-icons/io";
 import { Link } from "react-router";
 import Cookies from "js-cookie";
 import { AUTHENTICATION, COLLECTIONS } from "@config/constants";
 
 const Hero = () => {
-  const user = useAppSelector(selectUser);
   const session = Cookies.get("connect.sid");
   return (
     <>

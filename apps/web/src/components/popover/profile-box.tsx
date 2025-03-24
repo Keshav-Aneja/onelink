@@ -5,14 +5,9 @@ import { RiUserFill } from "react-icons/ri";
 import Popover from "./popover";
 import { useSelector } from "react-redux";
 import { selectUser } from "@store/slices/user-slice";
-import {
-  useLogoutUser,
-  useLogoutUserMutation,
-} from "@features/users/logout-user";
+import { useLogoutUserMutation } from "@features/users/logout-user";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useMutation } from "@tanstack/react-query";
-import { ImSpinner2 } from "react-icons/im";
 import { cn } from "@lib/tailwind-utils";
 interface ProfileBoxProps {
   profileImage?: string;

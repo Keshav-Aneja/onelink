@@ -1,7 +1,5 @@
-import { getParentIdFromPath } from "@lib/utils/get-paths";
 import { getAllCollections } from "@store/slices/collections-slice";
 import { useAppSelector } from "@store/store";
-import { useLocation } from "react-router";
 
 export function useStoredCollections(pathId: string | null | undefined) {
   const collections = useAppSelector(getAllCollections);

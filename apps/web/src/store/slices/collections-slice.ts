@@ -1,7 +1,5 @@
-import { getParentPath } from "@lib/utils/get-paths";
 import { Collection } from "@onelink/entities/models";
-import { createSelector, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { getParentId } from "./application-slice";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState: Collection[] = [];
 

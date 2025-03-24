@@ -11,6 +11,7 @@
   "devDependencies": {
     "@onelink/typescript-config": "*",
     "@types/bun": "latest",
+    "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
@@ -26,6 +27,7 @@
     "@onelink/db": "*",
     "@onelink/entities": "*",
     "@onelink/scraper": "*",
+    "compression": "^1.8.0",
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",

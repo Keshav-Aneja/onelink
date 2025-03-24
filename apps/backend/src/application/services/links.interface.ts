@@ -1,4 +1,4 @@
-import type { Link, LinkInsert } from "@onelink/entities/models";
+import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import type { RSSFeed } from "@onelink/scraper/rss";
 export default interface ILinksService {
   getAllChildLinks(
@@ -10,4 +10,10 @@ export default interface ILinksService {
     sinceDays: number,
     owner_id: string,
   ): Promise<RSSFeed[] | undefined>;
+  updateLink(
+    ownerId: string,
+    linkId: string,
+    data: Partial<LinkUpdate>,
+  ): Promise<Link>;
+  findRSSFeedLink(link: string): Promise<string | undefined>;
 }

@@ -3,6 +3,7 @@ import {
   RSSInputSchema,
   type Link,
   type LinkInsert,
+  type LinkUpdate,
 } from "@onelink/entities/models";
 import type ILinksService from "../../application/services/links.interface";
 import { LinksRepository } from "../repositories/links.repository";
@@ -38,14 +39,15 @@ export default class LinkService implements ILinksService {
 
   async createLink(link: LinkInsert): Promise<Link> {
     const scraper = new Scraper(link.link);
+    console.log("WE ARE HERE");
     const data = LinkSchema.omit({ id: true }).parse(link);
+    console.log("WE ARE NOT HERE");
     const content = await scraper.scrape();
     const metadata = await scraper.extractMetadata(content);
-    let rssLink = "";
-    if (!metadata.rssLink || metadata.rssLink.length == 0) {
-      const rss = new RSS(data.link);
-      metadata.rssLink = await rss.findValidRSS();
-    }
+    // if (!metadata.rssLink || metadata.rssLink.length == 0) {
+    //   const rss = new RSS(data.link);
+    //   metadata.rssLink = await rss.findValidRSS();
+    // }
     const newLink = await this.linkRepository.createLink(
       LinkDTO.toDB(data, metadata),
     );
@@ -54,6 +56,20 @@ export default class LinkService implements ILinksService {
     }
     const linkDTO = LinkDTO.fromObject(newLink);
     return linkDTO.toObject();
+  }
+  async findRSSFeedLink(link: string): Promise<string | undefined> {
+    const scraper = new Scraper(link);
+    const content = await scraper.scrape();
+    const metadata = await scraper.extractMetadata(content);
+    if (metadata.rssLink) {
+      return metadata.rssLink;
+    } else if (metadata.atomLink) {
+      return metadata.atomLink;
+    } else {
+      const rss = new RSS(link);
+      metadata.rssLink = await rss.findValidRSS();
+    }
+    return metadata.rssLink;
   }
   async getRSSFeed(
     sinceDays: number,
@@ -78,5 +94,23 @@ export default class LinkService implements ILinksService {
       .flatMap((result) => (result as PromiseFulfilledResult<RSSFeed[]>).value);
 
     return rssData.map((rss) => RSSDTO.fromObject(rss).toObject());
+  }
+  async updateLink(
+    ownerId: string,
+    linkId: string,
+    data: Partial<LinkUpdate>,
+  ): Promise<Link> {
+    const parsed = LinkSchema.partial().parse({
+      ...data,
+      owner_id: ownerId,
+      id: linkId,
+    });
+    const { owner_id, id, ...parsedData } = parsed;
+    const link = await this.linkRepository.updateLink(
+      owner_id ?? "",
+      id ?? "",
+      parsedData as Partial<LinkUpdate>,
+    );
+    return LinkDTO.fromObject(link).toObject();
   }
 }

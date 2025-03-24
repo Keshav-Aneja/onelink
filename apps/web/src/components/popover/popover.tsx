@@ -1,8 +1,6 @@
 import { cn } from "@lib/tailwind-utils";
 import { useEffect } from "react";
 import { ReactElement, useRef, useState } from "react";
-import { FaCross } from "react-icons/fa";
-import { IoMdClose } from "react-icons/io";
 interface PopoverProps {
   modal?: boolean;
   Trigger: ReactElement;

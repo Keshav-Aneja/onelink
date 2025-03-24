@@ -6,11 +6,19 @@ import { ActionResponse } from "@onelink/action";
 export default class LinkAdapter {
   static createLink = asyncHandler(async (req: Request, res: Response) => {
     const linkService = new LinkService();
-    const data = req.body;
-    const link = await linkService.createLink({
+    const { notification, ...data } = req.body;
+    let link = await linkService.createLink({
       ...data,
       owner_id: req.session.user_id,
     });
+    if (notification) {
+      const rss = await linkService.findRSSFeedLink(link.link);
+      if (rss) {
+        link = await linkService.updateLink(link.owner_id, link.id, {
+          rss,
+        });
+      }
+    }
     ActionResponse.success(res, link, 201, "Link created");
   });
 

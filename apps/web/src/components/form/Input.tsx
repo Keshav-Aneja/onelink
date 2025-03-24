@@ -1,12 +1,6 @@
-import { CreateCollection } from "@components/cards/create-collection-card";
 import { cn } from "@lib/tailwind-utils";
-import React, { useCallback, useEffect, useRef } from "react";
-import {
-  FieldError,
-  FieldErrors,
-  Path,
-  UseFormRegister,
-} from "react-hook-form";
+import React, { useCallback } from "react";
+import { FieldError, Path, UseFormRegister } from "react-hook-form";
 import FormError from "./form-error";
 
 type InputProps<T extends Record<string, any>> = {

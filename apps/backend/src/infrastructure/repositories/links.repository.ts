@@ -1,6 +1,6 @@
 import db from "@onelink/db";
 import type { ILinkRepository } from "../../application/repositories/links.repository.interface";
-import type { Link, LinkInsert } from "@onelink/entities/models";
+import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 
 export class LinksRepository implements ILinkRepository {
@@ -50,5 +50,20 @@ export class LinksRepository implements ILinkRepository {
       .select("rss", "link");
 
     return rssLinks;
+  }
+  async updateLink(
+    owner_id: string,
+    link_id: string,
+    data: Partial<LinkUpdate>,
+  ): Promise<Link> {
+    const [updatedLink] = await db("links")
+      .where({ owner_id, id: link_id })
+      .update(data)
+      .returning("*");
+
+    if (!updatedLink) {
+      throw new DatabaseOperationError("Failed to update link");
+    }
+    return updatedLink;
   }
 }

@@ -1,23 +1,23 @@
 import { IActionResponse, OptionsInit } from "./common";
 
 export interface IAction {
-  get<T>(
+  get(
     url: string,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse>;
-  delete<T>(
+  delete(
     url: string,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse>;
-  post<T>(
+  post(
     url: string,
     data?: any,
     options?: OptionsInit,
     headers?: HeadersInit,
   ): Promise<IActionResponse>;
-  patch<T>(
+  patch(
     url: string,
     data?: any,
     options?: OptionsInit,

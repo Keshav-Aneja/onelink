@@ -1,12 +1,9 @@
 import action from "@config/action";
 import { ROOT_PATH } from "@config/constants";
 import { QueryConfig } from "@lib/react-query";
-import { getParentPath } from "@lib/utils/get-paths";
 import { IActionResponse } from "@onelink/action";
 import { Collection } from "@onelink/entities/models";
 import { queryOptions, useQuery } from "@tanstack/react-query";
-import React from "react";
-import { useLocation } from "react-router";
 
 export const getCollections = (
   parent_id: string | null,

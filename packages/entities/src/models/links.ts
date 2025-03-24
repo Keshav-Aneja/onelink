@@ -17,4 +17,4 @@ export const LinkSchema = z.object({
 
 export type Link = z.infer<typeof LinkSchema>;
 export type LinkInsert = Omit<Link, "id">;
-export type LinkUpdate = Partial<Pick<Link, "id" | "owner_id">>;
+export type LinkUpdate = Partial<Omit<Link, "id" | "owner_id">>;

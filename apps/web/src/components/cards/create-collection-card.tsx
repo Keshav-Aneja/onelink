@@ -6,7 +6,6 @@ import Input from "@components/form/Input";
 import Button from "@components/buttons/button";
 import { FaPlus } from "react-icons/fa";
 import Textarea from "@components/form/textarea";
-import { IoMdClose } from "react-icons/io";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CollectionSchema } from "@onelink/entities/models";
 import { getRandomColor } from "@lib/utils/get-random-color";

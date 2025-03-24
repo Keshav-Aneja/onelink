@@ -1,6 +1,5 @@
-import { useAppDispatch, useAppSelector } from "@store/store";
+import { useAppDispatch } from "@store/store";
 import { Fragment, useEffect, useState } from "react";
-import Loader from "../app/loader";
 import { useStoredLinks } from "@hooks/links";
 import LinkCard from "@components/cards/link-card";
 import { useLinks } from "@features/links/get-links";

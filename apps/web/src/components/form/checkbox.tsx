@@ -1,4 +1,3 @@
-import { CreateCollection } from "@components/cards/create-collection-card";
 import React from "react";
 import { FieldError, Path, UseFormRegister } from "react-hook-form";
 import FormError from "./form-error";

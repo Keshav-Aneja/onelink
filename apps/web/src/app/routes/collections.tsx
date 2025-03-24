@@ -2,9 +2,6 @@ import { Fragment } from "react";
 import { getParentIdFromPath } from "@lib/utils/get-paths";
 import CollectionsContent from "@sections/collections";
 import LinksContent from "@sections/links";
-import { useAppSelector } from "@store/store";
-import { getNotFoundState } from "@store/slices/application-slice";
-import Mascot from "@components/mascot";
 
 const CollectionsPage = () => {
   const pathId = getParentIdFromPath();

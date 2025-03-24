@@ -7,11 +7,13 @@ import env from "../config/env";
 import Routes from "../api";
 import type { Request, Response, NextFunction, Errback } from "express";
 import { ActionResponse } from "@onelink/action";
+import compression from "compression";
 export default async (app: Express) => {
   app.use(cors({ origin: FRONTEND_URL, credentials: true }));
   app.use(express.json());
   app.use(cookieParser(env.SESS_SECRET));
   app.use(express.static("public"));
+  app.use(compression());
   app.enable("trust proxy");
 
   app.get("/status", (req, res) => {

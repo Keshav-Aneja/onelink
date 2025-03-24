@@ -22,7 +22,14 @@
   },
   "dependencies": {
     "@onelink/entities": "*",
-    "pg": "^8.13.3"
+    "better-sqlite3": "^11.9.1",
+    "mysql": "^2.18.1",
+    "mysql2": "^3.14.0",
+    "oracledb": "^6.8.0",
+    "pg": "^8.13.3",
+    "pg-query-stream": "^4.8.1",
+    "sqlite3": "^5.1.7",
+    "tedious": "^18.6.1"
   },
   "exports": {
     ".": "./index.ts"

@@ -1,4 +1,4 @@
-import type { Link, LinkInsert } from "@onelink/entities/models";
+import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 
 export interface ILinkRepository {
   createLink(data: LinkInsert): Promise<Link>;
@@ -12,4 +12,9 @@ export interface ILinkRepository {
   getRSSLinks(
     owner_id: string,
   ): Promise<Array<Pick<Link, "rss" | "link">> | undefined>;
+  updateLink(
+    owner_id: string,
+    link_id: string,
+    data: Partial<LinkUpdate>,
+  ): Promise<Link>;
 }
