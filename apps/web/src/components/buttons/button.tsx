@@ -9,11 +9,13 @@ type ButtonProps = {
   className?: string;
   loading?: boolean;
   onClick?: () => void;
+  Loader?: ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 const Button = ({
   children,
   className,
   onClick,
+  Loader,
   Icon,
   loading = false,
   iconSize = "xl",
@@ -39,7 +41,15 @@ const Button = ({
       ) : (
         ""
       )}
-      {loading ? <ImSpinner2 className="animate-spin" /> : children}
+      {loading ? (
+        Loader ? (
+          Loader
+        ) : (
+          <ImSpinner2 className="animate-spin" />
+        )
+      ) : (
+        children
+      )}
     </button>
   );
 };

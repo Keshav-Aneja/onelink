@@ -1,3 +1,4 @@
+import { Link } from "@onelink/entities/models";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface IApplicationConfig {
@@ -7,6 +8,7 @@ interface IApplicationConfig {
     collections: boolean;
     links: boolean;
   };
+  selectedLink: Link | null;
 }
 
 const initialState: IApplicationConfig = {
@@ -16,6 +18,7 @@ const initialState: IApplicationConfig = {
     collections: true,
     links: true,
   },
+  selectedLink: null,
 };
 
 export const applicationSlice = createSlice({
@@ -37,14 +40,23 @@ export const applicationSlice = createSlice({
         links: action.payload,
       };
     },
+    setSelectedLink: (state, action: { payload: Link | null }) => {
+      state.selectedLink = action.payload;
+    },
   },
   selectors: {
     getParentId: (state) => state.parent_id,
     getNotFoundState: (state) => state.not_found,
+    getSelectedLink: (state) => state.selectedLink,
   },
 });
 
-export const { setParentId, setFoundCollection, setFoundLink } =
-  applicationSlice.actions;
-export const { getParentId, getNotFoundState } = applicationSlice.selectors;
+export const {
+  setParentId,
+  setFoundCollection,
+  setFoundLink,
+  setSelectedLink,
+} = applicationSlice.actions;
+export const { getParentId, getNotFoundState, getSelectedLink } =
+  applicationSlice.selectors;
 export default applicationSlice.reducer;

@@ -13,6 +13,7 @@ import CloseButton from "@components/buttons/close-button";
 import { nanoid } from "@reduxjs/toolkit";
 import { useCreateLink } from "@features/links/create-link";
 import Checkbox from "@components/form/checkbox";
+import { ImSpinner2 } from "react-icons/im";
 interface CreateLinkCardProps {
   className?: string;
   closeModal?: () => void;
@@ -104,6 +105,12 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
             disabled={createLinkMutation.isPending}
             aria-disabled={createLinkMutation.isPending}
             loading={createLinkMutation.isPending}
+            Loader={
+              <span className="flex items-center justify-center w-full gap-4">
+                <ImSpinner2 className="animate-spin" />
+                <p>Creating Link</p>
+              </span>
+            }
           >
             Add Link
           </Button>

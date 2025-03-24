@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { getParentIdFromPath } from "@lib/utils/get-paths";
 import CollectionsContent from "@sections/collections";
 import LinksContent from "@sections/links";
+import LinkDetailCard from "@components/cards/link-details-card";
 
 const CollectionsPage = () => {
   const pathId = getParentIdFromPath();
@@ -18,6 +19,7 @@ const CollectionsPage = () => {
     <Fragment>
       <CollectionsContent pathId={pathId} />
       <LinksContent pathId={pathId} />
+      <LinkDetailCard />
     </Fragment>
   );
 };
