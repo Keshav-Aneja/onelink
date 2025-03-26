@@ -11,7 +11,7 @@ const SidebarButton = ({ item, active, setActive }: SidebarButtonProps) => {
   return (
     <button
       className={cn(
-        "w-full aspect-square flex items-center justify-center cursor-pointer text-2xl text-theme_secondary_white group border-1 border-transparent rounded-md relative hover:text-primary transition-all duration-200 ease-linear",
+        "w-full aspect-square flex items-center justify-center cursor-pointer text-xl text-theme_secondary_white group border-1 border-transparent rounded-md relative hover:text-primary transition-all duration-200 ease-linear",
         active && "border-primary text-primary shadow-lg shadow-primary/20",
       )}
       onClick={() => {

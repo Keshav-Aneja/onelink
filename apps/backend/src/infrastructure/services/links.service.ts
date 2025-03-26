@@ -8,7 +8,10 @@ import {
 import type ILinksService from "../../application/services/links.interface";
 import { LinksRepository } from "../repositories/links.repository";
 import { LinkDTO } from "../dtos/links.dto";
-import { DatabaseOperationError } from "@onelink/entities/errros";
+import {
+  AuthenticationError,
+  DatabaseOperationError,
+} from "@onelink/entities/errros";
 import { Scraper } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
@@ -115,9 +118,12 @@ export default class LinkService implements ILinksService {
       id: linkId,
     });
     const { owner_id, id, ...parsedData } = parsed;
+    if (!owner_id || !id) {
+      throw new AuthenticationError("Invalid owner or link id");
+    }
     const link = await this.linkRepository.updateLink(
-      owner_id ?? "",
-      id ?? "",
+      owner_id,
+      id,
       parsedData as Partial<LinkUpdate>,
     );
     return LinkDTO.fromObject(link).toObject();

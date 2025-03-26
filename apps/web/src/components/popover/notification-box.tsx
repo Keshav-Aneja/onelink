@@ -3,12 +3,20 @@ import { RiNotification4Fill } from "react-icons/ri";
 import Popover from "./popover";
 import { cn } from "@lib/tailwind-utils";
 import Button from "@components/buttons/button";
-import { useAppSelector } from "@store/store";
-import { getFeed } from "@store/slices/application-slice";
+import { useAppDispatch, useAppSelector } from "@store/store";
+import { getFeed, setFeed } from "@store/slices/application-slice";
 import { RSSFeed } from "@onelink/scraper/rss";
 import { Link } from "react-router";
+import NotificationItemSkeleton from "@components/loaders/notification-item-skeleton";
+import { useFeed } from "@features/feed/get-feed";
 
 const NotificationBox = () => {
+  const feed = useFeed(1);
+  const dispatch = useAppDispatch();
+
+  if (feed.isSuccess && feed.data?.data) {
+    dispatch(setFeed(feed.data.data));
+  }
   return (
     <section className="relative">
       <Popover
@@ -29,15 +37,29 @@ type ContentProps = {
 };
 export function NotificaitonContent({ className }: ContentProps) {
   const feed = useAppSelector(getFeed);
+
   return (
     <div className={cn(className, "w-88 xxl:w-100 p-3 xxl:p-4 z-[100]")}>
       <span className="w-full text-left text-lg xxl:text-xl  tracking-wide truncate font-semibold border-b-1 border-b-white/40 pb-2">
         Notifiations
       </span>
       <div className="flex flex-col">
-        {feed
-          ?.slice(0, 3)
-          .map((item, _i) => <NotificationItem key={_i} data={item} />)}
+        {!feed && (
+          <>
+            {[1, 2, 3].map((item, _) => (
+              <NotificationItemSkeleton key={item} />
+            ))}
+          </>
+        )}
+        {feed?.length === 0 ? (
+          <div className="text-xs text-theme_secondary_white text-center h-12 flex items-center justify-center">
+            No notifications here.
+          </div>
+        ) : (
+          feed
+            ?.slice(0, 3)
+            .map((item, _i) => <NotificationItem key={_i} data={item} />)
+        )}
       </div>
       <button className="w-full text-sm bg-theme_secondary_black hover:bg-theme_secondary_black/80 rounded-md py-1 cursor-pointer">
         View All

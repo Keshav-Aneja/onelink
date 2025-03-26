@@ -15,13 +15,19 @@ const linkSlice = createSlice({
         state.push(link);
       });
     },
+    replaceLink: (state, action: { payload: Link }) => {
+      const index = state.findIndex((link) => link.id === action.payload.id);
+      if (index !== -1) {
+        state[index] = action.payload;
+      }
+    },
   },
   selectors: {
     getAllLinks: (state) => state,
   },
 });
 
-export const { addLink, addMultipleLinks } = linkSlice.actions;
+export const { addLink, addMultipleLinks, replaceLink } = linkSlice.actions;
 export const { getAllLinks } = linkSlice.selectors;
 
 export default linkSlice.reducer;

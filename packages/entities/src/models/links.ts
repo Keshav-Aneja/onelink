@@ -11,6 +11,7 @@ export const LinkSchema = z.object({
   author: z.string().optional(),
   site_description: z.string().optional(),
   keywords: z.string().optional(),
+  is_starred: z.boolean().default(false),
   owner_id: z.string().uuid().nonempty(),
   parent_id: z.string().nullable(),
 });

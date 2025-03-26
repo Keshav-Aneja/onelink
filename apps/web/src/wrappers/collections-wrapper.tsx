@@ -5,21 +5,11 @@ import CollectionContentWrapper from "./collections-content-wrapper";
 import CollectionsHeader from "@components/headers/collection-header";
 import Breadcrumbs from "@components/bread-crumbs";
 import ActionHeader from "@components/headers/actions-header";
-import { useFeed } from "@features/feed/get-feed";
-import { useAppDispatch } from "@store/store";
-import { setFeed } from "@store/slices/application-slice";
 
 type CollectionWrapperProps = {
   children: ReactNode;
 };
 const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
-  const feed = useFeed(1);
-  const dispatch = useAppDispatch();
-
-  if (feed.isSuccess && feed.data?.data) {
-    dispatch(setFeed(feed.data.data));
-  }
-
   return (
     <main className="w-full h-svh flex font-kustom overflow-hidden">
       <SidebarWrapper>

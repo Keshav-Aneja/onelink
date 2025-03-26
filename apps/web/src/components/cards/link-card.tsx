@@ -30,7 +30,7 @@ const LinkCard = ({ data }: LinkCardProps) => {
           ) : (
             <RiFileMarkedFill className="text-4xl" />
           )}
-          <StarButton starred={true} />
+          <StarButton starred={data.is_starred ?? false} id={data.id} />
         </section>
         <span>
           <p className="text-sm xxl:text-base font-semibold line-clamp-2 text-theme_secondary_white select-none">

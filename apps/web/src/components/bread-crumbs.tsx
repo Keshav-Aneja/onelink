@@ -29,7 +29,7 @@ export const Crumb = ({ label }: CrumbProps) => {
   return (
     <Link to={getPath(label)} className="flex items-center gap-1 text-lg group">
       <IoFolderOpen className=" group-first:block hidden group-hover:text-primary group-last:text-primary" />
-      <span className="group-last:underline group-last:text-primary group-last:font-medium px-4  group-hover:text-primary group-hover:underline underline-offset-4 cursor-pointer">
+      <span className="group-last:underline group-last:text-primary group-last:font-medium px-2  group-hover:text-primary group-hover:underline underline-offset-4 cursor-pointer text-sm">
         {label}
       </span>
       <span className="group-last:hidden">/</span>

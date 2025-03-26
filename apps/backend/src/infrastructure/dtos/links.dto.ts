@@ -14,6 +14,7 @@ export class LinkDTO {
   private readonly _keywords: string;
   private readonly _author: string;
   private readonly _rss: string;
+  private readonly _is_starred: boolean;
 
   constructor(
     id: string,
@@ -28,6 +29,7 @@ export class LinkDTO {
     keywords: string,
     author: string,
     rss: string,
+    is_starred: boolean,
   ) {
     this._id = id;
     this._name = name;
@@ -41,6 +43,7 @@ export class LinkDTO {
     this._author = author;
     this._keywords = keywords;
     this._rss = rss;
+    this._is_starred = is_starred;
   }
 
   get id(): string {
@@ -91,6 +94,10 @@ export class LinkDTO {
     return this._keywords;
   }
 
+  get isStarred(): boolean {
+    return this._is_starred;
+  }
+
   static formatLink(link: string, path: string | undefined) {
     if (!path) {
       return;
@@ -116,6 +123,7 @@ export class LinkDTO {
       fingerprint: obj.fingerprint,
       parent_id: obj.parent_id,
       owner_id: obj.owner_id,
+      is_starred: obj.is_starred,
       link: obj.link,
       open_graph:
         this.formatLink(obj.link, metadata.ogImage) ||
@@ -146,6 +154,7 @@ export class LinkDTO {
       obj.keywords,
       obj.author,
       obj.rss,
+      obj.isStarred,
     );
   }
 
@@ -163,6 +172,7 @@ export class LinkDTO {
       author: this._author,
       rss: this._rss,
       keywords: this._keywords,
+      is_starred: this._is_starred,
     };
   }
 }

@@ -3,7 +3,6 @@ import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
 import { ActionResponse } from "@onelink/action";
 import { getRedisClient } from "../../loaders/redis.loader";
-import logger from "../../helpers/logger";
 
 export default class LinkAdapter {
   static createLink = asyncHandler(async (req: Request, res: Response) => {
@@ -57,5 +56,14 @@ export default class LinkAdapter {
       200,
       "New feed fetched successfully",
     );
+  });
+
+  static updateLink = asyncHandler(async (req: Request, res: Response) => {
+    const { data } = req.body;
+    console.log(data);
+    const { id } = req.params;
+    const linkService = new LinkService();
+    const link = await linkService.updateLink(req.session.user_id!, id!, data);
+    ActionResponse.success(res, link, 204, "Link updated");
   });
 }
