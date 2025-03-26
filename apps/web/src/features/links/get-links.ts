@@ -32,9 +32,7 @@ export const useLinks = (
   { queryConfig }: UseLinksQueryOptions = {},
 ) => {
   const parentPath = pathId !== undefined ? pathId : null;
-  console.log("ENABLED", enabled);
-  console.log("FETCH TIME PARENT ID", parentPath);
-  console.log("WILL FETCH", pathId !== undefined && enabled);
+
   return useQuery({
     ...getLinksQueryOptions(parentPath),
     ...queryConfig,

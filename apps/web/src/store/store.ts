@@ -15,6 +15,7 @@ import linkReducer from "./slices/links-slice";
 const persistConfig = {
   key: "onelink",
   storage,
+  blacklist: ["app"],
 };
 
 const rootReducer = combineReducers({

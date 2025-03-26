@@ -2,6 +2,8 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
 import { ActionResponse } from "@onelink/action";
+import { getRedisClient } from "../../loaders/redis.loader";
+import logger from "../../helpers/logger";
 
 export default class LinkAdapter {
   static createLink = asyncHandler(async (req: Request, res: Response) => {
@@ -34,13 +36,26 @@ export default class LinkAdapter {
   });
 
   static getUpdatedFeed = asyncHandler(async (req: Request, res: Response) => {
-    const { sinceDays } = req.body;
-    const linkService = new LinkService();
-    const feed = await linkService.getRSSFeed(
-      sinceDays,
-      req.session.user_id ?? "",
+    const redisClient = getRedisClient();
+    const cacheKey = `feed:${req.session.user_id ?? ""}`;
+    const cachedFeed = await redisClient.get(cacheKey);
+    if (!cachedFeed) {
+      const { sinceDays } = req.body;
+      const linkService = new LinkService();
+      const feed = await linkService.getRSSFeed(
+        sinceDays,
+        req.session.user_id ?? "",
+      );
+      ActionResponse.success(res, feed, 200, "New feed fetched successfully");
+      await redisClient.set(cacheKey, JSON.stringify(feed), { EX: 3600 * 12 });
+      //For now I am setting the expiry as 12 hours, might change later for live notifications
+      return;
+    }
+    ActionResponse.success(
+      res,
+      JSON.parse(cachedFeed),
+      200,
+      "New feed fetched successfully",
     );
-    console.log(feed);
-    ActionResponse.success(res, feed, 200, "New feed fetched successfully");
   });
 }

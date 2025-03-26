@@ -1,23 +1,40 @@
 import type { Express } from "express";
-import { createClient } from "redis";
+import { createClient, type RedisClientType } from "redis";
 import { RedisStore } from "connect-redis";
 import session from "express-session";
 import env from "../config/env";
+let redisClient: RedisClientType | null = null;
+
+export const initRedisClient = async () => {
+  if (!redisClient) {
+    redisClient = createClient({
+      username: "default",
+      password: env.REDIS_PASSWORD,
+      socket: {
+        host: env.REDIS_URL,
+        port: env.REDIS_PORT,
+      },
+    });
+
+    redisClient.on("error", (err) => console.log("Redis Client Error", err));
+    await redisClient.connect();
+  }
+  return redisClient;
+};
+
+export const getRedisClient = () => {
+  if (!redisClient) {
+    throw new Error(
+      "Redis client not initialized. Call initRedisClient first.",
+    );
+  }
+  return redisClient;
+};
+
 export default async (app: Express) => {
-  const redisClient = createClient({
-    username: "default",
-    password: env.REDIS_PASSWORD,
-    socket: {
-      host: env.REDIS_URL,
-      port: env.REDIS_PORT,
-    },
-  });
-
-  redisClient.on("error", (err) => console.log("Redis Client Error", err));
-
-  await redisClient.connect();
+  const client = await initRedisClient();
   let redisStore = new RedisStore({
-    client: redisClient,
+    client: client,
     prefix: env.REDIS_PREFIX,
   });
 

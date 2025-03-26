@@ -91,7 +91,16 @@ export default class LinkService implements ILinksService {
 
     const rssData: RSSFeed[] = results
       .filter((result) => result.status === "fulfilled" && result.value)
-      .flatMap((result) => (result as PromiseFulfilledResult<RSSFeed[]>).value);
+      .flatMap((result) => (result as PromiseFulfilledResult<RSSFeed[]>).value)
+      .sort((a, b) => {
+        if (!a.published_date) return -1;
+        if (!b.published_date) return 1;
+
+        const dateA = new Date(a.published_date).getTime();
+        const dateB = new Date(b.published_date).getTime();
+
+        return dateB - dateA;
+      });
 
     return rssData.map((rss) => RSSDTO.fromObject(rss).toObject());
   }

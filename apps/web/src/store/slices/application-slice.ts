@@ -1,6 +1,6 @@
 import { Link } from "@onelink/entities/models";
 import { createSlice } from "@reduxjs/toolkit";
-
+import type { RSSFeed } from "@onelink/scraper/rss";
 interface IApplicationConfig {
   redirectTo: string;
   parent_id: string | null;
@@ -9,6 +9,7 @@ interface IApplicationConfig {
     links: boolean;
   };
   selectedLink: Link | null;
+  feed: RSSFeed[] | null;
 }
 
 const initialState: IApplicationConfig = {
@@ -19,6 +20,7 @@ const initialState: IApplicationConfig = {
     links: true,
   },
   selectedLink: null,
+  feed: null,
 };
 
 export const applicationSlice = createSlice({
@@ -43,11 +45,15 @@ export const applicationSlice = createSlice({
     setSelectedLink: (state, action: { payload: Link | null }) => {
       state.selectedLink = action.payload;
     },
+    setFeed: (state, action: { payload: RSSFeed[] | null }) => {
+      state.feed = action.payload;
+    },
   },
   selectors: {
     getParentId: (state) => state.parent_id,
     getNotFoundState: (state) => state.not_found,
     getSelectedLink: (state) => state.selectedLink,
+    getFeed: (state) => state.feed,
   },
 });
 
@@ -56,7 +62,8 @@ export const {
   setFoundCollection,
   setFoundLink,
   setSelectedLink,
+  setFeed,
 } = applicationSlice.actions;
-export const { getParentId, getNotFoundState, getSelectedLink } =
+export const { getParentId, getNotFoundState, getSelectedLink, getFeed } =
   applicationSlice.selectors;
 export default applicationSlice.reducer;
