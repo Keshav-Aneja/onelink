@@ -12,6 +12,7 @@ export default async function request<T>(
     { baseURL: config.baseURL, prefix: config.prefix },
     url,
   );
+  console.log("SENDING FINAL OPTIONS ", options.body);
   const response = await fetch(endpoint, options);
   const resData = (await parseResponse<T>(response)) as IActionResponse;
   if (!response.ok) {

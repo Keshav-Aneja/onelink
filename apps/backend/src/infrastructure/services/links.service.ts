@@ -42,9 +42,7 @@ export default class LinkService implements ILinksService {
 
   async createLink(link: LinkInsert): Promise<Link> {
     const scraper = new Scraper(link.link);
-    console.log("WE ARE HERE");
     const data = LinkSchema.omit({ id: true }).parse(link);
-    console.log("WE ARE NOT HERE");
     const content = await scraper.scrape();
     const metadata = await scraper.extractMetadata(content);
     // if (!metadata.rssLink || metadata.rssLink.length == 0) {
@@ -127,5 +125,10 @@ export default class LinkService implements ILinksService {
       parsedData as Partial<LinkUpdate>,
     );
     return LinkDTO.fromObject(link).toObject();
+  }
+
+  async getStarredLinks(owner_id: string): Promise<Link[] | undefined> {
+    const links = await this.linkRepository.getStarredLinks(owner_id);
+    return links?.map((link) => LinkDTO.fromObject(link).toObject());
   }
 }

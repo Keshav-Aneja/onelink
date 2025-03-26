@@ -154,7 +154,7 @@ export class LinkDTO {
       obj.keywords,
       obj.author,
       obj.rss,
-      obj.isStarred,
+      obj.is_starred,
     );
   }
 

@@ -79,6 +79,24 @@ export class RSS {
           },
         ],
       },
+      {
+        matcher: (host: string) => host.includes("github.com"),
+        patterns: [
+          async () => {
+            console.log("GITHUB RSS CHECK");
+            let feedURL = `https://${origin}/`;
+            const pathLength = paths.length;
+            if (pathLength === 1) {
+              feedURL = feedURL.concat(`${paths[0]}.atom`);
+            } else if (pathLength > 1) {
+              feedURL = feedURL.concat(`${paths[0]}/${paths[1]}/commits.atom`);
+            }
+            console.log("FEED CHECK", feedURL);
+            if (await this.checkIfValid(feedURL)) return feedURL;
+            return null;
+          },
+        ],
+      },
       // Hashnode pattern
       {
         matcher: (host: string) => host.includes("hashnode.dev"),

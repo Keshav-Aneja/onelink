@@ -22,7 +22,7 @@ const SidebarButton = ({ item, active, setActive }: SidebarButtonProps) => {
         <div className="w-full h-full absolute top-0 left-0 border-3 blur-md border-primary"></div>
       )}
       <Icon />
-      <div className="group-hover:opacity-100 opacity-0 pointer-events-none absolute top-1/2 -translate-y-1/2 left-18 text-nowrap text-sm bg-primary text-black border-1 border-black font-medium px-3 py-1 rounded-md transition-all duration-200 ease-linear z-[100]">
+      <div className="group-hover:opacity-100 opacity-0 pointer-events-none absolute top-1/2 -translate-y-1/2 left-14 text-nowrap text-sm bg-primary text-black border-1 border-black font-medium px-3 py-1 rounded-md transition-all duration-200 ease-linear z-[100]">
         {label}
       </div>
     </button>

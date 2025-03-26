@@ -59,6 +59,7 @@ export class Action implements IAction {
       { ...this.config.headers, ...headers },
       data,
     );
+    console.log("COMING HERE DATA", data);
     return await request<T>(url, this.config, requestOptions);
   }
 

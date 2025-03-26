@@ -10,7 +10,7 @@ export default (app: Router) => {
 
   route.post("/", LinkAdapter.createLink);
   route.post("/feed", LinkAdapter.getUpdatedFeed);
-  route.patch("/:id", LinkAdapter.updateLink);
 
+  route.patch("/:id", LinkAdapter.updateLink);
   route.get("/:id?", LinkAdapter.getLinks);
 };

@@ -17,6 +17,7 @@ const linkSlice = createSlice({
     },
     replaceLink: (state, action: { payload: Link }) => {
       const index = state.findIndex((link) => link.id === action.payload.id);
+      console.log(state[index].name);
       if (index !== -1) {
         state[index] = action.payload;
       }

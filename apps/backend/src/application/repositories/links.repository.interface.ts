@@ -17,4 +17,5 @@ export interface ILinkRepository {
     link_id: string,
     data: Partial<LinkUpdate>,
   ): Promise<Link>;
+  getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
 }

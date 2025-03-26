@@ -66,4 +66,11 @@ export class LinksRepository implements ILinkRepository {
     }
     return updatedLink;
   }
+  async getStarredLinks(owner_id: string): Promise<Link[] | undefined> {
+    const links = await db("links")
+      .where({ owner_id, is_starred: true })
+      .orderBy("created_at", "desc");
+
+    return links;
+  }
 }

@@ -21,9 +21,8 @@ const StarButton = ({ starred, id }: StarButtonProps) => {
   });
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (starred != isStarred) {
-        updateLinkMutation.mutate({ id, data: { is_starred: isStarred } });
-      }
+      updateLinkMutation.mutate({ id, data: { is_starred: isStarred } });
+      //TODO: Add toaster notification here
     }, 1000);
 
     return () => {

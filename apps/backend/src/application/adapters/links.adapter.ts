@@ -59,11 +59,22 @@ export default class LinkAdapter {
   });
 
   static updateLink = asyncHandler(async (req: Request, res: Response) => {
-    const { data } = req.body;
-    console.log(data);
+    const data = req.body;
     const { id } = req.params;
     const linkService = new LinkService();
     const link = await linkService.updateLink(req.session.user_id!, id!, data);
-    ActionResponse.success(res, link, 204, "Link updated");
+    ActionResponse.success(res, link, 200, "Link updated");
+  });
+
+  static getStarredLinks = asyncHandler(async (req: Request, res: Response) => {
+    const owner_id = req.session.user_id!;
+    const linkService = new LinkService();
+    const links = await linkService.getStarredLinks(owner_id);
+    ActionResponse.success(
+      res,
+      links,
+      200,
+      "Starred links fetched successfully",
+    );
   });
 }

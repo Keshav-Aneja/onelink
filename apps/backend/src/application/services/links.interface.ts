@@ -16,4 +16,5 @@ export default interface ILinksService {
     data: Partial<LinkUpdate>,
   ): Promise<Link>;
   findRSSFeedLink(link: string): Promise<string | undefined>;
+  getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
 }
