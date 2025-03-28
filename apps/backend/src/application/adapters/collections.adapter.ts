@@ -2,6 +2,7 @@ import { ActionResponse } from "@onelink/action";
 import type { Request, Response } from "express";
 import CollectionsService from "../../infrastructure/services/collections.service";
 import { asyncHandler } from "../../helpers/async-handler";
+import LinkService from "../../infrastructure/services/links.service";
 
 export class CollectionAdapter {
   static createCollection = asyncHandler(
@@ -31,6 +32,30 @@ export class CollectionAdapter {
         200,
         "Collections fetched succesfully",
       );
+    },
+  );
+
+  static getCollectionStats = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { id } = req.params;
+      const collectionId = id ? id : null;
+      const collectionsService = new CollectionsService();
+      const linksService = new LinkService();
+      const user_id = req.session.user_id!;
+      const collectionsCount = await collectionsService.getCollectionsCount(
+        user_id,
+        collectionId,
+      );
+      const linksCount = await linksService.getLinksCount(
+        user_id,
+        collectionId,
+      );
+      const data = {
+        collections: collectionsCount,
+        links: linksCount,
+      };
+      console.log("DATA", JSON.stringify(data));
+      ActionResponse.success(res, data, 200, "Collection stats fetched");
     },
   );
 }

@@ -32,9 +32,6 @@ export const useCollections = (
   { queryConfig }: UseCollectionsQueryOptions = {},
 ) => {
   const parentPath = pathId !== undefined ? pathId : null;
-  console.log("ENABLED", enabled);
-  console.log("FETCH TIME PARENT ID", parentPath);
-  console.log("WILL FETCH", pathId !== undefined && enabled);
   return useQuery({
     ...getCollectionsQueryOptions(parentPath),
     ...queryConfig,

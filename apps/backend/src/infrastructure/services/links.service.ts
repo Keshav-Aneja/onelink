@@ -133,4 +133,15 @@ export default class LinkService implements ILinksService {
     const links = await this.linkRepository.getStarredLinks(owner_id);
     return links?.map((link) => LinkDTO.fromObject(link).toObject());
   }
+
+  async getLinksCount(
+    owner_id: string,
+    parent_id: string | null,
+  ): Promise<number> {
+    const linksCount = await this.linkRepository.getLinksCountByCollection(
+      owner_id,
+      parent_id,
+    );
+    return linksCount;
+  }
 }

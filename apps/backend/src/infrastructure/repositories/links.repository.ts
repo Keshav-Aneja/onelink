@@ -73,4 +73,17 @@ export class LinksRepository implements ILinkRepository {
 
     return links;
   }
+  async getLinksCountByCollection(
+    owner_id: string,
+    parent_id: string | null,
+  ): Promise<number> {
+    const [links]: Array<Record<string, any>> = await db("links")
+      .where({ owner_id, parent_id })
+      .count("id as count");
+
+    if (!links) {
+      return 0;
+    }
+    return parseInt(links["count"]);
+  }
 }

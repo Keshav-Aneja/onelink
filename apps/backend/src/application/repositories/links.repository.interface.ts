@@ -18,4 +18,8 @@ export interface ILinkRepository {
     data: Partial<LinkUpdate>,
   ): Promise<Link>;
   getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
+  getLinksCountByCollection(
+    owner_id: string,
+    parent_id: string | null,
+  ): Promise<number>;
 }

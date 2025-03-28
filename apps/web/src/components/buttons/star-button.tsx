@@ -9,8 +9,10 @@ interface StarButtonProps {
 
 const StarButton = ({ starred, id }: StarButtonProps) => {
   const [isStarred, setIsStarred] = useState(starred);
+  const [update, setUpdate] = useState(false);
   const handleChangeStarredState = () => {
     setIsStarred(!isStarred);
+    setUpdate(true);
   };
   const updateLinkMutation = useUpdateLink({
     mutationConfig: {
@@ -21,14 +23,18 @@ const StarButton = ({ starred, id }: StarButtonProps) => {
   });
   useEffect(() => {
     const timeout = setTimeout(() => {
-      updateLinkMutation.mutate({ id, data: { is_starred: isStarred } });
+      if (update) {
+        updateLinkMutation.mutate({ id, data: { is_starred: isStarred } });
+        setUpdate(false);
+      }
       //TODO: Add toaster notification here
     }, 1000);
 
     return () => {
       clearTimeout(timeout);
     };
-  }, [isStarred]);
+  }, [isStarred, update]);
+
   return (
     <button
       className={cn(

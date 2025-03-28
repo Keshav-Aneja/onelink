@@ -1,5 +1,6 @@
 import NotificationListItem from "@components/cards/notification-list-item-card";
 import NotificationListItemSkeleton from "@components/loaders/notification-list-item-skeleton";
+import Mascot from "@components/mascot";
 import { getFeed } from "@store/slices/application-slice";
 import { useAppSelector } from "@store/store";
 import CollectionWrapper from "@wrappers/collections-wrapper";
@@ -24,6 +25,9 @@ const Notifications = () => {
           notifications.map((notification) => (
             <NotificationListItem data={notification} />
           ))}
+        {notifications?.length === 0 && (
+          <Mascot>Nothing to see here—check back later!</Mascot>
+        )}
       </section>
     </CollectionWrapper>
   );

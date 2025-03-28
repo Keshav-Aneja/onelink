@@ -28,7 +28,8 @@ const LinksContent = ({ pathId }: LinksContent) => {
   useEffect(() => {
     if (linkQuery.isSuccess && linkQuery.data?.data) {
       setShouldFetchLinks(false);
-      if (!links) {
+      console.log("STORED LINKS", links);
+      if (!links || links.length === 0) {
         dispatch(addMultipleLinks(linkQuery.data.data));
       }
     }

@@ -25,7 +25,7 @@ const CollectionsContent = ({ pathId }: CollectionsContent) => {
   useEffect(() => {
     if (collectionsQuery.isSuccess && collectionsQuery.data?.data) {
       setShouldFetchCollections(false);
-      if (!collections) {
+      if (!collections || collections.length === 0) {
         dispatch(addMultipleCollections(collectionsQuery.data.data));
       }
     }

@@ -8,6 +8,7 @@ export default (app: Router) => {
   app.use("/collection", route);
   route.use(middlewares.protectedRoute);
 
+  route.get("/stats/:id?", CollectionAdapter.getCollectionStats);
   route.post("/", CollectionAdapter.createCollection);
   route.get("/:id?", CollectionAdapter.getCollections);
 };

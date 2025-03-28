@@ -84,9 +84,9 @@ export default class CollectionsService implements ICollectionsService {
     );
   }
 
-  async getCollectionsStats(
-    owner_id: string | null,
-    collection_id: string,
+  async getCollectionsCount(
+    owner_id: string,
+    collection_id: string | null,
   ): Promise<number> {
     const getCollectionStatsSchema = CollectionSchema.pick({
       owner_id: true,
@@ -102,7 +102,7 @@ export default class CollectionsService implements ICollectionsService {
         data.parent_id,
         data.owner_id,
       );
-
+    console.log("FROM COLLECTION SERVICE", collections);
     return collections;
   }
 }

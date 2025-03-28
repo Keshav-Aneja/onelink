@@ -18,4 +18,5 @@ export default interface ILinksService {
   deleteLink(ownerId: string, linkId: string): Promise<{ id: string }>;
   findRSSFeedLink(link: string): Promise<string | undefined>;
   getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
+  getLinksCount(owner_id: string, parent_id: string): Promise<number>;
 }

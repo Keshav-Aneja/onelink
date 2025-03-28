@@ -77,13 +77,12 @@ export class CollectionRepository implements ICollectionRepository {
     collection_id: string | null,
     owner_id: string,
   ): Promise<number> {
-    const [result] = await db("collections")
+    const [result]: Array<Record<string, any>> = await db("collections")
       .where({ owner_id, parent_id: collection_id })
       .count("id as count");
-
     if (!result) {
       return 0;
     }
-    return parseInt(result);
+    return parseInt(result["count"]);
   }
 }
