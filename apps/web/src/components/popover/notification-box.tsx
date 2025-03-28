@@ -73,9 +73,11 @@ export function NotificationTrigger() {
   return (
     <CircularButton>
       {/* TODO: Render the notifications blob based on the availability */}
-      <span className=" bg-primary w-5 h-5 rounded-full flex items-center justify-center absolute -top-1 -right-1 text-xs font-bold">
-        {feed ? feed.length : ""}
-      </span>
+      {feed?.length !== 0 && (
+        <span className=" bg-primary w-5 h-5 rounded-full flex items-center justify-center absolute -top-1 -right-1 text-xs font-bold">
+          {feed ? feed.length : ""}
+        </span>
+      )}
       <RiNotification4Fill className="text-xl xxl:text-2xl" />
     </CircularButton>
   );

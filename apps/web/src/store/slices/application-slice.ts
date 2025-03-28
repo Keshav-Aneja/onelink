@@ -1,6 +1,7 @@
-import { Link } from "@onelink/entities/models";
+import { Collection, Link } from "@onelink/entities/models";
 import { createSlice } from "@reduxjs/toolkit";
 import type { RSSFeed } from "@onelink/scraper/rss";
+import sidebarItems from "@config/navigation-sidebar-items";
 interface IApplicationConfig {
   redirectTo: string;
   parent_id: string | null;
@@ -9,7 +10,9 @@ interface IApplicationConfig {
     links: boolean;
   };
   selectedLink: Link | null;
+  selectedCollection: Collection | null;
   feed: RSSFeed[] | null;
+  activeTab: string;
 }
 
 const initialState: IApplicationConfig = {
@@ -19,8 +22,10 @@ const initialState: IApplicationConfig = {
     collections: true,
     links: true,
   },
+  selectedCollection: null,
   selectedLink: null,
   feed: null,
+  activeTab: sidebarItems[0].label,
 };
 
 export const applicationSlice = createSlice({
@@ -45,15 +50,23 @@ export const applicationSlice = createSlice({
     setSelectedLink: (state, action: { payload: Link | null }) => {
       state.selectedLink = action.payload;
     },
+    setSelectedCollection: (state, action: { payload: Collection | null }) => {
+      state.selectedCollection = action.payload;
+    },
     setFeed: (state, action: { payload: RSSFeed[] | null }) => {
       state.feed = action.payload;
+    },
+    setActiveTab: (state, action: { payload: string }) => {
+      state.activeTab = action.payload;
     },
   },
   selectors: {
     getParentId: (state) => state.parent_id,
     getNotFoundState: (state) => state.not_found,
     getSelectedLink: (state) => state.selectedLink,
+    getSelectedCollection: (state) => state.selectedCollection,
     getFeed: (state) => state.feed,
+    getActiveTab: (state) => state.activeTab,
   },
 });
 
@@ -63,7 +76,15 @@ export const {
   setFoundLink,
   setSelectedLink,
   setFeed,
+  setActiveTab,
+  setSelectedCollection,
 } = applicationSlice.actions;
-export const { getParentId, getNotFoundState, getSelectedLink, getFeed } =
-  applicationSlice.selectors;
+export const {
+  getParentId,
+  getNotFoundState,
+  getSelectedLink,
+  getFeed,
+  getActiveTab,
+  getSelectedCollection,
+} = applicationSlice.selectors;
 export default applicationSlice.reducer;

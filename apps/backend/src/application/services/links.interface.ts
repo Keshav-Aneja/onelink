@@ -15,6 +15,7 @@ export default interface ILinksService {
     linkId: string,
     data: Partial<LinkUpdate>,
   ): Promise<Link>;
+  deleteLink(ownerId: string, linkId: string): Promise<{ id: string }>;
   findRSSFeedLink(link: string): Promise<string | undefined>;
   getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
 }

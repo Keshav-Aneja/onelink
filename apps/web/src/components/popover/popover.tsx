@@ -47,7 +47,7 @@ const Popover = ({ Trigger, Content, modal = false }: PopoverProps) => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative ">
       {modal && isVisible && (
         <div
           className={cn(

@@ -16,6 +16,10 @@ export interface ICollectionRepository {
     collection_id: string,
     owner_id: string,
   ): Promise<Collection>;
+  getChildCollectionsCount(
+    collection_id: string | null,
+    owner_id: string,
+  ): Promise<number>;
   getAllCollections(owner_id: string): Promise<Collection[] | undefined>;
   getAllCollectionsOfCollection(
     parent_collection_id: string | null,

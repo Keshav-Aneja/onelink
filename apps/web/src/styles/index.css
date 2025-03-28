@@ -90,3 +90,9 @@
   background-image: url("../assets/images/noise.svg");
   background-blend-mode: lighten;
 }
+.--edit {
+  opacity: 0;
+}
+.--collection-box:hover .--edit {
+  opacity: 1;
+}

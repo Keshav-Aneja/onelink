@@ -40,7 +40,7 @@
 
 <ul>
     <li><b>[&nbsp;O&nbsp;]</b> ...</li>
-    <li><b>[&nbsp;X&nbsp;]</b> Integrate RSS Feeds</li>
+    <li><b>[&nbsp;O&nbsp;]</b> Integrate RSS Feeds</li>
     <li><b>[&nbsp;X&nbsp;]</b> Details component for links and repository</li>
     <li><b>[&nbsp;X&nbsp;]</b> Setup search functionality</li>
     <li><b>[&nbsp;X&nbsp;]</b> Remove response object dependency from the ActionResponse package</li>

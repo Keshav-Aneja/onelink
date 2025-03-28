@@ -3,11 +3,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface UserState {
   id: string;
   name: string;
+  profile_url: string;
 }
 
 const initialState: UserState = {
   id: "",
   name: "",
+  profile_url: "",
 };
 
 const userSlice = createSlice({
@@ -18,6 +20,7 @@ const userSlice = createSlice({
       const userData = action.payload;
       state.id = userData.id;
       state.name = userData.name;
+      state.profile_url = userData.profile_url;
     },
     resetUser: (state) => {
       state.id = "";

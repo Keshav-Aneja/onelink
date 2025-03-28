@@ -83,4 +83,26 @@ export default class CollectionsService implements ICollectionsService {
       CollectionDTO.fromObject(collection).toObject(),
     );
   }
+
+  async getCollectionsStats(
+    owner_id: string | null,
+    collection_id: string,
+  ): Promise<number> {
+    const getCollectionStatsSchema = CollectionSchema.pick({
+      owner_id: true,
+      parent_id: true,
+    });
+    const data = getCollectionStatsSchema.parse({
+      owner_id,
+      parent_id: collection_id,
+    });
+
+    const collections =
+      await this.collectionRepository.getChildCollectionsCount(
+        data.parent_id,
+        data.owner_id,
+      );
+
+    return collections;
+  }
 }

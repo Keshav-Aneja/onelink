@@ -17,10 +17,12 @@ const linkSlice = createSlice({
     },
     replaceLink: (state, action: { payload: Link }) => {
       const index = state.findIndex((link) => link.id === action.payload.id);
-      console.log(state[index].name);
       if (index !== -1) {
         state[index] = action.payload;
       }
+    },
+    deleteLink: (state, action: { payload: string }) => {
+      return state.filter((state) => state.id !== action.payload);
     },
   },
   selectors: {
@@ -28,7 +30,8 @@ const linkSlice = createSlice({
   },
 });
 
-export const { addLink, addMultipleLinks, replaceLink } = linkSlice.actions;
+export const { addLink, addMultipleLinks, replaceLink, deleteLink } =
+  linkSlice.actions;
 export const { getAllLinks } = linkSlice.selectors;
 
 export default linkSlice.reducer;

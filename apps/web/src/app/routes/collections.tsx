@@ -3,10 +3,10 @@ import { getParentIdFromPath } from "@lib/utils/get-paths";
 import CollectionsContent from "@sections/collections";
 import LinksContent from "@sections/links";
 import LinkDetailCard from "@components/cards/link-details-card";
+import CollectionsDetailCard from "@components/cards/collection-details-card";
 
 const CollectionsPage = () => {
   const pathId = getParentIdFromPath();
-  console.log("PATH ID", pathId);
   if (pathId === undefined) {
     return (
       <p className="text-center" role="alert">
@@ -20,6 +20,7 @@ const CollectionsPage = () => {
       <CollectionsContent pathId={pathId} />
       <LinksContent pathId={pathId} />
       <LinkDetailCard />
+      <CollectionsDetailCard />
     </Fragment>
   );
 };

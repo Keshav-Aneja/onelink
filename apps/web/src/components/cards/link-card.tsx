@@ -5,6 +5,7 @@ import Button from "@components/buttons/button";
 import { Link } from "@onelink/entities/models";
 import { useAppDispatch } from "@store/store";
 import { setSelectedLink } from "@store/slices/application-slice";
+import DeleteLinkButton from "@components/buttons/delete-link-button";
 interface LinkCardProps {
   data: Link;
 }
@@ -30,31 +31,24 @@ const LinkCard = ({ data }: LinkCardProps) => {
           ) : (
             <RiFileMarkedFill className="text-4xl" />
           )}
-          <StarButton starred={data.is_starred ?? false} id={data.id} />
+          <section className="absolute top-2 right-2 w-full flex items-center gap-1 justify-end">
+            <StarButton starred={data.is_starred ?? false} id={data.id} />
+          </section>
         </section>
         <span>
           <p className="text-sm xxl:text-base font-semibold line-clamp-2 text-theme_secondary_white select-none">
             {data.name}
           </p>
-          <p className="text-xs text-theme_secondary_white/70 line-clamp-2">
+          <p className="text-xs text-theme_secondary_white/70 line-clamp-2 select-none">
             {data.site_description}
           </p>
         </span>
       </div>
-      <section className="w-full flex justify-between items-center">
-        <p className="text-secondary_text text-xs xxl:text-sm">
-          {new Date().getDate() +
-            "/" +
-            new Date().getMonth() +
-            "/" +
-            new Date().getFullYear() +
-            ", " +
-            new Date().getHours() +
-            ":" +
-            new Date().getMinutes()}
-        </p>
+      <section className="w-full flex justify-between items-center relative">
+        <DeleteLinkButton id={data.id} />
+
         <Button
-          className="text-xs xxl:text-sm py-1 hover:bg-primary focus:bg-primary"
+          className="text-xs xxl:text-sm py-1 hover:bg-primary focus:bg-primary select-none"
           onClick={handleSelectLink}
         >
           Detail

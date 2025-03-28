@@ -83,7 +83,6 @@ export class RSS {
         matcher: (host: string) => host.includes("github.com"),
         patterns: [
           async () => {
-            console.log("GITHUB RSS CHECK");
             let feedURL = `https://${origin}/`;
             const pathLength = paths.length;
             if (pathLength === 1) {
@@ -91,7 +90,6 @@ export class RSS {
             } else if (pathLength > 1) {
               feedURL = feedURL.concat(`${paths[0]}/${paths[1]}/commits.atom`);
             }
-            console.log("FEED CHECK", feedURL);
             if (await this.checkIfValid(feedURL)) return feedURL;
             return null;
           },
@@ -235,11 +233,12 @@ export class RSS {
         }
       });
       $("entry").each((i, el) => {
-        const pubDate = $(el).find("published").text();
+        const pubDate =
+          $(el).find("published").text() || $(el).find("updated").text();
         const date = pubDate ? new Date(pubDate) : undefined;
         if (date && date >= daysAgo) {
           rssFeed.push({
-            title: $(el).find("title").text(),
+            title: this.formatCommitTitle($(el).find("title").text(), rssURL),
             published_date: date.toISOString(),
             link: $(el).find("link").attr("href"),
           });
@@ -251,8 +250,11 @@ export class RSS {
       return null;
     }
   }
-}
 
-// const rss = new RSS("https://medium.com/@keshav.aneja09");
-// const data = await rss.scrapeRSS(150);
-// console.log(data);
+  formatCommitTitle(title: string, url: string) {
+    if (url.includes("github") && url.includes("commits.atom")) {
+      return `New commit - ${title}`;
+    }
+    return title;
+  }
+}

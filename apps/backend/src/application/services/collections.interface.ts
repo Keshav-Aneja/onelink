@@ -11,4 +11,5 @@ export interface ICollectionsService {
     parentId: string | null,
     ownerId: string,
   ): Promise<Collection[] | undefined>;
+  getCollectionsStats(owner_id: string, collection_id: string): Promise<number>;
 }

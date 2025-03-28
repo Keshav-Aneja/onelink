@@ -32,7 +32,7 @@ const StarButton = ({ starred, id }: StarButtonProps) => {
   return (
     <button
       className={cn(
-        "bg-black text-white absolute top-2 right-2 rounded-full p-1 xxl:p-1.5 text-sm xxl:text-base cursor-pointer hover:bg-primary",
+        "bg-black text-white  rounded-full p-1 xxl:p-1.5 text-sm xxl:text-base cursor-pointer hover:bg-primary",
         isStarred && "bg-primary",
       )}
       onClick={handleChangeStarredState}

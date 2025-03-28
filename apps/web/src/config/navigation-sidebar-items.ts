@@ -12,7 +12,7 @@ const sidebarItems = [
   {
     label: "Notifications",
     Icon: RiNotification4Fill,
-    path: "",
+    path: paths.notifications.getHref(),
   },
   {
     label: "Shared Collections",
@@ -20,7 +20,7 @@ const sidebarItems = [
     path: "",
   },
   {
-    label: "Favourite",
+    label: "Favourites",
     Icon: FaStar,
     path: "",
   },

@@ -34,7 +34,6 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
     parentId: pathId,
     mutationConfig: {
       onSuccess: () => {
-        console.log("Link added successfull");
         closeModal && closeModal();
       },
     },
@@ -57,7 +56,6 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   });
   const onSubmit: SubmitHandler<CreateLink> = async (data) => {
     const linkData = { ...data, parent_id: pathId, fingerprint: nanoid(10) };
-    console.log(linkData);
     createLinkMutation.mutate(linkData);
     // await createLink(linkData);
   };

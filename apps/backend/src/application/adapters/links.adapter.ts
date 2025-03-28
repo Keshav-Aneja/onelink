@@ -46,8 +46,8 @@ export default class LinkAdapter {
         req.session.user_id ?? "",
       );
       ActionResponse.success(res, feed, 200, "New feed fetched successfully");
-      await redisClient.set(cacheKey, JSON.stringify(feed), { EX: 3600 * 12 });
-      //For now I am setting the expiry as 12 hours, might change later for live notifications
+      await redisClient.set(cacheKey, JSON.stringify(feed), { EX: 3600 * 3 });
+      //For now I am setting the expiry as 3 hours, might change later for live notifications
       return;
     }
     ActionResponse.success(
@@ -76,5 +76,12 @@ export default class LinkAdapter {
       200,
       "Starred links fetched successfully",
     );
+  });
+
+  static deleteLink = asyncHandler(async (req: Request, res: Response) => {
+    const { id } = req.params;
+    const linkService = new LinkService();
+    const deletedId = await linkService.deleteLink(req.session.user_id!, id!);
+    ActionResponse.success(res, deletedId, 200, "Link Deleted");
   });
 }

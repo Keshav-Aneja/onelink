@@ -9,16 +9,14 @@ import { useLogoutUserMutation } from "@features/users/logout-user";
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { cn } from "@lib/tailwind-utils";
-interface ProfileBoxProps {
-  profileImage?: string;
-}
-const ProfileBox = ({ profileImage }: ProfileBoxProps) => {
+
+const ProfileBox = () => {
   return (
     <section>
       {/* Instead of doing conditional rendering, and again and again mounting and unmounting the container, this will cache the component once it's rendered. so better performance */}
       <Popover
         key={2}
-        Trigger={<ProfileTrigger profileImage={profileImage} />}
+        Trigger={<ProfileTrigger />}
         Content={({ className }) => <ProfileContent className={className} />}
       />
     </section>
@@ -64,17 +62,14 @@ export function ProfileContent({ className }: ContentProps) {
   );
 }
 
-type TriggerProps = {
-  // ref: React.Ref<HTMLButtonElement> | undefined;
-  // onClick: () => void;
-  profileImage?: string;
-};
-export function ProfileTrigger({ profileImage }: TriggerProps) {
+export function ProfileTrigger() {
+  const user = useSelector(selectUser);
+  const { profile_url: profileImage } = user;
   return (
     <CircularButton key={2}>
       {profileImage && profileImage.length > 0 ? (
         <img
-          src="/images/logo.webp"
+          src={profileImage}
           alt="{{profile_user}}"
           className="w-full h-full object-cover rounded-full"
         />

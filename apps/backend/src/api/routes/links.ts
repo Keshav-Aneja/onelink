@@ -12,5 +12,6 @@ export default (app: Router) => {
   route.post("/feed", LinkAdapter.getUpdatedFeed);
 
   route.patch("/:id", LinkAdapter.updateLink);
+  route.delete("/:id", LinkAdapter.deleteLink);
   route.get("/:id?", LinkAdapter.getLinks);
 };

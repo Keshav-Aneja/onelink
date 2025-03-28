@@ -45,10 +45,6 @@ export default class LinkService implements ILinksService {
     const data = LinkSchema.omit({ id: true }).parse(link);
     const content = await scraper.scrape();
     const metadata = await scraper.extractMetadata(content);
-    // if (!metadata.rssLink || metadata.rssLink.length == 0) {
-    //   const rss = new RSS(data.link);
-    //   metadata.rssLink = await rss.findValidRSS();
-    // }
     const newLink = await this.linkRepository.createLink(
       LinkDTO.toDB(data, metadata),
     );
@@ -57,6 +53,12 @@ export default class LinkService implements ILinksService {
     }
     const linkDTO = LinkDTO.fromObject(newLink);
     return linkDTO.toObject();
+  }
+  async deleteLink(ownerId: string, linkId: string): Promise<{ id: string }> {
+    const deleteLinkSchema = LinkSchema.pick({ id: true, owner_id: true });
+    const data = deleteLinkSchema.parse({ owner_id: ownerId, id: linkId });
+    const id = await this.linkRepository.deleteLink(data.id, data.owner_id);
+    return { id };
   }
   async findRSSFeedLink(link: string): Promise<string | undefined> {
     const scraper = new Scraper(link);

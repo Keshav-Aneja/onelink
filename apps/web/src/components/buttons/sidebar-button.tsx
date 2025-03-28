@@ -1,13 +1,17 @@
 import { cn } from "@lib/tailwind-utils";
 import { SidebarItem } from "@onelink/entities/types";
+import { getActiveTab, setActiveTab } from "@store/slices/application-slice";
+import { useAppDispatch, useAppSelector } from "@store/store";
+import { useNavigate } from "react-router";
 interface SidebarButtonProps {
   item: SidebarItem;
-  //TODO: remove these and move them to redux store
-  active: boolean;
-  setActive: React.Dispatch<React.SetStateAction<string>>;
 }
-const SidebarButton = ({ item, active, setActive }: SidebarButtonProps) => {
+const SidebarButton = ({ item }: SidebarButtonProps) => {
+  const dispatch = useAppDispatch();
+  const activeTab = useAppSelector(getActiveTab);
   const { Icon, label } = item;
+  const active = activeTab === label;
+  const navigator = useNavigate();
   return (
     <button
       className={cn(
@@ -15,7 +19,8 @@ const SidebarButton = ({ item, active, setActive }: SidebarButtonProps) => {
         active && "border-primary text-primary shadow-lg shadow-primary/20",
       )}
       onClick={() => {
-        setActive(label);
+        dispatch(setActiveTab(label));
+        navigator(item.path);
       }}
     >
       {active && (
