@@ -3,6 +3,7 @@ import { ROOT_PATH } from "@config/constants";
 import { QueryConfig } from "@lib/react-query";
 import { IActionResponse } from "@onelink/action";
 import { Collection } from "@onelink/entities/models";
+
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getCollections = (
@@ -32,6 +33,7 @@ export const useCollections = (
   { queryConfig }: UseCollectionsQueryOptions = {},
 ) => {
   const parentPath = pathId !== undefined ? pathId : null;
+
   return useQuery({
     ...getCollectionsQueryOptions(parentPath),
     ...queryConfig,

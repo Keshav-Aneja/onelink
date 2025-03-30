@@ -99,6 +99,7 @@ const CreateCollectionCard = ({
               label="password"
               required={watch("is_protected")}
               register={register}
+              type="password"
               placeholder="Enter a secure password"
               error={errors.password}
             />

@@ -7,7 +7,8 @@ import type { ICollectionsService } from "../../application/services/collections
 import { CollectionRepository } from "../repositories/collections.repository";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 import { CollectionDTO } from "../dtos/collections.dto";
-
+import crypto from "node:crypto";
+import logger from "../../helpers/logger";
 export default class CollectionsService implements ICollectionsService {
   constructor(private collectionRepository = new CollectionRepository()) {}
 
@@ -26,10 +27,16 @@ export default class CollectionsService implements ICollectionsService {
 
   async createCollection(collection: CollectionInsert): Promise<Collection> {
     const data = CollectionSchema.omit({ id: true }).parse(collection);
+    if (data.is_protected && data.password) {
+      const hash = crypto
+        .createHash("sha256")
+        .update(data.password)
+        .digest("hex");
+      data["password"] = hash;
+    }
     const newCollection = await this.collectionRepository.createCollection(
       CollectionDTO.toDB(data),
     );
-    //TODO: ADD DTO HERE
     if (!newCollection) {
       throw new DatabaseOperationError("Cannot create collection");
     }
@@ -102,7 +109,37 @@ export default class CollectionsService implements ICollectionsService {
         data.parent_id,
         data.owner_id,
       );
-    console.log("FROM COLLECTION SERVICE", collections);
     return collections;
+  }
+
+  async verifyPassword(
+    collection_id: string | null,
+    owner_id: string,
+    password: string,
+  ): Promise<boolean> {
+    const getCollectionStatsSchema = CollectionSchema.pick({
+      id: true,
+      owner_id: true,
+    });
+    const data = getCollectionStatsSchema.parse({
+      id: collection_id,
+      owner_id,
+    });
+
+    const collection = await this.collectionRepository.getCollectionById(
+      data.id,
+      data.owner_id,
+    );
+    if (collection && password) {
+      const verifyHash = crypto
+        .createHash("sha256")
+        .update(password)
+        .digest("hex");
+      console.log(verifyHash);
+      console.log("_______");
+      console.log(collection.password);
+      return verifyHash === collection.password;
+    }
+    return false;
   }
 }

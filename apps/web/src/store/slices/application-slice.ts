@@ -13,6 +13,7 @@ interface IApplicationConfig {
   selectedCollection: Collection | null;
   feed: RSSFeed[] | null;
   activeTab: string;
+  securedCollections: string[];
 }
 
 const initialState: IApplicationConfig = {
@@ -26,6 +27,7 @@ const initialState: IApplicationConfig = {
   selectedLink: null,
   feed: null,
   activeTab: sidebarItems[0].label,
+  securedCollections: [],
 };
 
 export const applicationSlice = createSlice({
@@ -59,6 +61,9 @@ export const applicationSlice = createSlice({
     setActiveTab: (state, action: { payload: string }) => {
       state.activeTab = action.payload;
     },
+    addToSecuredCollection: (state, action: { payload: string }) => {
+      state.securedCollections.push(action.payload);
+    },
   },
   selectors: {
     getParentId: (state) => state.parent_id,
@@ -67,6 +72,7 @@ export const applicationSlice = createSlice({
     getSelectedCollection: (state) => state.selectedCollection,
     getFeed: (state) => state.feed,
     getActiveTab: (state) => state.activeTab,
+    getSecuredCollection: (state) => state.securedCollections,
   },
 });
 
@@ -78,6 +84,7 @@ export const {
   setFeed,
   setActiveTab,
   setSelectedCollection,
+  addToSecuredCollection,
 } = applicationSlice.actions;
 export const {
   getParentId,
@@ -86,5 +93,6 @@ export const {
   getFeed,
   getActiveTab,
   getSelectedCollection,
+  getSecuredCollection,
 } = applicationSlice.selectors;
 export default applicationSlice.reducer;

@@ -2,9 +2,10 @@ import CollectionCard from "@components/cards/collection-card";
 import { useCollections } from "@features/collections/get-collections";
 import { useStoredCollections } from "@hooks/collections";
 import { addMultipleCollections } from "@store/slices/collections-slice";
-import { useAppDispatch } from "@store/store";
+import { useAppDispatch, useAppSelector } from "@store/store";
 import { Fragment, useEffect, useState } from "react";
 import CollectionCardSuspense from "@components/cards/collection-card-suspense";
+import { getSecuredCollection } from "@store/slices/application-slice";
 interface CollectionsContent {
   pathId: string | null;
 }
@@ -17,6 +18,7 @@ const CollectionsContent = ({ pathId }: CollectionsContent) => {
     !collections || collections.length === 0,
   );
   const collectionsQuery = useCollections(shouldFetchCollections, pathId);
+  const securedCollections = useAppSelector(getSecuredCollection);
 
   useEffect(() => {
     setShouldFetchCollections(!collections || collections.length === 0);

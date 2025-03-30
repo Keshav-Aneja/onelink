@@ -34,7 +34,6 @@ export default class LinkService implements ILinksService {
       data.parent_id,
       data.owner_id,
     );
-
     if (!links) return undefined;
 
     return links.map((link) => LinkDTO.fromObject(link).toObject());

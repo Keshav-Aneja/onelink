@@ -15,4 +15,9 @@ export interface ICollectionsService {
     owner_id: string,
     collection_id: string | null,
   ): Promise<number>;
+  verifyPassword(
+    collection_id: string | null,
+    owner_id: string,
+    password: string,
+  ): Promise<boolean>;
 }

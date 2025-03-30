@@ -32,7 +32,6 @@ export const useLinks = (
   { queryConfig }: UseLinksQueryOptions = {},
 ) => {
   const parentPath = pathId !== undefined ? pathId : null;
-
   return useQuery({
     ...getLinksQueryOptions(parentPath),
     ...queryConfig,

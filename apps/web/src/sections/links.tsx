@@ -1,4 +1,4 @@
-import { useAppDispatch } from "@store/store";
+import { useAppDispatch, useAppSelector } from "@store/store";
 import { Fragment, useEffect, useState } from "react";
 import { useStoredLinks } from "@hooks/links";
 import LinkCard from "@components/cards/link-card";
@@ -8,6 +8,7 @@ import LinkCardSuspense from "@components/cards/link-card-suspense";
 import Mascot from "@components/mascot";
 
 import { useStoredCollections } from "@hooks/collections";
+import { getSecuredCollection } from "@store/slices/application-slice";
 interface LinksContent {
   pathId: string | null;
 }
@@ -15,7 +16,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
   const collections = useStoredCollections(pathId);
   const links = useStoredLinks(pathId);
   const dispatch = useAppDispatch();
-
+  const securedCollections = useAppSelector(getSecuredCollection);
   const [shouldFetchLinks, setShouldFetchLinks] = useState<boolean>(
     !links || links.length === 0,
   );
@@ -28,8 +29,8 @@ const LinksContent = ({ pathId }: LinksContent) => {
   useEffect(() => {
     if (linkQuery.isSuccess && linkQuery.data?.data) {
       setShouldFetchLinks(false);
-      console.log("STORED LINKS", links);
       if (!links || links.length === 0) {
+        console.log(securedCollections);
         dispatch(addMultipleLinks(linkQuery.data.data));
       }
     }

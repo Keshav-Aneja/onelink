@@ -58,4 +58,19 @@ export class CollectionAdapter {
       ActionResponse.success(res, data, 200, "Collection stats fetched");
     },
   );
+
+  static verifyPassword = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { id } = req.params;
+      const { password } = req.body;
+      const collectionId = id ? id : null;
+      const collectionsService = new CollectionsService();
+      const verified = await collectionsService.verifyPassword(
+        collectionId,
+        req.session.user_id!,
+        password,
+      );
+      ActionResponse.success(res, { verified }, 200, "Verification complete");
+    },
+  );
 }
