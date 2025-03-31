@@ -221,7 +221,7 @@ export class RSS {
         return null;
       }
       const rssFeed: RSSFeed[] = [];
-      $("item").each((i, el) => {
+      $("item").each((_, el) => {
         const pubDate = $(el).find("pubDate").text();
         const date = pubDate ? new Date(pubDate) : undefined;
         if (date && date >= daysAgo) {
@@ -232,7 +232,7 @@ export class RSS {
           });
         }
       });
-      $("entry").each((i, el) => {
+      $("entry").each((_, el) => {
         const pubDate =
           $(el).find("published").text() || $(el).find("updated").text();
         const date = pubDate ? new Date(pubDate) : undefined;

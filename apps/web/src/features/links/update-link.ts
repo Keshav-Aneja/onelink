@@ -7,7 +7,6 @@ import { getLinksQueryOptions } from "./get-links";
 import { useAppDispatch } from "@store/store";
 import { replaceLink } from "@store/slices/links-slice";
 import {
-  addFavLink,
   addOrReplaceFavLink,
   deleteFavLink,
 } from "@store/slices/favourite-links-slice";

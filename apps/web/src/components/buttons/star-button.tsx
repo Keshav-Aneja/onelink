@@ -1,8 +1,5 @@
 import { useUpdateLink } from "@features/links/update-link";
 import { cn } from "@lib/tailwind-utils";
-import { Link } from "@onelink/entities/models";
-import { addFavLink, deleteFavLink } from "@store/slices/favourite-links-slice";
-import { useAppDispatch } from "@store/store";
 import { useEffect, useState } from "react";
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
 interface StarButtonProps {

@@ -9,7 +9,6 @@ import { useState } from "react";
 import { IoMdArrowForward } from "react-icons/io";
 import { RiFileMarkedFill } from "react-icons/ri";
 import { FiChevronDown, FiChevronUp, FiUser } from "react-icons/fi";
-import { useUpdateLink } from "@features/links/update-link";
 import SubscribeButton from "@components/buttons/subscribe-button";
 
 const LinkDetailCard = () => {
