@@ -11,7 +11,6 @@ import NotificationItemSkeleton from "@components/loaders/notification-item-skel
 import { useFeed } from "@features/feed/get-feed";
 import { paths } from "@config/paths";
 import { useEffect } from "react";
-
 const NotificationBox = () => {
   const feed = useFeed(1);
   const dispatch = useAppDispatch();
@@ -79,7 +78,7 @@ export function NotificaitonContent({ className }: ContentProps) {
 export function NotificationTrigger() {
   const feed = useAppSelector(getFeed);
   return (
-    <CircularButton>
+    <CircularButton name="notifications">
       {/* TODO: Render the notifications blob based on the availability */}
       {feed?.length !== 0 && (
         <span className=" bg-primary w-5 h-5 rounded-full flex items-center justify-center absolute -top-1 -right-1 text-xs font-bold">

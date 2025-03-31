@@ -6,7 +6,11 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getLinksQueryOptions } from "./get-links";
 import { useAppDispatch } from "@store/store";
 import { replaceLink } from "@store/slices/links-slice";
-import { addFavLink, deleteFavLink } from "@store/slices/favourite-links-slice";
+import {
+  addFavLink,
+  addOrReplaceFavLink,
+  deleteFavLink,
+} from "@store/slices/favourite-links-slice";
 
 export const updateLink = ({
   id,
@@ -34,7 +38,7 @@ export const useUpdateLink = ({ mutationConfig }: UseUpdateLinkOptions) => {
       });
       dispatch(replaceLink(args[0].data));
       if (args[0].data.is_starred) {
-        dispatch(addFavLink(args[0].data));
+        dispatch(addOrReplaceFavLink(args[0].data));
       } else {
         dispatch(deleteFavLink(args[0].data.id));
       }

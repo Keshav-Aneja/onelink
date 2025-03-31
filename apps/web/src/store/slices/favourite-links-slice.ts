@@ -10,6 +10,14 @@ const favouriteLinkSlice = createSlice({
     addFavLink: (state, action: { payload: Link }) => {
       state.push(action.payload);
     },
+    addOrReplaceFavLink: (state, action: { payload: Link }) => {
+      const index = state.findIndex((link) => link.id === action.payload.id);
+      if (index == -1) {
+        state.push(action.payload);
+      } else {
+        state[index] = action.payload;
+      }
+    },
     addMultipleFavLinks: (state, action: { payload: Link[] }) => {
       action.payload.forEach((link) => {
         state.push(link);
@@ -35,6 +43,7 @@ export const {
   addMultipleFavLinks,
   replaceFavLink,
   deleteFavLink,
+  addOrReplaceFavLink,
 } = favouriteLinkSlice.actions;
 export const { getAllFavLinks } = favouriteLinkSlice.selectors;
 

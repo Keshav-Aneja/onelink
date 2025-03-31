@@ -31,7 +31,7 @@ export const useCreateLink = ({
     onSuccess: (...args) => {
       //Invalidate the collections get query
       queryClient.invalidateQueries({
-        queryKey: getLinksQueryOptions(parentId).queryKey,
+        queryKey: getLinksQueryOptions(parentId, false).queryKey,
       });
       //dispatch to the link collection
       dispatch(addLink(args[0].data));

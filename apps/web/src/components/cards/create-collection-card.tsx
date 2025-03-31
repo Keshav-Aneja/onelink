@@ -56,7 +56,7 @@ const CreateCollectionCard = ({
       is_protected: false,
       password: "",
     },
-    mode: "onChange",
+    mode: "onBlur",
   });
   const onSubmit: SubmitHandler<CreateCollection> = (data) => {
     const collectionData = { ...data, parent_id: pathId };

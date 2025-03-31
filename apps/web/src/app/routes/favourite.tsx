@@ -1,3 +1,4 @@
+import LinkDetailCard from "@components/cards/link-details-card";
 import FavouriteLinksContent from "@sections/favourite-links";
 import CollectionWrapper from "@wrappers/collections-wrapper";
 
@@ -13,6 +14,7 @@ const Favourite = () => {
         </p>
       </section>
       <FavouriteLinksContent />
+      <LinkDetailCard />
     </CollectionWrapper>
   );
 };

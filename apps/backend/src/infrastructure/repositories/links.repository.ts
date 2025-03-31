@@ -26,6 +26,7 @@ export class LinksRepository implements ILinkRepository {
     if (!requestQuery["is_starred"]) {
       dbParams["parent_id"] = parent_id;
     }
+    dbParams["owner_id"] = owner_id;
     const links = await db("links")
       .where({ ...dbParams })
       .select("*");
