@@ -2,16 +2,24 @@ import { cn } from "@lib/tailwind-utils";
 import { SidebarItem } from "@onelink/entities/types";
 import { getActiveTab, setActiveTab } from "@store/slices/application-slice";
 import { useAppDispatch, useAppSelector } from "@store/store";
-import { useNavigate } from "react-router";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router";
 interface SidebarButtonProps {
   item: SidebarItem;
 }
 const SidebarButton = ({ item }: SidebarButtonProps) => {
   const dispatch = useAppDispatch();
   const activeTab = useAppSelector(getActiveTab);
-  const { Icon, label } = item;
-  const active = activeTab === label;
+  const { Icon, label, path: itemPath } = item;
+  const active = activeTab === itemPath.split("/")[1];
   const navigator = useNavigate();
+  const path = useLocation();
+  useEffect(() => {
+    const activePath = path.pathname.split("/")[1];
+    if (activePath) {
+      dispatch(setActiveTab(activePath));
+    }
+  }, [path.pathname]);
   return (
     <button
       className={cn(
@@ -19,7 +27,7 @@ const SidebarButton = ({ item }: SidebarButtonProps) => {
         active && "border-primary text-primary shadow-lg shadow-primary/20",
       )}
       onClick={() => {
-        dispatch(setActiveTab(label));
+        dispatch(setActiveTab(itemPath.split("/")[1]));
         navigator(item.path);
       }}
     >

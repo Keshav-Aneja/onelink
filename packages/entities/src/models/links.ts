@@ -14,6 +14,7 @@ export const LinkSchema = z.object({
   is_starred: z.boolean().default(false),
   owner_id: z.string().uuid().nonempty(),
   parent_id: z.string().nullable(),
+  subscribed: z.boolean().default(false).optional(),
 });
 
 export type Link = z.infer<typeof LinkSchema>;

@@ -9,6 +9,8 @@ import { useState } from "react";
 import { IoMdArrowForward } from "react-icons/io";
 import { RiFileMarkedFill } from "react-icons/ri";
 import { FiChevronDown, FiChevronUp, FiUser } from "react-icons/fi";
+import { useUpdateLink } from "@features/links/update-link";
+import SubscribeButton from "@components/buttons/subscribe-button";
 
 const LinkDetailCard = () => {
   const link = useAppSelector(getSelectedLink);
@@ -24,7 +26,6 @@ const LinkDetailCard = () => {
   const truncateText = (text: string, maxLength: number) => {
     if (text.length <= maxLength) return text;
     const truncated = text.slice(0, maxLength);
-    // Find the last space to avoid cutting words
     const lastSpace = truncated.lastIndexOf(" ");
     return truncated.slice(0, lastSpace) + "...";
   };
@@ -36,7 +37,7 @@ const LinkDetailCard = () => {
         onClick={handleOutsideClick}
       ></div>
       <div className="fixed w-1/4 top-1/2 -translate-y-1/2 right-0 h-full bottom-0 bg-[rgba(0,0,0,0.2)] p-3 backdrop-blur-2xl rounded-lg border-1 border-theme_secondary_white/40 flex flex-col gap-2">
-        <section className="w-full aspect-[1.41] rounded-md overflow-hidden bg-theme_secondary_black relative flex items-center justify-center select-none">
+        <section className="w-full aspect-[1.91] rounded-md overflow-hidden bg-theme_secondary_black relative flex items-center justify-center select-none">
           {link.open_graph ? (
             <img
               src={link.open_graph}
@@ -56,14 +57,19 @@ const LinkDetailCard = () => {
             <IoMdArrowForward className="text-xl -rotate-45" />
           </Button>
         </section>
-        <div className="w-full flex flex-col gap-2 overflow-y-auto h-full">
+        <div className="w-full flex flex-col gap-2">
           <h1 className="text-2xl font-medium text-white">{link.name}</h1>
-          {link.author && (
-            <span className="flex items-center gap-2 text-sm text-theme_secondary_white">
-              <FiUser className="text-xs" /> {link.author}
-            </span>
-          )}
-
+          <section className="flex items-center w-full justify-between">
+            {link.author && (
+              <span className="flex items-center gap-2 text-sm text-theme_secondary_white">
+                <FiUser className="text-xs" /> {link.author}
+              </span>
+            )}
+            <SubscribeButton
+              subscribed={link.subscribed ?? false}
+              id={link.id}
+            />
+          </section>
           <div className="relative">
             <p
               id="description-text"

@@ -1,0 +1,345 @@
+Date : 2025-03-31 16:25:57
+Directory : /home/aneja/work/web/onelink
+Total : 222 files,  8336 codes, 450 comments, 1727 blanks, all 10513 lines
+
+Languages
++--------------------+------------+------------+------------+------------+------------+
+| language           | files      | code       | comment    | blank      | total      |
++--------------------+------------+------------+------------+------------+------------+
+| TypeScript         |        121 |      4,069 |        390 |        564 |      5,023 |
+| TypeScript JSX     |         57 |      2,326 |         16 |        211 |      2,553 |
+| JSON with Comments |          7 |      1,099 |          2 |        852 |      1,953 |
+| JSON               |         17 |        408 |          4 |         22 |        434 |
+| CSS                |          3 |        145 |         21 |         11 |        177 |
+| Markdown           |          8 |        137 |          0 |         57 |        194 |
+| JavaScript         |          4 |        128 |         16 |          8 |        152 |
+| HTML               |          1 |         13 |          0 |          1 |         14 |
+| XML                |          3 |          8 |          0 |          1 |          9 |
+| Ignore             |          1 |          3 |          1 |          0 |          4 |
++--------------------+------------+------------+------------+------------+------------+
+
+Directories
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| path                                                                                                       | files      | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+| .                                                                                                          |        222 |      8,336 |        450 |      1,727 |     10,513 |
+| . (Files)                                                                                                  |          6 |      1,124 |          1 |        863 |      1,988 |
+| apps                                                                                                       |        148 |      5,638 |        242 |        612 |      6,492 |
+| apps/backend                                                                                               |         47 |      1,999 |        178 |        236 |      2,413 |
+| apps/backend (Files)                                                                                       |          3 |         70 |          2 |          9 |         81 |
+| apps/backend/src                                                                                           |         44 |      1,929 |        176 |        227 |      2,332 |
+| apps/backend/src (Files)                                                                                   |          1 |         30 |          5 |          4 |         39 |
+| apps/backend/src/api                                                                                       |          6 |        121 |          6 |         25 |        152 |
+| apps/backend/src/api (Files)                                                                               |          1 |         11 |          0 |          2 |         13 |
+| apps/backend/src/api/middleware                                                                            |          2 |         55 |          4 |         12 |         71 |
+| apps/backend/src/api/routes                                                                                |          3 |         55 |          2 |         11 |         68 |
+| apps/backend/src/application                                                                               |         13 |        412 |         96 |         36 |        544 |
+| apps/backend/src/application/adapters                                                                      |          3 |        240 |         31 |         14 |        285 |
+| apps/backend/src/application/factory                                                                       |          1 |         21 |          0 |          2 |         23 |
+| apps/backend/src/application/repositories                                                                  |          4 |         65 |          0 |          8 |         73 |
+| apps/backend/src/application/services                                                                      |          5 |         86 |         65 |         12 |        163 |
+| apps/backend/src/config                                                                                    |          2 |         37 |          4 |          9 |         50 |
+| apps/backend/src/helpers                                                                                   |          2 |         57 |          0 |          7 |         64 |
+| apps/backend/src/infrastructure                                                                            |         14 |      1,118 |         59 |        127 |      1,304 |
+| apps/backend/src/infrastructure/dtos                                                                       |          4 |        355 |          3 |         46 |        404 |
+| apps/backend/src/infrastructure/repositories                                                               |          4 |        235 |         15 |         18 |        268 |
+| apps/backend/src/infrastructure/services                                                                   |          6 |        528 |         41 |         63 |        632 |
+| apps/backend/src/lib                                                                                       |          2 |         44 |          1 |          7 |         52 |
+| apps/backend/src/lib/types                                                                                 |          2 |         44 |          1 |          7 |         52 |
+| apps/backend/src/loaders                                                                                   |          4 |        110 |          5 |         12 |        127 |
+| apps/web                                                                                                   |        101 |      3,639 |         64 |        376 |      4,079 |
+| apps/web (Files)                                                                                           |          8 |        218 |          5 |         23 |        246 |
+| apps/web/public                                                                                            |          1 |          1 |          0 |          0 |          1 |
+| apps/web/src                                                                                               |         92 |      3,420 |         59 |        353 |      3,832 |
+| apps/web/src (Files)                                                                                       |          2 |          9 |          1 |          3 |         13 |
+| apps/web/src/app                                                                                           |         11 |        309 |          7 |         42 |        358 |
+| apps/web/src/app (Files)                                                                                   |          5 |        152 |          5 |         22 |        179 |
+| apps/web/src/app/routes                                                                                    |          6 |        157 |          2 |         20 |        179 |
+| apps/web/src/assets                                                                                        |          2 |          7 |          0 |          1 |          8 |
+| apps/web/src/assets (Files)                                                                                |          1 |          1 |          0 |          0 |          1 |
+| apps/web/src/assets/images                                                                                 |          1 |          6 |          0 |          1 |          7 |
+| apps/web/src/components                                                                                    |         37 |      1,768 |          8 |        132 |      1,908 |
+| apps/web/src/components (Files)                                                                            |          4 |        126 |          0 |         13 |        139 |
+| apps/web/src/components/buttons                                                                            |          6 |        217 |          2 |         16 |        235 |
+| apps/web/src/components/cards                                                                              |         11 |        848 |          4 |         43 |        895 |
+| apps/web/src/components/form                                                                               |          4 |        148 |          0 |         16 |        164 |
+| apps/web/src/components/headers                                                                            |          4 |         77 |          0 |         10 |         87 |
+| apps/web/src/components/loaders                                                                            |          3 |         41 |          0 |          8 |         49 |
+| apps/web/src/components/popover                                                                            |          5 |        311 |          2 |         26 |        339 |
+| apps/web/src/config                                                                                        |          4 |         73 |          5 |          9 |         87 |
+| apps/web/src/features                                                                                      |         12 |        439 |         11 |         70 |        520 |
+| apps/web/src/features/collections                                                                          |          4 |        143 |          0 |         21 |        164 |
+| apps/web/src/features/feed                                                                                 |          1 |         34 |          0 |          5 |         39 |
+| apps/web/src/features/links                                                                                |          5 |        205 |         11 |         33 |        249 |
+| apps/web/src/features/users                                                                                |          2 |         57 |          0 |         11 |         68 |
+| apps/web/src/hooks                                                                                         |          3 |         51 |          0 |          5 |         56 |
+| apps/web/src/lib                                                                                           |          4 |        124 |          4 |         17 |        145 |
+| apps/web/src/lib (Files)                                                                                   |          2 |         26 |          0 |          7 |         33 |
+| apps/web/src/lib/utils                                                                                     |          2 |         98 |          4 |         10 |        112 |
+| apps/web/src/sections                                                                                      |          3 |        153 |          1 |         20 |        174 |
+| apps/web/src/store                                                                                         |          5 |        252 |          1 |         27 |        280 |
+| apps/web/src/store (Files)                                                                                 |          1 |         46 |          1 |          7 |         54 |
+| apps/web/src/store/slices                                                                                  |          4 |        206 |          0 |         20 |        226 |
+| apps/web/src/styles                                                                                        |          4 |        148 |         21 |         12 |        181 |
+| apps/web/src/wrappers                                                                                      |          5 |         87 |          0 |         15 |        102 |
+| packages                                                                                                   |         68 |      1,574 |        207 |        252 |      2,033 |
+| packages/action                                                                                            |         15 |        408 |        103 |         66 |        577 |
+| packages/action (Files)                                                                                    |          4 |         46 |          0 |          9 |         55 |
+| packages/action/src                                                                                        |         11 |        362 |        103 |         57 |        522 |
+| packages/action/src/action                                                                                 |          6 |        169 |         29 |         21 |        219 |
+| packages/action/src/action (Files)                                                                         |          1 |         73 |          0 |          6 |         79 |
+| packages/action/src/action-response                                                                        |          1 |        132 |         69 |         29 |        230 |
+| packages/action/src/action/modules                                                                         |          5 |         96 |         29 |         15 |        140 |
+| packages/action/src/interfaces                                                                             |          3 |         50 |          0 |          6 |         56 |
+| packages/action/src/utils                                                                                  |          1 |         11 |          5 |          1 |         17 |
+| packages/db                                                                                                |         16 |        327 |         33 |         70 |        430 |
+| packages/db (Files)                                                                                        |          4 |         75 |          2 |         11 |         88 |
+| packages/db/src                                                                                            |         12 |        252 |         31 |         59 |        342 |
+| packages/db/src (Files)                                                                                    |          1 |         27 |          0 |          2 |         29 |
+| packages/db/src/migrations                                                                                 |         10 |        194 |         31 |         52 |        277 |
+| packages/db/src/types                                                                                      |          1 |         31 |          0 |          5 |         36 |
+| packages/entities                                                                                          |         17 |        175 |          0 |         40 |        215 |
+| packages/entities (Files)                                                                                  |          4 |         47 |          0 |          9 |         56 |
+| packages/entities/src                                                                                      |         13 |        128 |          0 |         31 |        159 |
+| packages/entities/src (Files)                                                                              |          2 |         10 |          0 |          3 |         13 |
+| packages/entities/src/errors                                                                               |          3 |         32 |          0 |          7 |         39 |
+| packages/entities/src/models                                                                               |          6 |         73 |          0 |         17 |         90 |
+| packages/entities/src/types                                                                                |          2 |         13 |          0 |          4 |         17 |
+| packages/eslint-config                                                                                     |          5 |        127 |         16 |          9 |        152 |
+| packages/scraper                                                                                           |         10 |        464 |         55 |         62 |        581 |
+| packages/scraper (Files)                                                                                   |          4 |         46 |         17 |          9 |         72 |
+| packages/scraper/extractors                                                                                |          1 |        146 |         30 |         30 |        206 |
+| packages/scraper/module                                                                                    |          5 |        272 |          8 |         23 |        303 |
+| packages/scraper/module (Files)                                                                            |          4 |         36 |          0 |          6 |         42 |
+| packages/scraper/module/rss                                                                                |          1 |        236 |          8 |         17 |        261 |
+| packages/typescript-config                                                                                 |          5 |         73 |          0 |          5 |         78 |
++------------------------------------------------------------------------------------------------------------+------------+------------+------------+------------+------------+
+
+Files
++------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| filename                                                                                                   | language           | code       | comment    | blank      | total      |
++------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+
+| /home/aneja/work/web/onelink/.prettierignore                                                               | Ignore             |          3 |          1 |          0 |          4 |
+| /home/aneja/work/web/onelink/.prettierrc                                                                   | JSON               |         16 |          0 |          1 |         17 |
+| /home/aneja/work/web/onelink/README.md                                                                     | Markdown           |         39 |          0 |         15 |         54 |
+| /home/aneja/work/web/onelink/apps/backend/README.md                                                        | Markdown           |         10 |          0 |          6 |         16 |
+| /home/aneja/work/web/onelink/apps/backend/package.json                                                     | JSON               |         42 |          0 |          1 |         43 |
+| /home/aneja/work/web/onelink/apps/backend/src/api/index.ts                                                 | TypeScript         |         11 |          0 |          2 |         13 |
+| /home/aneja/work/web/onelink/apps/backend/src/api/middleware/authentication.middleware.ts                  | TypeScript         |         50 |          4 |         10 |         64 |
+| /home/aneja/work/web/onelink/apps/backend/src/api/middleware/index.ts                                      | TypeScript         |          5 |          0 |          2 |          7 |
+| /home/aneja/work/web/onelink/apps/backend/src/api/routes/authentication.ts                                 | TypeScript         |         30 |          2 |          3 |         35 |
+| /home/aneja/work/web/onelink/apps/backend/src/api/routes/collections.ts                                    | TypeScript         |         12 |          0 |          4 |         16 |
+| /home/aneja/work/web/onelink/apps/backend/src/api/routes/links.ts                                          | TypeScript         |         13 |          0 |          4 |         17 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/adapters/authentication.adapter.ts               | TypeScript         |         88 |         30 |          2 |        120 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/adapters/collections.adapter.ts                  | TypeScript         |         72 |          0 |          5 |         77 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/adapters/links.adapter.ts                        | TypeScript         |         80 |          1 |          7 |         88 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/factory/authentication.factory.ts                | TypeScript         |         21 |          0 |          2 |         23 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/repositories/collections.repository.interface.ts | TypeScript         |         27 |          0 |          2 |         29 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/repositories/links.repository.interface.ts       | TypeScript         |         24 |          0 |          2 |         26 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/repositories/shares.repository.interface.ts      | TypeScript         |          7 |          0 |          2 |          9 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/repositories/users.repository.interface.ts       | TypeScript         |          7 |          0 |          2 |          9 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/services/authentication.interface.ts             | TypeScript         |         16 |         22 |          2 |         40 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/services/collections.interface.ts                | TypeScript         |         22 |          0 |          2 |         24 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/services/links.interface.ts                      | TypeScript         |         22 |          0 |          1 |         23 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/services/session.services.interface.ts           | TypeScript         |         21 |         43 |          5 |         69 |
+| /home/aneja/work/web/onelink/apps/backend/src/application/services/user.services.interface.ts              | TypeScript         |          5 |          0 |          2 |          7 |
+| /home/aneja/work/web/onelink/apps/backend/src/config/constants.ts                                          | TypeScript         |          4 |          0 |          2 |          6 |
+| /home/aneja/work/web/onelink/apps/backend/src/config/env.ts                                                | TypeScript         |         33 |          4 |          7 |         44 |
+| /home/aneja/work/web/onelink/apps/backend/src/helpers/async-handler.ts                                     | TypeScript         |         11 |          0 |          4 |         15 |
+| /home/aneja/work/web/onelink/apps/backend/src/helpers/logger.ts                                            | TypeScript         |         46 |          0 |          3 |         49 |
+| /home/aneja/work/web/onelink/apps/backend/src/index.ts                                                     | TypeScript         |         30 |          5 |          4 |         39 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/collections.dto.ts                       | TypeScript         |         88 |          2 |          7 |         97 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/links.dto.ts                             | TypeScript         |        164 |          1 |         25 |        190 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/rss.dto.ts                               | TypeScript         |         29 |          0 |          7 |         36 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/user.dto.ts                              | TypeScript         |         74 |          0 |          7 |         81 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/collections.repository.ts        | TypeScript         |         85 |          0 |          4 |         89 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/links.repository.ts              | TypeScript         |         84 |          0 |          6 |         90 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/shares.repository.ts             | TypeScript         |         39 |          0 |          2 |         41 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/users.repository.ts              | TypeScript         |         27 |         15 |          6 |         48 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/collections.service.ts               | TypeScript         |        130 |          4 |         12 |        146 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/github.authentication.service.ts     | TypeScript         |         92 |          4 |         15 |        111 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/google.authentication.services.ts    | TypeScript         |         92 |          7 |         17 |        116 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/links.service.ts                     | TypeScript         |        134 |          0 |         13 |        147 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/session.services.ts                  | TypeScript         |         57 |         26 |          2 |         85 |
+| /home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/user.services.ts                     | TypeScript         |         23 |          0 |          4 |         27 |
+| /home/aneja/work/web/onelink/apps/backend/src/lib/types/express-session.d.ts                               | TypeScript         |         13 |          1 |          2 |         16 |
+| /home/aneja/work/web/onelink/apps/backend/src/lib/types/knex.d.ts                                          | TypeScript         |         31 |          0 |          5 |         36 |
+| /home/aneja/work/web/onelink/apps/backend/src/loaders/express.loader.ts                                    | TypeScript         |         27 |          1 |          3 |         31 |
+| /home/aneja/work/web/onelink/apps/backend/src/loaders/index.ts                                             | TypeScript         |         12 |          3 |          1 |         16 |
+| /home/aneja/work/web/onelink/apps/backend/src/loaders/logger.loader.ts                                     | TypeScript         |         21 |          1 |          1 |         23 |
+| /home/aneja/work/web/onelink/apps/backend/src/loaders/redis.loader.ts                                      | TypeScript         |         50 |          0 |          7 |         57 |
+| /home/aneja/work/web/onelink/apps/backend/tsconfig.json                                                    | JSON with Comments |         18 |          2 |          2 |         22 |
+| /home/aneja/work/web/onelink/apps/web/README.md                                                            | Markdown           |         45 |          0 |         10 |         55 |
+| /home/aneja/work/web/onelink/apps/web/eslint.config.js                                                     | JavaScript         |         27 |          0 |          2 |         29 |
+| /home/aneja/work/web/onelink/apps/web/index.html                                                           | HTML               |         13 |          0 |          1 |         14 |
+| /home/aneja/work/web/onelink/apps/web/package.json                                                         | JSON               |         47 |          0 |          1 |         48 |
+| /home/aneja/work/web/onelink/apps/web/public/vite.svg                                                      | XML                |          1 |          0 |          0 |          1 |
+| /home/aneja/work/web/onelink/apps/web/src/app/index.tsx                                                    | TypeScript JSX     |          9 |          0 |          2 |         11 |
+| /home/aneja/work/web/onelink/apps/web/src/app/loader.tsx                                                   | TypeScript JSX     |         11 |          0 |          2 |         13 |
+| /home/aneja/work/web/onelink/apps/web/src/app/protected.tsx                                                | TypeScript JSX     |         48 |          5 |         10 |         63 |
+| /home/aneja/work/web/onelink/apps/web/src/app/provider.tsx                                                 | TypeScript JSX     |         28 |          0 |          2 |         30 |
+| /home/aneja/work/web/onelink/apps/web/src/app/router.tsx                                                   | TypeScript JSX     |         56 |          0 |          6 |         62 |
+| /home/aneja/work/web/onelink/apps/web/src/app/routes/authentication.tsx                                    | TypeScript JSX     |         61 |          1 |          2 |         64 |
+| /home/aneja/work/web/onelink/apps/web/src/app/routes/collections-root.tsx                                  | TypeScript JSX     |         10 |          0 |          3 |         13 |
+| /home/aneja/work/web/onelink/apps/web/src/app/routes/collections.tsx                                       | TypeScript JSX     |         37 |          1 |          6 |         44 |
+| /home/aneja/work/web/onelink/apps/web/src/app/routes/landing.tsx                                           | TypeScript JSX     |         12 |          0 |          3 |         15 |
+| /home/aneja/work/web/onelink/apps/web/src/app/routes/not-found.tsx                                         | TypeScript JSX     |          4 |          0 |          2 |          6 |
+| /home/aneja/work/web/onelink/apps/web/src/app/routes/notifications.tsx                                     | TypeScript JSX     |         33 |          0 |          4 |         37 |
+| /home/aneja/work/web/onelink/apps/web/src/assets/images/noise.svg                                          | XML                |          6 |          0 |          1 |          7 |
+| /home/aneja/work/web/onelink/apps/web/src/assets/react.svg                                                 | XML                |          1 |          0 |          0 |          1 |
+| /home/aneja/work/web/onelink/apps/web/src/components/bread-crumbs.tsx                                      | TypeScript JSX     |         35 |          0 |          4 |         39 |
+| /home/aneja/work/web/onelink/apps/web/src/components/buttons/button.tsx                                    | TypeScript JSX     |         56 |          0 |          2 |         58 |
+| /home/aneja/work/web/onelink/apps/web/src/components/buttons/circular-button.tsx                           | TypeScript JSX     |         19 |          0 |          2 |         21 |
+| /home/aneja/work/web/onelink/apps/web/src/components/buttons/close-button.tsx                              | TypeScript JSX     |         19 |          0 |          2 |         21 |
+| /home/aneja/work/web/onelink/apps/web/src/components/buttons/delete-link-button.tsx                        | TypeScript JSX     |         33 |          1 |          3 |         37 |
+| /home/aneja/work/web/onelink/apps/web/src/components/buttons/sidebar-button.tsx                            | TypeScript JSX     |         44 |          0 |          2 |         46 |
+| /home/aneja/work/web/onelink/apps/web/src/components/buttons/star-button.tsx                               | TypeScript JSX     |         46 |          1 |          5 |         52 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/collection-card-suspense.tsx                    | TypeScript JSX     |         15 |          0 |          3 |         18 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/collection-card.tsx                             | TypeScript JSX     |         39 |          0 |          3 |         42 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/collection-details-card.tsx                     | TypeScript JSX     |        175 |          0 |          5 |        180 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/create-collection-card.tsx                      | TypeScript JSX     |        122 |          1 |          4 |        127 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/create-link-card.tsx                            | TypeScript JSX     |        122 |          2 |          4 |        128 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/glow-card.tsx                                   | TypeScript JSX     |         39 |          0 |          1 |         40 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/link-card-suspense.tsx                          | TypeScript JSX     |         30 |          0 |          3 |         33 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/link-card.tsx                                   | TypeScript JSX     |         59 |          0 |          3 |         62 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/link-details-card.tsx                           | TypeScript JSX     |        117 |          0 |          9 |        126 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/notification-list-item-card.tsx                 | TypeScript JSX     |         27 |          0 |          3 |         30 |
+| /home/aneja/work/web/onelink/apps/web/src/components/cards/verify-password-card.tsx                        | TypeScript JSX     |        103 |          1 |          5 |        109 |
+| /home/aneja/work/web/onelink/apps/web/src/components/form/Input.tsx                                        | TypeScript JSX     |         50 |          0 |          5 |         55 |
+| /home/aneja/work/web/onelink/apps/web/src/components/form/checkbox.tsx                                     | TypeScript JSX     |         36 |          0 |          3 |         39 |
+| /home/aneja/work/web/onelink/apps/web/src/components/form/form-error.tsx                                   | TypeScript JSX     |         25 |          0 |          4 |         29 |
+| /home/aneja/work/web/onelink/apps/web/src/components/form/textarea.tsx                                     | TypeScript JSX     |         37 |          0 |          4 |         41 |
+| /home/aneja/work/web/onelink/apps/web/src/components/headers/actions-header.tsx                            | TypeScript JSX     |         11 |          0 |          2 |         13 |
+| /home/aneja/work/web/onelink/apps/web/src/components/headers/collection-header.tsx                         | TypeScript JSX     |         13 |          0 |          3 |         16 |
+| /home/aneja/work/web/onelink/apps/web/src/components/headers/navigation-menu.tsx                           | TypeScript JSX     |         36 |          0 |          3 |         39 |
+| /home/aneja/work/web/onelink/apps/web/src/components/headers/navigation-sidebar.tsx                        | TypeScript JSX     |         17 |          0 |          2 |         19 |
+| /home/aneja/work/web/onelink/apps/web/src/components/loaders/global-fallback-loader.tsx                    | TypeScript JSX     |          8 |          0 |          2 |         10 |
+| /home/aneja/work/web/onelink/apps/web/src/components/loaders/notification-item-skeleton.tsx                | TypeScript JSX     |         18 |          0 |          3 |         21 |
+| /home/aneja/work/web/onelink/apps/web/src/components/loaders/notification-list-item-skeleton.tsx           | TypeScript JSX     |         15 |          0 |          3 |         18 |
+| /home/aneja/work/web/onelink/apps/web/src/components/mascot.tsx                                            | TypeScript JSX     |         56 |          0 |          2 |         58 |
+| /home/aneja/work/web/onelink/apps/web/src/components/popover/create-collection.tsx                         | TypeScript JSX     |         25 |          0 |          4 |         29 |
+| /home/aneja/work/web/onelink/apps/web/src/components/popover/create-link.tsx                               | TypeScript JSX     |         25 |          0 |          4 |         29 |
+| /home/aneja/work/web/onelink/apps/web/src/components/popover/notification-box.tsx                          | TypeScript JSX     |        115 |          1 |          7 |        123 |
+| /home/aneja/work/web/onelink/apps/web/src/components/popover/popover.tsx                                   | TypeScript JSX     |         70 |          0 |          6 |         76 |
+| /home/aneja/work/web/onelink/apps/web/src/components/popover/profile-box.tsx                               | TypeScript JSX     |         76 |          1 |          5 |         82 |
+| /home/aneja/work/web/onelink/apps/web/src/components/search-bar.tsx                                        | TypeScript JSX     |         16 |          0 |          2 |         18 |
+| /home/aneja/work/web/onelink/apps/web/src/components/use-movement.tsx                                      | TypeScript JSX     |         19 |          0 |          5 |         24 |
+| /home/aneja/work/web/onelink/apps/web/src/config/action.ts                                                 | TypeScript         |          6 |          4 |          2 |         12 |
+| /home/aneja/work/web/onelink/apps/web/src/config/constants.ts                                              | TypeScript         |          4 |          0 |          2 |          6 |
+| /home/aneja/work/web/onelink/apps/web/src/config/navigation-sidebar-items.ts                               | TypeScript         |         27 |          0 |          3 |         30 |
+| /home/aneja/work/web/onelink/apps/web/src/config/paths.ts                                                  | TypeScript         |         36 |          1 |          2 |         39 |
+| /home/aneja/work/web/onelink/apps/web/src/features/collections/create-collection.ts                        | TypeScript         |         39 |          0 |          5 |         44 |
+| /home/aneja/work/web/onelink/apps/web/src/features/collections/get-collections-stats.ts                    | TypeScript         |         34 |          0 |          5 |         39 |
+| /home/aneja/work/web/onelink/apps/web/src/features/collections/get-collections.ts                          | TypeScript         |         36 |          0 |          7 |         43 |
+| /home/aneja/work/web/onelink/apps/web/src/features/collections/verify-collection-password.ts               | TypeScript         |         34 |          0 |          4 |         38 |
+| /home/aneja/work/web/onelink/apps/web/src/features/feed/get-feed.ts                                        | TypeScript         |         34 |          0 |          5 |         39 |
+| /home/aneja/work/web/onelink/apps/web/src/features/links/create-link-fetch.ts                              | TypeScript         |         63 |          8 |         14 |         85 |
+| /home/aneja/work/web/onelink/apps/web/src/features/links/create-link.ts                                    | TypeScript         |         39 |          2 |          4 |         45 |
+| /home/aneja/work/web/onelink/apps/web/src/features/links/delete-link.ts                                    | TypeScript         |         29 |          1 |          5 |         35 |
+| /home/aneja/work/web/onelink/apps/web/src/features/links/get-links.ts                                      | TypeScript         |         36 |          0 |          5 |         41 |
+| /home/aneja/work/web/onelink/apps/web/src/features/links/update-link.ts                                    | TypeScript         |         38 |          0 |          5 |         43 |
+| /home/aneja/work/web/onelink/apps/web/src/features/users/get-user.ts                                       | TypeScript         |         27 |          0 |          5 |         32 |
+| /home/aneja/work/web/onelink/apps/web/src/features/users/logout-user.ts                                    | TypeScript         |         30 |          0 |          6 |         36 |
+| /home/aneja/work/web/onelink/apps/web/src/hooks/collections.ts                                             | TypeScript         |         22 |          0 |          2 |         24 |
+| /home/aneja/work/web/onelink/apps/web/src/hooks/links.ts                                                   | TypeScript         |         12 |          0 |          2 |         14 |
+| /home/aneja/work/web/onelink/apps/web/src/hooks/user.ts                                                    | TypeScript         |         17 |          0 |          1 |         18 |
+| /home/aneja/work/web/onelink/apps/web/src/lib/react-query.ts                                               | TypeScript         |         21 |          0 |          5 |         26 |
+| /home/aneja/work/web/onelink/apps/web/src/lib/tailwind-utils.ts                                            | TypeScript         |          5 |          0 |          2 |          7 |
+| /home/aneja/work/web/onelink/apps/web/src/lib/utils/get-paths.ts                                           | TypeScript         |         72 |          4 |          8 |         84 |
+| /home/aneja/work/web/onelink/apps/web/src/lib/utils/get-random-color.ts                                    | TypeScript         |         26 |          0 |          2 |         28 |
+| /home/aneja/work/web/onelink/apps/web/src/main.tsx                                                         | TypeScript JSX     |          9 |          0 |          2 |         11 |
+| /home/aneja/work/web/onelink/apps/web/src/sections/collections.tsx                                         | TypeScript JSX     |         53 |          1 |          8 |         62 |
+| /home/aneja/work/web/onelink/apps/web/src/sections/hero.tsx                                                | TypeScript JSX     |         37 |          0 |          3 |         40 |
+| /home/aneja/work/web/onelink/apps/web/src/sections/links.tsx                                               | TypeScript JSX     |         63 |          0 |          9 |         72 |
+| /home/aneja/work/web/onelink/apps/web/src/store/slices/application-slice.ts                                | TypeScript         |         95 |          0 |          4 |         99 |
+| /home/aneja/work/web/onelink/apps/web/src/store/slices/collections-slice.ts                                | TypeScript         |         38 |          0 |          5 |         43 |
+| /home/aneja/work/web/onelink/apps/web/src/store/slices/links-slice.ts                                      | TypeScript         |         33 |          0 |          5 |         38 |
+| /home/aneja/work/web/onelink/apps/web/src/store/slices/user-slice.ts                                       | TypeScript         |         40 |          0 |          6 |         46 |
+| /home/aneja/work/web/onelink/apps/web/src/store/store.ts                                                   | TypeScript         |         46 |          1 |          7 |         54 |
+| /home/aneja/work/web/onelink/apps/web/src/styles/forms.css                                                 | CSS                |         25 |          0 |          2 |         27 |
+| /home/aneja/work/web/onelink/apps/web/src/styles/index.css                                                 | CSS                |         92 |          0 |          7 |         99 |
+| /home/aneja/work/web/onelink/apps/web/src/styles/index.ts                                                  | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/aneja/work/web/onelink/apps/web/src/styles/tailwind.config.css                                       | CSS                |         28 |         21 |          2 |         51 |
+| /home/aneja/work/web/onelink/apps/web/src/vite-env.d.ts                                                    | TypeScript         |          0 |          1 |          1 |          2 |
+| /home/aneja/work/web/onelink/apps/web/src/wrappers/app-wrapper.tsx                                         | TypeScript JSX     |          9 |          0 |          3 |         12 |
+| /home/aneja/work/web/onelink/apps/web/src/wrappers/base-wrapper.tsx                                        | TypeScript JSX     |         26 |          0 |          3 |         29 |
+| /home/aneja/work/web/onelink/apps/web/src/wrappers/collections-content-wrapper.tsx                         | TypeScript JSX     |         12 |          0 |          3 |         15 |
+| /home/aneja/work/web/onelink/apps/web/src/wrappers/collections-wrapper.tsx                                 | TypeScript JSX     |         28 |          0 |          3 |         31 |
+| /home/aneja/work/web/onelink/apps/web/src/wrappers/sidebar-wrapper.tsx                                     | TypeScript JSX     |         12 |          0 |          3 |         15 |
+| /home/aneja/work/web/onelink/apps/web/tsconfig.app.json                                                    | JSON               |         35 |          2 |          4 |         41 |
+| /home/aneja/work/web/onelink/apps/web/tsconfig.json                                                        | JSON with Comments |          7 |          0 |          1 |          8 |
+| /home/aneja/work/web/onelink/apps/web/tsconfig.node.json                                                   | JSON               |         20 |          2 |          3 |         25 |
+| /home/aneja/work/web/onelink/apps/web/vite.config.ts                                                       | TypeScript         |         24 |          1 |          1 |         26 |
+| /home/aneja/work/web/onelink/bun.lock                                                                      | JSON with Comments |      1,018 |          0 |        845 |      1,863 |
+| /home/aneja/work/web/onelink/package.json                                                                  | JSON               |         27 |          0 |          1 |         28 |
+| /home/aneja/work/web/onelink/packages/action/README.md                                                     | Markdown           |         10 |          0 |          6 |         16 |
+| /home/aneja/work/web/onelink/packages/action/index.ts                                                      | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/aneja/work/web/onelink/packages/action/package.json                                                  | JSON               |         19 |          0 |          1 |         20 |
+| /home/aneja/work/web/onelink/packages/action/src/action-response/index.ts                                  | TypeScript         |        132 |         69 |         29 |        230 |
+| /home/aneja/work/web/onelink/packages/action/src/action/index.ts                                           | TypeScript         |         73 |          0 |          6 |         79 |
+| /home/aneja/work/web/onelink/packages/action/src/action/modules/config.ts                                  | TypeScript         |         21 |          8 |          4 |         33 |
+| /home/aneja/work/web/onelink/packages/action/src/action/modules/create-request.ts                          | TypeScript         |         25 |          2 |          2 |         29 |
+| /home/aneja/work/web/onelink/packages/action/src/action/modules/options-builder.ts                         | TypeScript         |         24 |          2 |          3 |         29 |
+| /home/aneja/work/web/onelink/packages/action/src/action/modules/parser.ts                                  | TypeScript         |          5 |          5 |          1 |         11 |
+| /home/aneja/work/web/onelink/packages/action/src/action/modules/url-generator.ts                           | TypeScript         |         21 |         12 |          5 |         38 |
+| /home/aneja/work/web/onelink/packages/action/src/interfaces/action.interface.ts                            | TypeScript         |         25 |          0 |          2 |         27 |
+| /home/aneja/work/web/onelink/packages/action/src/interfaces/common.ts                                      | TypeScript         |         23 |          0 |          3 |         26 |
+| /home/aneja/work/web/onelink/packages/action/src/interfaces/index.ts                                       | TypeScript         |          2 |          0 |          1 |          3 |
+| /home/aneja/work/web/onelink/packages/action/src/utils/merge.ts                                            | TypeScript         |         11 |          5 |          1 |         17 |
+| /home/aneja/work/web/onelink/packages/action/tsconfig.json                                                 | JSON with Comments |         14 |          0 |          1 |         15 |
+| /home/aneja/work/web/onelink/packages/db/README.md                                                         | Markdown           |         11 |          0 |          6 |         17 |
+| /home/aneja/work/web/onelink/packages/db/index.ts                                                          | TypeScript         |          8 |          2 |          3 |         13 |
+| /home/aneja/work/web/onelink/packages/db/package.json                                                      | JSON               |         42 |          0 |          1 |         43 |
+| /home/aneja/work/web/onelink/packages/db/src/knexfile.ts                                                   | TypeScript         |         27 |          0 |          2 |         29 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250227211827_user.ts                             | TypeScript         |         21 |         22 |          8 |         51 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250302173601_collection.ts                       | TypeScript         |         31 |          6 |          9 |         46 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250302181410_link.ts                             | TypeScript         |         29 |          1 |          7 |         37 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250302185208_share.ts                            | TypeScript         |         31 |          1 |          8 |         40 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250302190033_link_favourite.ts                   | TypeScript         |         11 |          0 |          3 |         14 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250307201348_update_user.ts                      | TypeScript         |         13 |          0 |          3 |         16 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250309185203_link_fix.ts                         | TypeScript         |         11 |          0 |          3 |         14 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250309204150_link_metadata.ts                    | TypeScript         |         17 |          1 |          3 |         21 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250309210936_link_metadata_fix.ts                | TypeScript         |         15 |          0 |          3 |         18 |
+| /home/aneja/work/web/onelink/packages/db/src/migrations/20250331102847_link_subscribe.ts                   | TypeScript         |         15 |          0 |          5 |         20 |
+| /home/aneja/work/web/onelink/packages/db/src/types/knex.d.ts                                               | TypeScript         |         31 |          0 |          5 |         36 |
+| /home/aneja/work/web/onelink/packages/db/tsconfig.json                                                     | JSON with Comments |         14 |          0 |          1 |         15 |
+| /home/aneja/work/web/onelink/packages/entities/README.md                                                   | Markdown           |         10 |          0 |          6 |         16 |
+| /home/aneja/work/web/onelink/packages/entities/index.ts                                                    | TypeScript         |          1 |          0 |          1 |          2 |
+| /home/aneja/work/web/onelink/packages/entities/package.json                                                | JSON               |         22 |          0 |          1 |         23 |
+| /home/aneja/work/web/onelink/packages/entities/src/constants.ts                                            | TypeScript         |          9 |          0 |          2 |         11 |
+| /home/aneja/work/web/onelink/packages/entities/src/errors/auth.ts                                          | TypeScript         |          5 |          0 |          1 |          6 |
+| /home/aneja/work/web/onelink/packages/entities/src/errors/common.ts                                        | TypeScript         |         25 |          0 |          5 |         30 |
+| /home/aneja/work/web/onelink/packages/entities/src/errors/index.ts                                         | TypeScript         |          2 |          0 |          1 |          3 |
+| /home/aneja/work/web/onelink/packages/entities/src/index.ts                                                | TypeScript         |          1 |          0 |          1 |          2 |
+| /home/aneja/work/web/onelink/packages/entities/src/models/collections.ts                                   | TypeScript         |         14 |          0 |          4 |         18 |
+| /home/aneja/work/web/onelink/packages/entities/src/models/index.ts                                         | TypeScript         |          5 |          0 |          1 |          6 |
+| /home/aneja/work/web/onelink/packages/entities/src/models/links.ts                                         | TypeScript         |         20 |          0 |          3 |         23 |
+| /home/aneja/work/web/onelink/packages/entities/src/models/rss.ts                                           | TypeScript         |          6 |          0 |          3 |          9 |
+| /home/aneja/work/web/onelink/packages/entities/src/models/shares.ts                                        | TypeScript         |         14 |          0 |          3 |         17 |
+| /home/aneja/work/web/onelink/packages/entities/src/models/user.ts                                          | TypeScript         |         14 |          0 |          3 |         17 |
+| /home/aneja/work/web/onelink/packages/entities/src/types/index.ts                                          | TypeScript         |          1 |          0 |          1 |          2 |
+| /home/aneja/work/web/onelink/packages/entities/src/types/navigation.ts                                     | TypeScript         |         12 |          0 |          3 |         15 |
+| /home/aneja/work/web/onelink/packages/entities/tsconfig.json                                               | JSON with Comments |         14 |          0 |          1 |         15 |
+| /home/aneja/work/web/onelink/packages/eslint-config/README.md                                              | Markdown           |          2 |          0 |          2 |          4 |
+| /home/aneja/work/web/onelink/packages/eslint-config/base.js                                                | JavaScript         |         26 |          5 |          2 |         33 |
+| /home/aneja/work/web/onelink/packages/eslint-config/next.js                                                | JavaScript         |         42 |          6 |          2 |         50 |
+| /home/aneja/work/web/onelink/packages/eslint-config/package.json                                           | JSON               |         24 |          0 |          1 |         25 |
+| /home/aneja/work/web/onelink/packages/eslint-config/react-internal.js                                      | JavaScript         |         33 |          5 |          2 |         40 |
+| /home/aneja/work/web/onelink/packages/scraper/README.md                                                    | Markdown           |         10 |          0 |          6 |         16 |
+| /home/aneja/work/web/onelink/packages/scraper/extractors/metadata.ts                                       | TypeScript         |        146 |         30 |         30 |        206 |
+| /home/aneja/work/web/onelink/packages/scraper/index.ts                                                     | TypeScript         |          2 |         17 |          1 |         20 |
+| /home/aneja/work/web/onelink/packages/scraper/module/index.ts                                              | TypeScript         |          3 |          0 |          1 |          4 |
+| /home/aneja/work/web/onelink/packages/scraper/module/rss/index.ts                                          | TypeScript         |        236 |          8 |         17 |        261 |
+| /home/aneja/work/web/onelink/packages/scraper/module/schema.ts                                             | TypeScript         |          3 |          0 |          2 |          5 |
+| /home/aneja/work/web/onelink/packages/scraper/module/scraper.interface.ts                                  | TypeScript         |          7 |          0 |          1 |          8 |
+| /home/aneja/work/web/onelink/packages/scraper/module/scraper.ts                                            | TypeScript         |         23 |          0 |          2 |         25 |
+| /home/aneja/work/web/onelink/packages/scraper/package.json                                                 | JSON               |         20 |          0 |          1 |         21 |
+| /home/aneja/work/web/onelink/packages/scraper/tsconfig.json                                                | JSON with Comments |         14 |          0 |          1 |         15 |
+| /home/aneja/work/web/onelink/packages/typescript-config/base.json                                          | JSON               |         21 |          0 |          1 |         22 |
+| /home/aneja/work/web/onelink/packages/typescript-config/nextjs.json                                        | JSON               |         20 |          0 |          1 |         21 |
+| /home/aneja/work/web/onelink/packages/typescript-config/package.json                                       | JSON               |          9 |          0 |          1 |         10 |
+| /home/aneja/work/web/onelink/packages/typescript-config/react-library.json                                 | JSON               |          7 |          0 |          1 |          8 |
+| /home/aneja/work/web/onelink/packages/typescript-config/vite.json                                          | JSON               |         16 |          0 |          1 |         17 |
+| /home/aneja/work/web/onelink/turbo.json                                                                    | JSON               |         21 |          0 |          1 |         22 |
+| Total                                                                                                      |                    |      8,336 |        450 |      1,727 |     10,513 |
++------------------------------------------------------------------------------------------------------------+--------------------+------------+------------+------------+------------+

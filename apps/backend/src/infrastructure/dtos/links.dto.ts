@@ -1,5 +1,6 @@
 import type { Link, LinkInsert } from "@onelink/entities/models";
 import type { WebsiteMetadata } from "@onelink/scraper";
+import { subscribe } from "node:diagnostics_channel";
 
 export class LinkDTO {
   private readonly _id: string;
@@ -15,6 +16,7 @@ export class LinkDTO {
   private readonly _author: string;
   private readonly _rss: string;
   private readonly _is_starred: boolean;
+  private readonly _subscribed: boolean;
 
   constructor(
     id: string,
@@ -30,6 +32,7 @@ export class LinkDTO {
     author: string,
     rss: string,
     is_starred: boolean,
+    subscribed: boolean,
   ) {
     this._id = id;
     this._name = name;
@@ -44,6 +47,7 @@ export class LinkDTO {
     this._keywords = keywords;
     this._rss = rss;
     this._is_starred = is_starred;
+    this._subscribed = subscribed;
   }
 
   get id(): string {
@@ -98,6 +102,10 @@ export class LinkDTO {
     return this._is_starred;
   }
 
+  get subscribed(): boolean {
+    return this._subscribed;
+  }
+
   static formatLink(link: string, path: string | undefined) {
     if (!path) {
       return;
@@ -137,6 +145,7 @@ export class LinkDTO {
       keywords: metadata.keywords || "",
       author: metadata.author || "",
       rss: metadata.rssLink || "",
+      subscribed: obj.subscribed,
     };
   }
 
@@ -155,6 +164,7 @@ export class LinkDTO {
       obj.author,
       obj.rss,
       obj.is_starred,
+      obj.subscribed,
     );
   }
 
@@ -173,6 +183,7 @@ export class LinkDTO {
       rss: this._rss,
       keywords: this._keywords,
       is_starred: this._is_starred,
+      subscribed: this._subscribed,
     };
   }
 }

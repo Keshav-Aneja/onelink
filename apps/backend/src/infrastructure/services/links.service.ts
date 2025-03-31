@@ -15,12 +15,14 @@ import {
 import { Scraper } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
+import e from "express";
 export default class LinkService implements ILinksService {
   constructor(private readonly linkRepository = new LinksRepository()) {}
 
   async getAllChildLinks(
     parentId: string | null,
     ownerId: string,
+    requestQuery: Record<string, any>,
   ): Promise<Link[] | undefined> {
     const getLinkSchema = LinkSchema.pick({
       owner_id: true,
@@ -33,6 +35,7 @@ export default class LinkService implements ILinksService {
     const links = await this.linkRepository.getAllLinksOfCollection(
       data.parent_id,
       data.owner_id,
+      requestQuery,
     );
     if (!links) return undefined;
 
@@ -119,6 +122,23 @@ export default class LinkService implements ILinksService {
     const { owner_id, id, ...parsedData } = parsed;
     if (!owner_id || !id) {
       throw new AuthenticationError("Invalid owner or link id");
+    }
+    if (parsedData.subscribed === true) {
+      const link = await this.linkRepository.getLinkById(id, ownerId);
+      if (link && !link.rss) {
+        const scraper = new Scraper(link.link);
+        const content = await scraper.scrape();
+        const metadata = await scraper.extractMetadata(content);
+        if (metadata.rssLink || metadata.atomLink) {
+          parsedData["rss"] = metadata.rssLink || metadata.atomLink;
+        } else {
+          const rss = new RSS(link.link, "");
+          const foundRSSLink = await rss.findValidRSS();
+          if (foundRSSLink) {
+            parsedData["rss"] = foundRSSLink;
+          }
+        }
+      }
     }
     const link = await this.linkRepository.updateLink(
       owner_id,

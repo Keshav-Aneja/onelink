@@ -14,7 +14,6 @@ export const updateLink = ({
   id: string;
   data: Partial<LinkUpdate>;
 }): Promise<IActionResponse<Link>> => {
-  console.log("SENT DATA", data);
   return action.patch(`/links/${id}`, data);
 };
 

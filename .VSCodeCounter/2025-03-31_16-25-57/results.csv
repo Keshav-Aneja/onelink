@@ -1,0 +1,224 @@
+"filename", "language", "JSON", "Markdown", "JavaScript", "TypeScript", "TypeScript JSX", "CSS", "XML", "JSON with Comments", "HTML", "Ignore", "comment", "blank", "total"
+"/home/aneja/work/web/onelink/.prettierignore", "Ignore", 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 1, 0, 4
+"/home/aneja/work/web/onelink/.prettierrc", "JSON", 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 17
+"/home/aneja/work/web/onelink/README.md", "Markdown", 0, 39, 0, 0, 0, 0, 0, 0, 0, 0, 0, 15, 54
+"/home/aneja/work/web/onelink/apps/backend/README.md", "Markdown", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 16
+"/home/aneja/work/web/onelink/apps/backend/package.json", "JSON", 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 43
+"/home/aneja/work/web/onelink/apps/backend/src/api/index.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 2, 13
+"/home/aneja/work/web/onelink/apps/backend/src/api/middleware/authentication.middleware.ts", "TypeScript", 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 4, 10, 64
+"/home/aneja/work/web/onelink/apps/backend/src/api/middleware/index.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"/home/aneja/work/web/onelink/apps/backend/src/api/routes/authentication.ts", "TypeScript", 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 2, 3, 35
+"/home/aneja/work/web/onelink/apps/backend/src/api/routes/collections.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 4, 16
+"/home/aneja/work/web/onelink/apps/backend/src/api/routes/links.ts", "TypeScript", 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 4, 17
+"/home/aneja/work/web/onelink/apps/backend/src/application/adapters/authentication.adapter.ts", "TypeScript", 0, 0, 0, 88, 0, 0, 0, 0, 0, 0, 30, 2, 120
+"/home/aneja/work/web/onelink/apps/backend/src/application/adapters/collections.adapter.ts", "TypeScript", 0, 0, 0, 72, 0, 0, 0, 0, 0, 0, 0, 5, 77
+"/home/aneja/work/web/onelink/apps/backend/src/application/adapters/links.adapter.ts", "TypeScript", 0, 0, 0, 80, 0, 0, 0, 0, 0, 0, 1, 7, 88
+"/home/aneja/work/web/onelink/apps/backend/src/application/factory/authentication.factory.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 2, 23
+"/home/aneja/work/web/onelink/apps/backend/src/application/repositories/collections.repository.interface.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 2, 29
+"/home/aneja/work/web/onelink/apps/backend/src/application/repositories/links.repository.interface.ts", "TypeScript", 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 0, 2, 26
+"/home/aneja/work/web/onelink/apps/backend/src/application/repositories/shares.repository.interface.ts", "TypeScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+"/home/aneja/work/web/onelink/apps/backend/src/application/repositories/users.repository.interface.ts", "TypeScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 2, 9
+"/home/aneja/work/web/onelink/apps/backend/src/application/services/authentication.interface.ts", "TypeScript", 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 22, 2, 40
+"/home/aneja/work/web/onelink/apps/backend/src/application/services/collections.interface.ts", "TypeScript", 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 2, 24
+"/home/aneja/work/web/onelink/apps/backend/src/application/services/links.interface.ts", "TypeScript", 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 1, 23
+"/home/aneja/work/web/onelink/apps/backend/src/application/services/session.services.interface.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 43, 5, 69
+"/home/aneja/work/web/onelink/apps/backend/src/application/services/user.services.interface.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"/home/aneja/work/web/onelink/apps/backend/src/config/constants.ts", "TypeScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/aneja/work/web/onelink/apps/backend/src/config/env.ts", "TypeScript", 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 4, 7, 44
+"/home/aneja/work/web/onelink/apps/backend/src/helpers/async-handler.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 4, 15
+"/home/aneja/work/web/onelink/apps/backend/src/helpers/logger.ts", "TypeScript", 0, 0, 0, 46, 0, 0, 0, 0, 0, 0, 0, 3, 49
+"/home/aneja/work/web/onelink/apps/backend/src/index.ts", "TypeScript", 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 5, 4, 39
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/collections.dto.ts", "TypeScript", 0, 0, 0, 88, 0, 0, 0, 0, 0, 0, 2, 7, 97
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/links.dto.ts", "TypeScript", 0, 0, 0, 164, 0, 0, 0, 0, 0, 0, 1, 25, 190
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/rss.dto.ts", "TypeScript", 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 0, 7, 36
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/dtos/user.dto.ts", "TypeScript", 0, 0, 0, 74, 0, 0, 0, 0, 0, 0, 0, 7, 81
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/collections.repository.ts", "TypeScript", 0, 0, 0, 85, 0, 0, 0, 0, 0, 0, 0, 4, 89
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/links.repository.ts", "TypeScript", 0, 0, 0, 84, 0, 0, 0, 0, 0, 0, 0, 6, 90
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/shares.repository.ts", "TypeScript", 0, 0, 0, 39, 0, 0, 0, 0, 0, 0, 0, 2, 41
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/repositories/users.repository.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 15, 6, 48
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/collections.service.ts", "TypeScript", 0, 0, 0, 130, 0, 0, 0, 0, 0, 0, 4, 12, 146
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/github.authentication.service.ts", "TypeScript", 0, 0, 0, 92, 0, 0, 0, 0, 0, 0, 4, 15, 111
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/google.authentication.services.ts", "TypeScript", 0, 0, 0, 92, 0, 0, 0, 0, 0, 0, 7, 17, 116
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/links.service.ts", "TypeScript", 0, 0, 0, 134, 0, 0, 0, 0, 0, 0, 0, 13, 147
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/session.services.ts", "TypeScript", 0, 0, 0, 57, 0, 0, 0, 0, 0, 0, 26, 2, 85
+"/home/aneja/work/web/onelink/apps/backend/src/infrastructure/services/user.services.ts", "TypeScript", 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 4, 27
+"/home/aneja/work/web/onelink/apps/backend/src/lib/types/express-session.d.ts", "TypeScript", 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 1, 2, 16
+"/home/aneja/work/web/onelink/apps/backend/src/lib/types/knex.d.ts", "TypeScript", 0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 5, 36
+"/home/aneja/work/web/onelink/apps/backend/src/loaders/express.loader.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 1, 3, 31
+"/home/aneja/work/web/onelink/apps/backend/src/loaders/index.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 3, 1, 16
+"/home/aneja/work/web/onelink/apps/backend/src/loaders/logger.loader.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 1, 1, 23
+"/home/aneja/work/web/onelink/apps/backend/src/loaders/redis.loader.ts", "TypeScript", 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 0, 7, 57
+"/home/aneja/work/web/onelink/apps/backend/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 18, 0, 0, 2, 2, 22
+"/home/aneja/work/web/onelink/apps/web/README.md", "Markdown", 0, 45, 0, 0, 0, 0, 0, 0, 0, 0, 0, 10, 55
+"/home/aneja/work/web/onelink/apps/web/eslint.config.js", "JavaScript", 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 0, 2, 29
+"/home/aneja/work/web/onelink/apps/web/index.html", "HTML", 0, 0, 0, 0, 0, 0, 0, 0, 13, 0, 0, 1, 14
+"/home/aneja/work/web/onelink/apps/web/package.json", "JSON", 47, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 48
+"/home/aneja/work/web/onelink/apps/web/public/vite.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"/home/aneja/work/web/onelink/apps/web/src/app/index.tsx", "TypeScript JSX", 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/aneja/work/web/onelink/apps/web/src/app/loader.tsx", "TypeScript JSX", 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 2, 13
+"/home/aneja/work/web/onelink/apps/web/src/app/protected.tsx", "TypeScript JSX", 0, 0, 0, 0, 48, 0, 0, 0, 0, 0, 5, 10, 63
+"/home/aneja/work/web/onelink/apps/web/src/app/provider.tsx", "TypeScript JSX", 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 0, 2, 30
+"/home/aneja/work/web/onelink/apps/web/src/app/router.tsx", "TypeScript JSX", 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 0, 6, 62
+"/home/aneja/work/web/onelink/apps/web/src/app/routes/authentication.tsx", "TypeScript JSX", 0, 0, 0, 0, 61, 0, 0, 0, 0, 0, 1, 2, 64
+"/home/aneja/work/web/onelink/apps/web/src/app/routes/collections-root.tsx", "TypeScript JSX", 0, 0, 0, 0, 10, 0, 0, 0, 0, 0, 0, 3, 13
+"/home/aneja/work/web/onelink/apps/web/src/app/routes/collections.tsx", "TypeScript JSX", 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 1, 6, 44
+"/home/aneja/work/web/onelink/apps/web/src/app/routes/landing.tsx", "TypeScript JSX", 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/aneja/work/web/onelink/apps/web/src/app/routes/not-found.tsx", "TypeScript JSX", 0, 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/aneja/work/web/onelink/apps/web/src/app/routes/notifications.tsx", "TypeScript JSX", 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 4, 37
+"/home/aneja/work/web/onelink/apps/web/src/assets/images/noise.svg", "XML", 0, 0, 0, 0, 0, 0, 6, 0, 0, 0, 0, 1, 7
+"/home/aneja/work/web/onelink/apps/web/src/assets/react.svg", "XML", 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1
+"/home/aneja/work/web/onelink/apps/web/src/components/bread-crumbs.tsx", "TypeScript JSX", 0, 0, 0, 0, 35, 0, 0, 0, 0, 0, 0, 4, 39
+"/home/aneja/work/web/onelink/apps/web/src/components/buttons/button.tsx", "TypeScript JSX", 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 0, 2, 58
+"/home/aneja/work/web/onelink/apps/web/src/components/buttons/circular-button.tsx", "TypeScript JSX", 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 2, 21
+"/home/aneja/work/web/onelink/apps/web/src/components/buttons/close-button.tsx", "TypeScript JSX", 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 2, 21
+"/home/aneja/work/web/onelink/apps/web/src/components/buttons/delete-link-button.tsx", "TypeScript JSX", 0, 0, 0, 0, 33, 0, 0, 0, 0, 0, 1, 3, 37
+"/home/aneja/work/web/onelink/apps/web/src/components/buttons/sidebar-button.tsx", "TypeScript JSX", 0, 0, 0, 0, 44, 0, 0, 0, 0, 0, 0, 2, 46
+"/home/aneja/work/web/onelink/apps/web/src/components/buttons/star-button.tsx", "TypeScript JSX", 0, 0, 0, 0, 46, 0, 0, 0, 0, 0, 1, 5, 52
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/collection-card-suspense.tsx", "TypeScript JSX", 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 3, 18
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/collection-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 39, 0, 0, 0, 0, 0, 0, 3, 42
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/collection-details-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 175, 0, 0, 0, 0, 0, 0, 5, 180
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/create-collection-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 122, 0, 0, 0, 0, 0, 1, 4, 127
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/create-link-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 122, 0, 0, 0, 0, 0, 2, 4, 128
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/glow-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 39, 0, 0, 0, 0, 0, 0, 1, 40
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/link-card-suspense.tsx", "TypeScript JSX", 0, 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 3, 33
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/link-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 3, 62
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/link-details-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 117, 0, 0, 0, 0, 0, 0, 9, 126
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/notification-list-item-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 3, 30
+"/home/aneja/work/web/onelink/apps/web/src/components/cards/verify-password-card.tsx", "TypeScript JSX", 0, 0, 0, 0, 103, 0, 0, 0, 0, 0, 1, 5, 109
+"/home/aneja/work/web/onelink/apps/web/src/components/form/Input.tsx", "TypeScript JSX", 0, 0, 0, 0, 50, 0, 0, 0, 0, 0, 0, 5, 55
+"/home/aneja/work/web/onelink/apps/web/src/components/form/checkbox.tsx", "TypeScript JSX", 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 3, 39
+"/home/aneja/work/web/onelink/apps/web/src/components/form/form-error.tsx", "TypeScript JSX", 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 4, 29
+"/home/aneja/work/web/onelink/apps/web/src/components/form/textarea.tsx", "TypeScript JSX", 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 4, 41
+"/home/aneja/work/web/onelink/apps/web/src/components/headers/actions-header.tsx", "TypeScript JSX", 0, 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 2, 13
+"/home/aneja/work/web/onelink/apps/web/src/components/headers/collection-header.tsx", "TypeScript JSX", 0, 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 3, 16
+"/home/aneja/work/web/onelink/apps/web/src/components/headers/navigation-menu.tsx", "TypeScript JSX", 0, 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 3, 39
+"/home/aneja/work/web/onelink/apps/web/src/components/headers/navigation-sidebar.tsx", "TypeScript JSX", 0, 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 2, 19
+"/home/aneja/work/web/onelink/apps/web/src/components/loaders/global-fallback-loader.tsx", "TypeScript JSX", 0, 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 2, 10
+"/home/aneja/work/web/onelink/apps/web/src/components/loaders/notification-item-skeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 18, 0, 0, 0, 0, 0, 0, 3, 21
+"/home/aneja/work/web/onelink/apps/web/src/components/loaders/notification-list-item-skeleton.tsx", "TypeScript JSX", 0, 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 3, 18
+"/home/aneja/work/web/onelink/apps/web/src/components/mascot.tsx", "TypeScript JSX", 0, 0, 0, 0, 56, 0, 0, 0, 0, 0, 0, 2, 58
+"/home/aneja/work/web/onelink/apps/web/src/components/popover/create-collection.tsx", "TypeScript JSX", 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 4, 29
+"/home/aneja/work/web/onelink/apps/web/src/components/popover/create-link.tsx", "TypeScript JSX", 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 4, 29
+"/home/aneja/work/web/onelink/apps/web/src/components/popover/notification-box.tsx", "TypeScript JSX", 0, 0, 0, 0, 115, 0, 0, 0, 0, 0, 1, 7, 123
+"/home/aneja/work/web/onelink/apps/web/src/components/popover/popover.tsx", "TypeScript JSX", 0, 0, 0, 0, 70, 0, 0, 0, 0, 0, 0, 6, 76
+"/home/aneja/work/web/onelink/apps/web/src/components/popover/profile-box.tsx", "TypeScript JSX", 0, 0, 0, 0, 76, 0, 0, 0, 0, 0, 1, 5, 82
+"/home/aneja/work/web/onelink/apps/web/src/components/search-bar.tsx", "TypeScript JSX", 0, 0, 0, 0, 16, 0, 0, 0, 0, 0, 0, 2, 18
+"/home/aneja/work/web/onelink/apps/web/src/components/use-movement.tsx", "TypeScript JSX", 0, 0, 0, 0, 19, 0, 0, 0, 0, 0, 0, 5, 24
+"/home/aneja/work/web/onelink/apps/web/src/config/action.ts", "TypeScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 4, 2, 12
+"/home/aneja/work/web/onelink/apps/web/src/config/constants.ts", "TypeScript", 0, 0, 0, 4, 0, 0, 0, 0, 0, 0, 0, 2, 6
+"/home/aneja/work/web/onelink/apps/web/src/config/navigation-sidebar-items.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 3, 30
+"/home/aneja/work/web/onelink/apps/web/src/config/paths.ts", "TypeScript", 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 1, 2, 39
+"/home/aneja/work/web/onelink/apps/web/src/features/collections/create-collection.ts", "TypeScript", 0, 0, 0, 39, 0, 0, 0, 0, 0, 0, 0, 5, 44
+"/home/aneja/work/web/onelink/apps/web/src/features/collections/get-collections-stats.ts", "TypeScript", 0, 0, 0, 34, 0, 0, 0, 0, 0, 0, 0, 5, 39
+"/home/aneja/work/web/onelink/apps/web/src/features/collections/get-collections.ts", "TypeScript", 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 7, 43
+"/home/aneja/work/web/onelink/apps/web/src/features/collections/verify-collection-password.ts", "TypeScript", 0, 0, 0, 34, 0, 0, 0, 0, 0, 0, 0, 4, 38
+"/home/aneja/work/web/onelink/apps/web/src/features/feed/get-feed.ts", "TypeScript", 0, 0, 0, 34, 0, 0, 0, 0, 0, 0, 0, 5, 39
+"/home/aneja/work/web/onelink/apps/web/src/features/links/create-link-fetch.ts", "TypeScript", 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 8, 14, 85
+"/home/aneja/work/web/onelink/apps/web/src/features/links/create-link.ts", "TypeScript", 0, 0, 0, 39, 0, 0, 0, 0, 0, 0, 2, 4, 45
+"/home/aneja/work/web/onelink/apps/web/src/features/links/delete-link.ts", "TypeScript", 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 1, 5, 35
+"/home/aneja/work/web/onelink/apps/web/src/features/links/get-links.ts", "TypeScript", 0, 0, 0, 36, 0, 0, 0, 0, 0, 0, 0, 5, 41
+"/home/aneja/work/web/onelink/apps/web/src/features/links/update-link.ts", "TypeScript", 0, 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 5, 43
+"/home/aneja/work/web/onelink/apps/web/src/features/users/get-user.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 5, 32
+"/home/aneja/work/web/onelink/apps/web/src/features/users/logout-user.ts", "TypeScript", 0, 0, 0, 30, 0, 0, 0, 0, 0, 0, 0, 6, 36
+"/home/aneja/work/web/onelink/apps/web/src/hooks/collections.ts", "TypeScript", 0, 0, 0, 22, 0, 0, 0, 0, 0, 0, 0, 2, 24
+"/home/aneja/work/web/onelink/apps/web/src/hooks/links.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 2, 14
+"/home/aneja/work/web/onelink/apps/web/src/hooks/user.ts", "TypeScript", 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 0, 1, 18
+"/home/aneja/work/web/onelink/apps/web/src/lib/react-query.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 0, 5, 26
+"/home/aneja/work/web/onelink/apps/web/src/lib/tailwind-utils.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 2, 7
+"/home/aneja/work/web/onelink/apps/web/src/lib/utils/get-paths.ts", "TypeScript", 0, 0, 0, 72, 0, 0, 0, 0, 0, 0, 4, 8, 84
+"/home/aneja/work/web/onelink/apps/web/src/lib/utils/get-random-color.ts", "TypeScript", 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 2, 28
+"/home/aneja/work/web/onelink/apps/web/src/main.tsx", "TypeScript JSX", 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/aneja/work/web/onelink/apps/web/src/sections/collections.tsx", "TypeScript JSX", 0, 0, 0, 0, 53, 0, 0, 0, 0, 0, 1, 8, 62
+"/home/aneja/work/web/onelink/apps/web/src/sections/hero.tsx", "TypeScript JSX", 0, 0, 0, 0, 37, 0, 0, 0, 0, 0, 0, 3, 40
+"/home/aneja/work/web/onelink/apps/web/src/sections/links.tsx", "TypeScript JSX", 0, 0, 0, 0, 63, 0, 0, 0, 0, 0, 0, 9, 72
+"/home/aneja/work/web/onelink/apps/web/src/store/slices/application-slice.ts", "TypeScript", 0, 0, 0, 95, 0, 0, 0, 0, 0, 0, 0, 4, 99
+"/home/aneja/work/web/onelink/apps/web/src/store/slices/collections-slice.ts", "TypeScript", 0, 0, 0, 38, 0, 0, 0, 0, 0, 0, 0, 5, 43
+"/home/aneja/work/web/onelink/apps/web/src/store/slices/links-slice.ts", "TypeScript", 0, 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 5, 38
+"/home/aneja/work/web/onelink/apps/web/src/store/slices/user-slice.ts", "TypeScript", 0, 0, 0, 40, 0, 0, 0, 0, 0, 0, 0, 6, 46
+"/home/aneja/work/web/onelink/apps/web/src/store/store.ts", "TypeScript", 0, 0, 0, 46, 0, 0, 0, 0, 0, 0, 1, 7, 54
+"/home/aneja/work/web/onelink/apps/web/src/styles/forms.css", "CSS", 0, 0, 0, 0, 0, 25, 0, 0, 0, 0, 0, 2, 27
+"/home/aneja/work/web/onelink/apps/web/src/styles/index.css", "CSS", 0, 0, 0, 0, 0, 92, 0, 0, 0, 0, 0, 7, 99
+"/home/aneja/work/web/onelink/apps/web/src/styles/index.ts", "TypeScript", 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/aneja/work/web/onelink/apps/web/src/styles/tailwind.config.css", "CSS", 0, 0, 0, 0, 0, 28, 0, 0, 0, 0, 21, 2, 51
+"/home/aneja/work/web/onelink/apps/web/src/vite-env.d.ts", "TypeScript", 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 2
+"/home/aneja/work/web/onelink/apps/web/src/wrappers/app-wrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 3, 12
+"/home/aneja/work/web/onelink/apps/web/src/wrappers/base-wrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 26, 0, 0, 0, 0, 0, 0, 3, 29
+"/home/aneja/work/web/onelink/apps/web/src/wrappers/collections-content-wrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/aneja/work/web/onelink/apps/web/src/wrappers/collections-wrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 28, 0, 0, 0, 0, 0, 0, 3, 31
+"/home/aneja/work/web/onelink/apps/web/src/wrappers/sidebar-wrapper.tsx", "TypeScript JSX", 0, 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/aneja/work/web/onelink/apps/web/tsconfig.app.json", "JSON", 35, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4, 41
+"/home/aneja/work/web/onelink/apps/web/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 7, 0, 0, 0, 1, 8
+"/home/aneja/work/web/onelink/apps/web/tsconfig.node.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 3, 25
+"/home/aneja/work/web/onelink/apps/web/vite.config.ts", "TypeScript", 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 1, 1, 26
+"/home/aneja/work/web/onelink/bun.lock", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 1018, 0, 0, 0, 845, 1863
+"/home/aneja/work/web/onelink/package.json", "JSON", 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 28
+"/home/aneja/work/web/onelink/packages/action/README.md", "Markdown", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 16
+"/home/aneja/work/web/onelink/packages/action/index.ts", "TypeScript", 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/aneja/work/web/onelink/packages/action/package.json", "JSON", 19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 20
+"/home/aneja/work/web/onelink/packages/action/src/action-response/index.ts", "TypeScript", 0, 0, 0, 132, 0, 0, 0, 0, 0, 0, 69, 29, 230
+"/home/aneja/work/web/onelink/packages/action/src/action/index.ts", "TypeScript", 0, 0, 0, 73, 0, 0, 0, 0, 0, 0, 0, 6, 79
+"/home/aneja/work/web/onelink/packages/action/src/action/modules/config.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 8, 4, 33
+"/home/aneja/work/web/onelink/packages/action/src/action/modules/create-request.ts", "TypeScript", 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 2, 2, 29
+"/home/aneja/work/web/onelink/packages/action/src/action/modules/options-builder.ts", "TypeScript", 0, 0, 0, 24, 0, 0, 0, 0, 0, 0, 2, 3, 29
+"/home/aneja/work/web/onelink/packages/action/src/action/modules/parser.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 5, 1, 11
+"/home/aneja/work/web/onelink/packages/action/src/action/modules/url-generator.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 12, 5, 38
+"/home/aneja/work/web/onelink/packages/action/src/interfaces/action.interface.ts", "TypeScript", 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 2, 27
+"/home/aneja/work/web/onelink/packages/action/src/interfaces/common.ts", "TypeScript", 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 3, 26
+"/home/aneja/work/web/onelink/packages/action/src/interfaces/index.ts", "TypeScript", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 3
+"/home/aneja/work/web/onelink/packages/action/src/utils/merge.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 5, 1, 17
+"/home/aneja/work/web/onelink/packages/action/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 1, 15
+"/home/aneja/work/web/onelink/packages/db/README.md", "Markdown", 0, 11, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 17
+"/home/aneja/work/web/onelink/packages/db/index.ts", "TypeScript", 0, 0, 0, 8, 0, 0, 0, 0, 0, 0, 2, 3, 13
+"/home/aneja/work/web/onelink/packages/db/package.json", "JSON", 42, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 43
+"/home/aneja/work/web/onelink/packages/db/src/knexfile.ts", "TypeScript", 0, 0, 0, 27, 0, 0, 0, 0, 0, 0, 0, 2, 29
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250227211827_user.ts", "TypeScript", 0, 0, 0, 21, 0, 0, 0, 0, 0, 0, 22, 8, 51
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250302173601_collection.ts", "TypeScript", 0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 6, 9, 46
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250302181410_link.ts", "TypeScript", 0, 0, 0, 29, 0, 0, 0, 0, 0, 0, 1, 7, 37
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250302185208_share.ts", "TypeScript", 0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 1, 8, 40
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250302190033_link_favourite.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250307201348_update_user.ts", "TypeScript", 0, 0, 0, 13, 0, 0, 0, 0, 0, 0, 0, 3, 16
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250309185203_link_fix.ts", "TypeScript", 0, 0, 0, 11, 0, 0, 0, 0, 0, 0, 0, 3, 14
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250309204150_link_metadata.ts", "TypeScript", 0, 0, 0, 17, 0, 0, 0, 0, 0, 0, 1, 3, 21
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250309210936_link_metadata_fix.ts", "TypeScript", 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 3, 18
+"/home/aneja/work/web/onelink/packages/db/src/migrations/20250331102847_link_subscribe.ts", "TypeScript", 0, 0, 0, 15, 0, 0, 0, 0, 0, 0, 0, 5, 20
+"/home/aneja/work/web/onelink/packages/db/src/types/knex.d.ts", "TypeScript", 0, 0, 0, 31, 0, 0, 0, 0, 0, 0, 0, 5, 36
+"/home/aneja/work/web/onelink/packages/db/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 1, 15
+"/home/aneja/work/web/onelink/packages/entities/README.md", "Markdown", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 16
+"/home/aneja/work/web/onelink/packages/entities/index.ts", "TypeScript", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2
+"/home/aneja/work/web/onelink/packages/entities/package.json", "JSON", 22, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 23
+"/home/aneja/work/web/onelink/packages/entities/src/constants.ts", "TypeScript", 0, 0, 0, 9, 0, 0, 0, 0, 0, 0, 0, 2, 11
+"/home/aneja/work/web/onelink/packages/entities/src/errors/auth.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+"/home/aneja/work/web/onelink/packages/entities/src/errors/common.ts", "TypeScript", 0, 0, 0, 25, 0, 0, 0, 0, 0, 0, 0, 5, 30
+"/home/aneja/work/web/onelink/packages/entities/src/errors/index.ts", "TypeScript", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 1, 3
+"/home/aneja/work/web/onelink/packages/entities/src/index.ts", "TypeScript", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2
+"/home/aneja/work/web/onelink/packages/entities/src/models/collections.ts", "TypeScript", 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 4, 18
+"/home/aneja/work/web/onelink/packages/entities/src/models/index.ts", "TypeScript", 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 1, 6
+"/home/aneja/work/web/onelink/packages/entities/src/models/links.ts", "TypeScript", 0, 0, 0, 20, 0, 0, 0, 0, 0, 0, 0, 3, 23
+"/home/aneja/work/web/onelink/packages/entities/src/models/rss.ts", "TypeScript", 0, 0, 0, 6, 0, 0, 0, 0, 0, 0, 0, 3, 9
+"/home/aneja/work/web/onelink/packages/entities/src/models/shares.ts", "TypeScript", 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 3, 17
+"/home/aneja/work/web/onelink/packages/entities/src/models/user.ts", "TypeScript", 0, 0, 0, 14, 0, 0, 0, 0, 0, 0, 0, 3, 17
+"/home/aneja/work/web/onelink/packages/entities/src/types/index.ts", "TypeScript", 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2
+"/home/aneja/work/web/onelink/packages/entities/src/types/navigation.ts", "TypeScript", 0, 0, 0, 12, 0, 0, 0, 0, 0, 0, 0, 3, 15
+"/home/aneja/work/web/onelink/packages/entities/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 1, 15
+"/home/aneja/work/web/onelink/packages/eslint-config/README.md", "Markdown", 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 4
+"/home/aneja/work/web/onelink/packages/eslint-config/base.js", "JavaScript", 0, 0, 26, 0, 0, 0, 0, 0, 0, 0, 5, 2, 33
+"/home/aneja/work/web/onelink/packages/eslint-config/next.js", "JavaScript", 0, 0, 42, 0, 0, 0, 0, 0, 0, 0, 6, 2, 50
+"/home/aneja/work/web/onelink/packages/eslint-config/package.json", "JSON", 24, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 25
+"/home/aneja/work/web/onelink/packages/eslint-config/react-internal.js", "JavaScript", 0, 0, 33, 0, 0, 0, 0, 0, 0, 0, 5, 2, 40
+"/home/aneja/work/web/onelink/packages/scraper/README.md", "Markdown", 0, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 16
+"/home/aneja/work/web/onelink/packages/scraper/extractors/metadata.ts", "TypeScript", 0, 0, 0, 146, 0, 0, 0, 0, 0, 0, 30, 30, 206
+"/home/aneja/work/web/onelink/packages/scraper/index.ts", "TypeScript", 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 17, 1, 20
+"/home/aneja/work/web/onelink/packages/scraper/module/index.ts", "TypeScript", 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 1, 4
+"/home/aneja/work/web/onelink/packages/scraper/module/rss/index.ts", "TypeScript", 0, 0, 0, 236, 0, 0, 0, 0, 0, 0, 8, 17, 261
+"/home/aneja/work/web/onelink/packages/scraper/module/schema.ts", "TypeScript", 0, 0, 0, 3, 0, 0, 0, 0, 0, 0, 0, 2, 5
+"/home/aneja/work/web/onelink/packages/scraper/module/scraper.interface.ts", "TypeScript", 0, 0, 0, 7, 0, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/aneja/work/web/onelink/packages/scraper/module/scraper.ts", "TypeScript", 0, 0, 0, 23, 0, 0, 0, 0, 0, 0, 0, 2, 25
+"/home/aneja/work/web/onelink/packages/scraper/package.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 21
+"/home/aneja/work/web/onelink/packages/scraper/tsconfig.json", "JSON with Comments", 0, 0, 0, 0, 0, 0, 0, 14, 0, 0, 0, 1, 15
+"/home/aneja/work/web/onelink/packages/typescript-config/base.json", "JSON", 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 22
+"/home/aneja/work/web/onelink/packages/typescript-config/nextjs.json", "JSON", 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 21
+"/home/aneja/work/web/onelink/packages/typescript-config/package.json", "JSON", 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 10
+"/home/aneja/work/web/onelink/packages/typescript-config/react-library.json", "JSON", 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8
+"/home/aneja/work/web/onelink/packages/typescript-config/vite.json", "JSON", 16, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 17
+"/home/aneja/work/web/onelink/turbo.json", "JSON", 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 22
+"Total", "-", 408, 137, 128, 4069, 2326, 145, 8, 1099, 13, 3, 450, 1727, 10513

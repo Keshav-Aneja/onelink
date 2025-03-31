@@ -11,7 +11,7 @@ import userReducer from "@store/slices/user-slice";
 import collectionReducer from "@store/slices/collections-slice";
 import appReducer from "@store/slices/application-slice";
 import linkReducer from "./slices/links-slice";
-
+import favouriteLinkReducer from "./slices/favourite-links-slice";
 const persistConfig = {
   key: "onelink",
   storage,
@@ -23,6 +23,7 @@ const rootReducer = combineReducers({
   collection: collectionReducer,
   link: linkReducer,
   app: appReducer,
+  favouriteLinks: favouriteLinkReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

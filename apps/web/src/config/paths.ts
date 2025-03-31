@@ -33,6 +33,10 @@ export const paths = {
     path: "/notifications",
     getHref: () => "/notifications",
   },
+  favourite: {
+    path: "/favourite",
+    getHref: () => "/favourite",
+  },
 } as const;
 
 //Learning: here exporting it as const preserves the contents of the object making it immutable.

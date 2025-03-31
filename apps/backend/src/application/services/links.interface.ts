@@ -4,6 +4,7 @@ export default interface ILinksService {
   getAllChildLinks(
     parent_id: string | null,
     owner_id: string,
+    requestQuery: Record<string, any>,
   ): Promise<Link[] | undefined>;
   createLink(link: LinkInsert): Promise<Link>;
   getRSSFeed(

@@ -55,7 +55,13 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
     mode: "onChange",
   });
   const onSubmit: SubmitHandler<CreateLink> = async (data) => {
-    const linkData = { ...data, parent_id: pathId, fingerprint: nanoid(10) };
+    const linkData = {
+      ...data,
+      parent_id: pathId,
+      fingerprint: nanoid(10),
+      subscribed: data.notification,
+    };
+    console.log(linkData);
     createLinkMutation.mutate(linkData);
     // await createLink(linkData);
   };

@@ -32,7 +32,11 @@ const LinkCard = ({ data }: LinkCardProps) => {
             <RiFileMarkedFill className="text-4xl" />
           )}
           <section className="absolute top-2 right-2 w-full flex items-center gap-1 justify-end">
-            <StarButton starred={data.is_starred ?? false} id={data.id} />
+            <StarButton
+              starred={data.is_starred ?? false}
+              id={data.id}
+              link={data}
+            />
           </section>
         </section>
         <span>

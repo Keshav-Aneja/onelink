@@ -20,8 +20,15 @@ export class LinksRepository implements ILinkRepository {
   async getAllLinksOfCollection(
     parent_id: string | null,
     owner_id: string,
+    requestQuery: Record<string, any>,
   ): Promise<Link[] | undefined> {
-    const links = await db("links").where({ owner_id, parent_id }).select("*");
+    const dbParams = { ...requestQuery };
+    if (!requestQuery["is_starred"]) {
+      dbParams["parent_id"] = parent_id;
+    }
+    const links = await db("links")
+      .where({ ...dbParams })
+      .select("*");
     return links;
   }
   async createLink(data: LinkInsert): Promise<Link> {
@@ -45,7 +52,7 @@ export class LinksRepository implements ILinkRepository {
     owner_id: string,
   ): Promise<Array<Pick<Link, "rss" | "link">> | undefined> {
     const rssLinks = await db("links")
-      .where({ owner_id })
+      .where({ owner_id, subscribed: true })
       .whereNot("rss", "")
       .select("rss", "link");
 

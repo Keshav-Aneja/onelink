@@ -17,12 +17,12 @@ const sidebarItems = [
   {
     label: "Shared Collections",
     Icon: RiFolderSharedFill,
-    path: "",
+    path: "/shared",
   },
   {
     label: "Favourites",
     Icon: FaStar,
-    path: "",
+    path: paths.favourite.getHref(),
   },
 ];
 

@@ -6,6 +6,7 @@ export interface ILinkRepository {
   getAllLinksOfCollection(
     parent_id: string | null,
     owner_id: string,
+    requestQuery: Record<string, any>,
   ): Promise<Link[] | undefined>;
   getAllLinks(owner_id: string): Promise<Link[] | undefined>;
   deleteLink(link_id: string, owner_id: string): Promise<string>;

@@ -6,7 +6,7 @@ export const CollectionSchema = z.object({
   color: z.string().length(7),
   description: z.string().optional(),
   is_protected: z.boolean().default(false),
-  password: z.string().optional(),
+  password: z.string().min(3).max(30).optional(),
 
   parent_id: z.string().uuid().nullable(),
   owner_id: z.string().uuid().nonempty(),

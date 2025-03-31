@@ -3,6 +3,7 @@ import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
 import { ActionResponse } from "@onelink/action";
 import { getRedisClient } from "../../loaders/redis.loader";
+import { formatGetQueries } from "../../helpers/format-query";
 
 export default class LinkAdapter {
   static createLink = asyncHandler(async (req: Request, res: Response) => {
@@ -26,10 +27,14 @@ export default class LinkAdapter {
   static getLinks = asyncHandler(async (req: Request, res: Response) => {
     const { id } = req.params;
     const collectionId = id ? id : null;
+    const requestQuery: Record<string, any> = formatGetQueries(
+      req.query as Record<string, string>,
+    );
     const linkService = new LinkService();
     const links = await linkService.getAllChildLinks(
       collectionId,
       req.session.user_id ?? "",
+      requestQuery,
     );
     ActionResponse.success(res, links, 200, "Links fetched successfully");
   });

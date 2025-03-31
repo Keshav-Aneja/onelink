@@ -6,21 +6,24 @@ import Button from "@components/buttons/button";
 import { useAppDispatch, useAppSelector } from "@store/store";
 import { getFeed, setFeed } from "@store/slices/application-slice";
 import { RSSFeed } from "@onelink/scraper/rss";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import NotificationItemSkeleton from "@components/loaders/notification-item-skeleton";
 import { useFeed } from "@features/feed/get-feed";
+import { paths } from "@config/paths";
+import { useEffect } from "react";
 
 const NotificationBox = () => {
   const feed = useFeed(1);
   const dispatch = useAppDispatch();
 
-  if (feed.isSuccess && feed.data?.data) {
-    dispatch(setFeed(feed.data.data));
-  }
+  useEffect(() => {
+    if (feed.isSuccess && feed.data?.data) {
+      dispatch(setFeed(feed.data.data));
+    }
+  }, [feed]);
   return (
     <section className="relative">
       <Popover
-        key={1}
         Trigger={<NotificationTrigger />}
         Content={({ className }) => (
           <NotificaitonContent className={className} />
@@ -37,7 +40,7 @@ type ContentProps = {
 };
 export function NotificaitonContent({ className }: ContentProps) {
   const feed = useAppSelector(getFeed);
-
+  const navigate = useNavigate();
   return (
     <div className={cn(className, "w-88 xxl:w-100 p-3 xxl:p-4 z-[100]")}>
       <span className="w-full text-left text-lg xxl:text-xl  tracking-wide truncate font-semibold border-b-1 border-b-white/40 pb-2">
@@ -61,7 +64,12 @@ export function NotificaitonContent({ className }: ContentProps) {
             .map((item, _i) => <NotificationItem key={_i} data={item} />)
         )}
       </div>
-      <button className="w-full text-sm bg-theme_secondary_black hover:bg-theme_secondary_black/80 rounded-md py-1 cursor-pointer">
+      <button
+        className="w-full text-sm bg-theme_secondary_black hover:bg-theme_secondary_black/80 rounded-md py-1 cursor-pointer"
+        onClick={() => {
+          navigate(paths.notifications.getHref());
+        }}
+      >
         View All
       </button>
     </div>
