@@ -10,7 +10,9 @@ import { addMultipleFavLinks } from "@store/slices/favourite-links-slice";
 const FavouriteLinksContent = () => {
   const links = useStoredFavouriteLinks();
   const dispatch = useAppDispatch();
-  const [shouldFetchLinks, setShouldFetchLinks] = useState<boolean>(true);
+  const [shouldFetchLinks, setShouldFetchLinks] = useState<boolean>(
+    !links || links.length === 0,
+  );
   const linkQuery = useLinks(shouldFetchLinks, null, true);
 
   useEffect(() => {

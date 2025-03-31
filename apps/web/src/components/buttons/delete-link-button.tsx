@@ -8,6 +8,7 @@ const DeleteLinkButton = ({ id }: { id: string }) => {
     mutationConfig: {
       onSuccess: () => {
         //Notification
+
         console.log("DELETED");
       },
     },

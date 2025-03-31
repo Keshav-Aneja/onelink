@@ -1,41 +1,28 @@
 import { useUpdateLink } from "@features/links/update-link";
 import { cn } from "@lib/tailwind-utils";
 import { Link } from "@onelink/entities/models";
-import {
-  addFavLink,
-  deleteFavLink,
-  replaceFavLink,
-} from "@store/slices/favourite-links-slice";
+import { addFavLink, deleteFavLink } from "@store/slices/favourite-links-slice";
 import { useAppDispatch } from "@store/store";
 import { useEffect, useState } from "react";
 import { ImStarFull, ImStarEmpty } from "react-icons/im";
 interface StarButtonProps {
   starred: boolean;
   id: string;
-  link: Link;
 }
 
-const StarButton = ({ starred, id, link }: StarButtonProps) => {
+const StarButton = ({ starred, id }: StarButtonProps) => {
   const [isStarred, setIsStarred] = useState(starred);
   const [update, setUpdate] = useState(false);
-  const dispatch = useAppDispatch();
   const handleChangeStarredState = () => {
     setIsStarred(!isStarred);
     setUpdate(true);
   };
   const updateLinkMutation = useUpdateLink({
     mutationConfig: {
-      onSuccess: () => {
-        if (isStarred) {
-          const linkObj = link;
-          linkObj["is_starred"] = isStarred;
-          dispatch(addFavLink(linkObj));
-        } else {
-          dispatch(deleteFavLink(link.id));
-        }
-      },
+      onSuccess: () => {},
     },
   });
+
   useEffect(() => {
     const timeout = setTimeout(() => {
       if (update) {

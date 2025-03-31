@@ -67,7 +67,6 @@ export class LinksRepository implements ILinkRepository {
       .where({ owner_id, id: link_id })
       .update(data)
       .returning("*");
-
     if (!updatedLink) {
       throw new DatabaseOperationError("Failed to update link");
     }

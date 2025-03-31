@@ -1,6 +1,7 @@
 import action from "@config/action";
 import { MutationConfig } from "@lib/react-query";
 import { IActionResponse } from "@onelink/action";
+import { deleteFavLink } from "@store/slices/favourite-links-slice";
 import { deleteLink } from "@store/slices/links-slice";
 import { useAppDispatch } from "@store/store";
 import { useMutation } from "@tanstack/react-query";
@@ -24,6 +25,7 @@ export const useDeleteLink = ({ mutationConfig }: UseDeleteLinkOptions) => {
   return useMutation({
     onSuccess: (...args) => {
       dispatch(deleteLink(args[0].data.id));
+      dispatch(deleteFavLink(args[0].data.id));
       //Consider if you want to invalidate the queries or not here
       onSuccess?.(...args);
     },
