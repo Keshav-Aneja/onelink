@@ -5,7 +5,8 @@ import { cn } from "@lib/tailwind-utils";
 import Button from "@components/buttons/button";
 import { useAppDispatch, useAppSelector } from "@store/store";
 import { getFeed, setFeed } from "@store/slices/application-slice";
-import { RSSFeed } from "@onelink/scraper/rss";
+import type { RSSFeed } from "@onelink/entities/models";
+
 import { Link, useNavigate } from "react-router";
 import NotificationItemSkeleton from "@components/loaders/notification-item-skeleton";
 import { useFeed } from "@features/feed/get-feed";

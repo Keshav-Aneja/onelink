@@ -1,6 +1,6 @@
 import { Collection, Link } from "@onelink/entities/models";
 import { createSlice } from "@reduxjs/toolkit";
-import type { RSSFeed } from "@onelink/scraper/rss";
+import type { RSSFeed } from "@onelink/entities/models";
 import sidebarItems from "@config/navigation-sidebar-items";
 interface IApplicationConfig {
   redirectTo: string;

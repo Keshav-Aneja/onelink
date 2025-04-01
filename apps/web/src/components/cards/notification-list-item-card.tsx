@@ -1,7 +1,6 @@
 import Button from "@components/buttons/button";
-import { RSSFeed } from "@onelink/scraper/rss";
 import { Link } from "react-router";
-
+import type { RSSFeed } from "@onelink/entities/models";
 interface NotificationProps {
   data: RSSFeed;
 }

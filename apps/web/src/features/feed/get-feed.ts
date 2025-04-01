@@ -1,7 +1,8 @@
 import action from "@config/action";
 import { QueryConfig } from "@lib/react-query";
 import { IActionResponse } from "@onelink/action";
-import { RSSFeed } from "@onelink/scraper/rss";
+import type { RSSFeed } from "@onelink/entities/models";
+
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
 export const getFeed = (
