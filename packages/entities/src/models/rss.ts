@@ -6,3 +6,9 @@ export const RSSInputSchema = z.object({
 });
 
 export type RSSInputType = z.infer<typeof RSSInputSchema>;
+
+export type RSSFeed = {
+  title?: string;
+  published_date?: string;
+  link?: string;
+};

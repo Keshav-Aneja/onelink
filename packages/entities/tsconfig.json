@@ -7,7 +7,8 @@
       }
     ],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "lib": ["ES2022", "ES2022.Error"]
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "build"]
