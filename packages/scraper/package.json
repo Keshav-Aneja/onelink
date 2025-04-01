@@ -8,7 +8,8 @@
     "@onelink/typescript-config": "*"
   },
   "dependencies": {
-    "@onelink/entities": "*"
+    "@onelink/entities": "*",
+    "cheerio": "^1.0.0"
   },
   "peerDependencies": {
     "typescript": "^5"
