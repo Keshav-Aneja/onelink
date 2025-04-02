@@ -45,6 +45,7 @@ export default async (app: Express) => {
       store: redisStore,
       secret: env.SESS_SECRET,
       resave: false,
+      proxy: true,
       saveUninitialized: false,
       cookie: {
         secure: true,
