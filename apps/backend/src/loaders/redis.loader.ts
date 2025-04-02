@@ -37,17 +37,20 @@ export default async (app: Express) => {
     client: client,
     prefix: env.REDIS_PREFIX,
   });
-
+  app.set("trust proxy", 1);
   app.use(
     session({
       store: redisStore,
       secret: env.SESS_SECRET, //it is used to sign the key
       resave: false,
+      proxy: process.env["NODE_ENV"] === "production",
       saveUninitialized: false,
       cookie: {
-        secure: process.env.NODE_ENV === "production",
-        httpOnly: false,
-        maxAge: 60000 * 60 * 24 * 3, //expiry for 3 days
+        secure: process.env["NODE_ENV"] === "production",
+        httpOnly: true,
+        maxAge: 60000 * 60 * 24 * 3, //expiry for 3 days,
+        sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
+        domain: "",
       },
     }),
   );
