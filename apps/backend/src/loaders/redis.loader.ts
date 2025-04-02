@@ -52,7 +52,6 @@ export default async (app: Express) => {
         httpOnly: false,
         maxAge: 60000 * 60 * 24 * 3, //expiry for 3 days,
         sameSite: "none",
-        domain: "kustom.cc",
       },
     }),
   );
