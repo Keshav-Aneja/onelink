@@ -6,10 +6,10 @@
   "scripts": {
     "dev": "bun --watch src/index.ts",
     "build": "bun build --entry src/index.ts --minify --target=bun --outfile dist/bundle.js",
-    "start": "bun run dist/index.ts"
+    "start": "bun run dist/bundle.js"
   },
   "devDependencies": {
-    "@onelink/typescript-config": "*",
+    "@onelink/typescript-config": "workspace:*",
     "@types/bun": "latest",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.8",
@@ -23,10 +23,10 @@
     "typescript": "^5"
   },
   "dependencies": {
-    "@onelink/action": "*",
-    "@onelink/db": "*",
-    "@onelink/entities": "*",
-    "@onelink/scraper": "*",
+    "@onelink/action": "workspace:*",
+    "@onelink/db": "workspace:*",
+    "@onelink/entities": "workspace:*",
+    "@onelink/scraper": "workspace:*",
     "compression": "^1.8.0",
     "connect-redis": "^8.0.1",
     "cookie-parser": "^1.4.7",
