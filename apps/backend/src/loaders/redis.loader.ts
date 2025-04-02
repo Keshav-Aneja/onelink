@@ -41,15 +41,15 @@ export default async (app: Express) => {
   app.use(
     session({
       store: redisStore,
-      secret: env.SESS_SECRET, //it is used to sign the key
+      secret: env.SESS_SECRET,
       resave: false,
-      proxy: process.env["NODE_ENV"] === "production",
+      proxy: true,
       saveUninitialized: false,
       cookie: {
-        secure: process.env["NODE_ENV"] === "production",
+        secure: true,
         httpOnly: true,
         maxAge: 60000 * 60 * 24 * 3, //expiry for 3 days,
-        sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
+        sameSite: "none",
         domain: "",
       },
     }),
