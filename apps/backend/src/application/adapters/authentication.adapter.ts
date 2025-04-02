@@ -33,6 +33,20 @@ export class AuthenticationAdapter {
       const authUrl = await authService.initiateAuthorizationRequest(
         req.session,
       );
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader(
+        "Access-Control-Allow-Origin",
+        req.headers.origin || "https://onelink.kustom.cc",
+      );
+      res.setHeader("Access-Control-Allow-Credentials", "true");
+      res.setHeader(
+        "Access-Control-Allow-Methods",
+        "GET, POST, DELETE, PATCH, OPTIONS",
+      );
+      res.setHeader(
+        "Access-Control-Allow-Headers",
+        "Content-Type, Authorization",
+      );
       res.redirect(authUrl);
     } catch (error: any) {
       // PROBLEM: This is just temporary will replace it with my ActionResponse package

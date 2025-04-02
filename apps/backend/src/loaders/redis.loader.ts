@@ -3,6 +3,7 @@ import { createClient, type RedisClientType } from "redis";
 import { RedisStore } from "connect-redis";
 import session from "express-session";
 import env from "../config/env";
+import logger from "../helpers/logger";
 let redisClient: RedisClientType | null = null;
 
 export const initRedisClient = async () => {
@@ -37,6 +38,7 @@ export default async (app: Express) => {
     client: client,
     prefix: env.REDIS_PREFIX,
   });
+  console.log("ENVIRONMENT : ", process.env["NODE_ENV"]);
   app.set("trust proxy", 1);
   app.use(
     session({
