@@ -39,13 +39,12 @@ export default async (app: Express) => {
     prefix: env.REDIS_PREFIX,
   });
   console.log("ENVIRONMENT : ", process.env["NODE_ENV"]);
-  app.set("trust proxy", 1);
+  // app.set("trust proxy", 1);
   app.use(
     session({
       store: redisStore,
       secret: env.SESS_SECRET,
       resave: false,
-      proxy: true,
       saveUninitialized: false,
       cookie: {
         secure: true,
