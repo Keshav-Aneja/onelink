@@ -16,12 +16,12 @@
     "db:list": "bun knex migrate:list --knexfile ./src/knexfile.ts"
   },
   "devDependencies": {
-    "@onelink/typescript-config": "*",
+    "@onelink/typescript-config": "workspace:*",
     "@types/bun": "latest",
     "knex": "^3.1.0"
   },
   "dependencies": {
-    "@onelink/entities": "*",
+    "@onelink/entities": "workspace:*",
     "better-sqlite3": "^11.9.1",
     "mysql": "^2.18.1",
     "mysql2": "^3.14.0",

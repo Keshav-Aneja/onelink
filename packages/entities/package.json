@@ -5,7 +5,7 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@onelink/typescript-config": "*"
+    "@onelink/typescript-config": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5"

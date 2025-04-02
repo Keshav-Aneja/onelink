@@ -5,10 +5,10 @@
   "private": true,
   "devDependencies": {
     "@types/bun": "latest",
-    "@onelink/typescript-config": "*"
+    "@onelink/typescript-config": "workspace:*"
   },
   "dependencies": {
-    "@onelink/entities": "*"
+    "@onelink/entities": "workspace:*"
   },
   "peerDependencies": {
     "typescript": "^5"
