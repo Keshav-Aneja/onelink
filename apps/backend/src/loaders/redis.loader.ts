@@ -47,10 +47,10 @@ export default async (app: Express) => {
       saveUninitialized: false,
       cookie: {
         secure: process.env["NODE_ENV"] === "production",
-        httpOnly: true,
-        maxAge: 60000 * 60 * 24 * 3,
+        httpOnly: false,
+        maxAge: 60000 * 60 * 24 * 3, //expiry for 3 days,
         sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
-        domain: "",
+        domain: "onelinkapi.kustom.cc",
       },
     }),
   );
