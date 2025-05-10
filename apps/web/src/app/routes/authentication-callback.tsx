@@ -37,7 +37,7 @@ const AuthenticationCallback = () => {
 
   useEffect(() => {
     handleCookie();
-    handleRedirect();
+    // handleRedirect();
   }, []);
   return <div>AuthenticationCallback</div>;
 };
