@@ -4,12 +4,14 @@ interface UserState {
   id: string;
   name: string;
   profile_url: string;
+  email: string;
 }
 
 const initialState: UserState = {
   id: "",
   name: "",
   profile_url: "",
+  email: "",
 };
 
 const userSlice = createSlice({
@@ -21,10 +23,13 @@ const userSlice = createSlice({
       state.id = userData.id;
       state.name = userData.name;
       state.profile_url = userData.profile_url;
+      state.email = userData.email;
     },
     resetUser: (state) => {
       state.id = "";
       state.name = "";
+      state.email = "";
+      state.profile_url = "";
     },
     setUserId: (state, action: PayloadAction<string>) => {
       state.id = action.payload;

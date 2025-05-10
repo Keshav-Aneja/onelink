@@ -6,9 +6,9 @@ import { useLocation, useNavigate } from "react-router";
 const AuthenticationCallback = () => {
   const locationURL = useLocation();
   const navigate = useNavigate();
-  const queryParams = new URLSearchParams(locationURL.search);
 
   const handleCookie = () => {
+    const queryParams = new URLSearchParams(locationURL.search);
     const token = queryParams.get("token");
     if (!token || token.length == 0) {
       navigate(paths.landing.path);
@@ -20,13 +20,13 @@ const AuthenticationCallback = () => {
     Cookies.set("connect.sid", token, {
       expires: 1, // days
       secure: true,
-      httpOnly: true,
       sameSite: "None",
       path: "/",
     });
   };
 
   const handleRedirect = () => {
+    const queryParams = new URLSearchParams(locationURL.search);
     const redirectPath = queryParams.get("redirectTo");
     if (redirectPath && redirectPath.length > 0) {
       navigate(decodeURIComponent(redirectPath));

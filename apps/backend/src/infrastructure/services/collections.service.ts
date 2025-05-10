@@ -33,6 +33,9 @@ export default class CollectionsService implements ICollectionsService {
         .update(data.password)
         .digest("hex");
       data["password"] = hash;
+    } else {
+      data.is_protected = false;
+      delete data["password"];
     }
     const newCollection = await this.collectionRepository.createCollection(
       CollectionDTO.toDB(data),

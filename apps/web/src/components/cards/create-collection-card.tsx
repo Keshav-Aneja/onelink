@@ -17,10 +17,12 @@ interface CreateCollectionCardProps {
   className?: string;
   closeModal?: () => void;
 }
-const collectionSchema = CollectionSchema.omit({
-  id: true,
-  parent_id: true,
-  owner_id: true,
+const collectionSchema = z.object({
+  name: z.string(),
+  description: z.string().max(500).optional(),
+  color: z.string().optional(),
+  is_protected: z.boolean().default(false),
+  password: z.string().optional(),
 });
 export type CreateCollection = z.infer<typeof collectionSchema>;
 const CreateCollectionCard = ({

@@ -48,6 +48,9 @@ export function ProfileContent({ className }: ContentProps) {
       <div className="bg-theme_secondary_black rounded-md p-2 text-sm xxl:text-lg text-center font-medium truncate">
         {user.name}
       </div>
+      <div className="bg-theme_secondary_black rounded-md p-2 text-xs xxl:text-sm text-center font-medium truncate">
+        {user.email}
+      </div>
       <Button
         Icon={IoLogOutSharp}
         className="w-full text-sm xxl:text-base rounded-md"
