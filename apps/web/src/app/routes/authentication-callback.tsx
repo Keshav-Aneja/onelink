@@ -1,11 +1,11 @@
-import { paths } from "@config/paths";
+// import { paths } from "@config/paths";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 
 const AuthenticationCallback = () => {
   const locationURL = useLocation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleCookie = () => {
     const queryParams = new URLSearchParams(locationURL.search);
