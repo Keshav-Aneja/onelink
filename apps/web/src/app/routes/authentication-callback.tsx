@@ -27,15 +27,15 @@ const AuthenticationCallback = () => {
     });
   };
 
-  const handleRedirect = () => {
-    const queryParams = new URLSearchParams(locationURL.search);
-    const redirectPath = queryParams.get("redirectTo");
-    if (redirectPath && redirectPath.length > 0) {
-      navigate(decodeURIComponent(redirectPath));
-      return;
-    }
-    navigate(paths.landing.path);
-  };
+  // const handleRedirect = () => {
+  //   const queryParams = new URLSearchParams(locationURL.search);
+  //   const redirectPath = queryParams.get("redirectTo");
+  //   if (redirectPath && redirectPath.length > 0) {
+  //     navigate(decodeURIComponent(redirectPath));
+  //     return;
+  //   }
+  //   navigate(paths.landing.path);
+  // };
 
   useEffect(() => {
     handleCookie();
