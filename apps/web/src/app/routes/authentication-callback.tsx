@@ -21,7 +21,7 @@ const AuthenticationCallback = () => {
       expires: 1, // days
       secure: true,
       httpOnly: true,
-      // sameSite: "None",
+      sameSite: "None",
       path: "/",
     });
   };
