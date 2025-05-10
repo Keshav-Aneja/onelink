@@ -7,7 +7,6 @@ import Button from "@components/buttons/button";
 import { FaPlus } from "react-icons/fa";
 import Textarea from "@components/form/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { CollectionSchema } from "@onelink/entities/models";
 import { getRandomColor } from "@lib/utils/get-random-color";
 import Checkbox from "@components/form/checkbox";
 import { useCreateCollection } from "@features/collections/create-collection";
