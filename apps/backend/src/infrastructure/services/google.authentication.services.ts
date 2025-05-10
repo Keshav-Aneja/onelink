@@ -29,12 +29,10 @@ export class GoogleOAuthService implements IAuthenticationService {
   ): Promise<string> {
     const { code_verifier, code_challenge } = await pkceChallenge();
     const csrf_token = crypto.randomUUID();
-
     if (session) {
       session.code_verifier = code_verifier;
       session.csrf_token = csrf_token;
     }
-
     const params = new URLSearchParams({
       client_id: this.CLIENT_ID,
       redirect_uri: this.REDIRECT_URI,

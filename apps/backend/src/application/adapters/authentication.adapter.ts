@@ -78,7 +78,9 @@ export class AuthenticationAdapter {
       );
       res
         .status(200)
-        .redirect(`${FRONTEND_URL}${redirectTo ? redirectTo : ""}`);
+        .redirect(
+          `${FRONTEND_URL}/auth/callback?token=${req.sessionID}${redirectTo ? `&redirectTo=${encodeURIComponent(redirectTo)}` : ""}`,
+        );
     } catch (error: any) {
       console.error(error);
       res.status(400).json({ success: false, error: error.message });

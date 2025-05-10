@@ -19,8 +19,13 @@ const convert = (queryClient: QueryClient) => (m: any) => {
 export const createAppRouter = (queryClient: QueryClient) => {
   return createBrowserRouter([
     {
-      path: paths.auth.path,
+      path: paths.auth.root.path,
       lazy: () => import("./routes/authentication").then(convert(queryClient)),
+    },
+    {
+      path: paths.auth.callback.path,
+      lazy: () =>
+        import("./routes/authentication-callback").then(convert(queryClient)),
     },
     {
       path: paths.landing.path,

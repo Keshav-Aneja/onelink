@@ -18,7 +18,7 @@ const NavigationMenu = () => {
         </div>
         <ul className="flex items-center text-sm xxl:text-base text-theme_secondary_white/80">
           <Link
-            to={paths.auth.getHref()}
+            to={paths.auth.root.getHref()}
             className="hover:text-theme_primary_white px-3 py-1"
           >
             Login

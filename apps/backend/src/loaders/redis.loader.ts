@@ -50,7 +50,7 @@ export default async (app: Express) => {
         httpOnly: false,
         maxAge: 60000 * 60 * 24 * 3, //expiry for 3 days,
         sameSite: process.env["NODE_ENV"] === "production" ? "none" : "lax",
-        domain: "onelinkapi.kustom.cc",
+        // domain: "onelinkapi.kustom.cc",
       },
     }),
   );

@@ -4,9 +4,15 @@ export const paths = {
     getHref: () => "/",
   },
   auth: {
-    path: "/auth",
-    getHref: (redirectTo?: string | null | undefined) => {
-      return `/auth${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`;
+    root: {
+      path: "/auth",
+      getHref: (redirectTo?: string | null | undefined) => {
+        return `/auth${redirectTo ? `?redirectTo=${encodeURIComponent(redirectTo)}` : ""}`;
+      },
+    },
+    callback: {
+      path: "/auth/callback",
+      getHref: () => "/auth/callback",
     },
   },
   collections: {

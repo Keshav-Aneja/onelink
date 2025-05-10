@@ -34,7 +34,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
 
   // Handle session check
   if (!sessionExists) {
-    return <Navigate to={paths.auth.getHref(location.pathname)} replace />;
+    return <Navigate to={paths.auth.root.getHref(location.pathname)} replace />;
   }
 
   // If user exists, render children
@@ -50,7 +50,9 @@ const ProtectedRoute = ({ children }: AuthProps) => {
 
     if (!userQuery.data || !userQuery.data?.success) {
       Cookies.remove("connect.sid");
-      return <Navigate to={paths.auth.getHref(location.pathname)} replace />;
+      return (
+        <Navigate to={paths.auth.root.getHref(location.pathname)} replace />
+      );
     }
 
     if (userQuery.data) {
