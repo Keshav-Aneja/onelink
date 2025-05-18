@@ -33,6 +33,7 @@ export class LinksRepository implements ILinkRepository {
     return links;
   }
   async createLink(data: LinkInsert): Promise<Link> {
+    console.log(data);
     const [link] = await db("links").insert(data).returning("*");
     if (!link) {
       throw new DatabaseOperationError("Cannot create link");

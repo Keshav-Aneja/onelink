@@ -67,13 +67,13 @@ export function ProfileContent({ className }: ContentProps) {
 
 export function ProfileTrigger() {
   const user = useSelector(selectUser);
-  const { profile_url: profileImage } = user;
+  const { profile_url: profileImage, name: username } = user;
   return (
     <CircularButton key={2}>
       {profileImage && profileImage.length > 0 ? (
         <img
           src={profileImage}
-          alt="{{profile_user}}"
+          alt={username}
           className="w-full h-full object-cover rounded-full"
         />
       ) : (
