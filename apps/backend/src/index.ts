@@ -8,7 +8,7 @@ async function startServer() {
   const app = express();
   app.get("/test-db", async (req, res) => {
     try {
-      const result = await db.raw("SELECT 1+1 AS result");
+      const result = await db.raw("SELECT 1+2 AS result");
       res.json({ database: "connected", result: result.rows[0] });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
