@@ -46,4 +46,4 @@ jobs:
           gcloud run deploy onelink --image
           asia-south1-docker.pkg.dev/onelink-473914/onelink-repo/onelink:1.0.0
           --region asia-south1 --allow-unauthenticated --project onelink-473914
-          --max-instances=4
+          --max-instances=2 --timeout 300s
