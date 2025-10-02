@@ -6,6 +6,7 @@ import { Link } from "@onelink/entities/models";
 import { useAppDispatch } from "@store/store";
 import { setSelectedLink } from "@store/slices/application-slice";
 import DeleteLinkButton from "@components/buttons/delete-link-button";
+import formatLink from "@lib/utils/format-link";
 interface LinkCardProps {
   data: Link;
 }
@@ -31,6 +32,9 @@ const LinkCard = ({ data }: LinkCardProps) => {
           ) : (
             <RiFileMarkedFill className="text-4xl" />
           )}
+          <span className="text-xs text-theme_secondary_white font-bold absolute bottom-2 right-3">
+            {formatLink(data.link)}
+          </span>
           <section className="absolute top-2 right-2 w-full flex items-center gap-1 justify-end">
             <StarButton starred={data.is_starred ?? false} id={data.id} />
           </section>
@@ -39,6 +43,7 @@ const LinkCard = ({ data }: LinkCardProps) => {
           <p className="text-sm xxl:text-base font-semibold line-clamp-2 text-theme_secondary_white select-none">
             {data.name}
           </p>
+
           <p className="text-xs text-theme_secondary_white/70 line-clamp-2 select-none">
             {data.site_description}
           </p>

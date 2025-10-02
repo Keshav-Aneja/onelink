@@ -1,0 +1,36 @@
+# Node/Bun related
+node_modules
+bun.lockb
+dist
+
+# Logs
+*.log
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Frontend (web app)
+apps/web
+packages/scraper # optional if not needed at runtime
+.storybook
+.vscode
+
+# Test files
+*.spec.ts
+*.test.ts
+*.test.tsx
+coverage
+jest.config.js
+*.snap
+
+# Git
+.git
+.gitignore
+
+# Turbo cache
+.turbo
