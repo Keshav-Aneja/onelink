@@ -43,7 +43,7 @@ jobs:
 
       - name: Deploy to Cloud Run
         run:
-          gcloud run deploy notely --image
+          gcloud run deploy onelink --image
           asia-south1-docker.pkg.dev/onelink-473914/onelink-repo/onelink:1.0.0
           --region asia-south1 --allow-unauthenticated --project onelink-473914
           --max-instances=4
