@@ -35,3 +35,8 @@ jobs:
 
       - name: Use gcloud CLI
         run: gcloud auth list --filter=status:ACTIVE --format="value(account)"
+
+      - name: Pushing image to registry
+        run:
+          gcloud builds submit --tag
+          asia-south1-docker.pkg.dev/onelink-473914/onelink-repo/onelink:1.0.0
