@@ -1,11 +1,20 @@
 import GlowCard from "@components/cards/glow-card";
 import { IoMdArrowForward } from "react-icons/io";
-import { Link } from "react-router";
-import Cookies from "js-cookie";
-import { AUTHENTICATION, COLLECTIONS } from "@config/constants";
+import { Link, useNavigate } from "react-router";
+import { Pages } from "@config/constants";
+import { useCheckSession } from "@hooks/user";
+import { useEffect } from "react";
 
 const Hero = () => {
-  const session = Cookies.get("connect.sid");
+  const navigate = useNavigate();
+  const sessionExists = useCheckSession();
+
+  useEffect(() => {
+    if (sessionExists) {
+      navigate(Pages.COLLECTIONS);
+    }
+  }, [sessionExists]);
+
   return (
     <>
       <h1 className="text-[2.5rem] md:text-[3.5rem] xl:text-[4rem] xxl-text-[5rem] leading-[2.5rem] md:leading-[3.5rem] xl:leading-[4rem] xxl:leading-[5rem]  text-center xl:max-w-[55vw] xxl:max-w-[50vw] font-semibold text-primary_text">
@@ -21,7 +30,7 @@ const Hero = () => {
         style={{ "--color-gradient": "red" }}
       >
         <Link
-          to={session ? COLLECTIONS : AUTHENTICATION}
+          to={sessionExists ? Pages.COLLECTIONS : Pages.AUTHENTICATION}
           className="rounded-full w-full h-full flex items-center justify-center gap-6 cursor-pointer group hover:shadow-lg shadow-white/30  transition-all duration-200 ease-linear text-lg font-medium"
         >
           <span>Get Started</span>

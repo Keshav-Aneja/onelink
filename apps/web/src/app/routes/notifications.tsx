@@ -18,7 +18,7 @@ const Notifications = () => {
           latest content from the past 24 hours.
         </p>
       </section>
-      <section className="flex flex-col gap-2">
+      <section className="flex flex-col gap-2 my-4">
         {!notifications &&
           [1, 2, 3].map((_i) => <NotificationListItemSkeleton key={_i} />)}
         {notifications &&

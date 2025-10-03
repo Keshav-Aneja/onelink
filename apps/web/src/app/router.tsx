@@ -3,7 +3,6 @@ import { createBrowserRouter } from "react-router";
 import { RouterProvider } from "react-router-dom";
 import { paths } from "../config/paths";
 import { useMemo } from "react";
-import CollectionsRoot from "./routes/collections-root";
 import ProtectedRoute from "./protected";
 
 const convert = (queryClient: QueryClient) => (m: any) => {
@@ -13,6 +12,20 @@ const convert = (queryClient: QueryClient) => (m: any) => {
     loader: clientLoader?.(queryClient),
     action: clientAction?.(clientAction),
     Component,
+  };
+};
+
+const protectedLoader = (queryClient: QueryClient) => async (m: any) => {
+  const { clientLoader, clientAction, default: Component, ...rest } = await m;
+  return {
+    ...rest,
+    loader: clientLoader?.(queryClient),
+    action: clientAction?.(clientAction),
+    Component: () => (
+      <ProtectedRoute>
+        <Component />
+      </ProtectedRoute>
+    ),
   };
 };
 
@@ -33,26 +46,26 @@ export const createAppRouter = (queryClient: QueryClient) => {
     },
     {
       path: paths.collections.root.path,
-      element: (
-        <ProtectedRoute>
-          <CollectionsRoot />
-        </ProtectedRoute>
-      ),
+      lazy: () =>
+        import("./routes/collections-root").then(protectedLoader(queryClient)),
       children: [
         {
           index: true,
           path: paths.collections.collection.path,
-          lazy: () => import("./routes/collections").then(convert(queryClient)),
+          lazy: () =>
+            import("./routes/collections").then(protectedLoader(queryClient)),
         },
       ],
     },
     {
       path: paths.notifications.path,
-      lazy: () => import("./routes/notifications").then(convert(queryClient)),
+      lazy: () =>
+        import("./routes/notifications").then(protectedLoader(queryClient)),
     },
     {
       path: paths.favourite.path,
-      lazy: () => import("./routes/favourite").then(convert(queryClient)),
+      lazy: () =>
+        import("./routes/favourite").then(protectedLoader(queryClient)),
     },
     {
       path: "*",
