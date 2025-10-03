@@ -3,6 +3,9 @@ name: cd
 on:
   push:
     branches: [main]
+    paths:
+      - apps/backend/**
+      - packages/**
 
 jobs:
   deploy:
