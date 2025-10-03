@@ -15,7 +15,7 @@ import {
 import { Scraper } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
-import e from "express";
+import e, { query } from "express";
 export default class LinkService implements ILinksService {
   constructor(private readonly linkRepository = new LinksRepository()) {}
 
@@ -162,5 +162,10 @@ export default class LinkService implements ILinksService {
       parent_id,
     );
     return linksCount;
+  }
+
+  async searchLinks(search_query: string): Promise<Link[] | undefined> {
+    const queriedLinks = await this.linkRepository.getSearchLinks(search_query);
+    return queriedLinks;
   }
 }

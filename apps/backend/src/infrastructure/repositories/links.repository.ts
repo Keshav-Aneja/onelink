@@ -2,6 +2,7 @@ import db from "@onelink/db";
 import type { ILinkRepository } from "../../application/repositories/links.repository.interface";
 import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import { DatabaseOperationError } from "@onelink/entities/errros";
+import logger from "../../helpers/logger";
 
 export class LinksRepository implements ILinkRepository {
   async getLinkById(
@@ -93,5 +94,36 @@ export class LinksRepository implements ILinkRepository {
       return 0;
     }
     return parseInt(links["count"]);
+  }
+
+  async getSearchLinks(search_query: string): Promise<Link[] | undefined> {
+    await db.raw("CREATE EXTENSION IF NOT EXISTS pg_trgm");
+    const links = await db("links")
+      .select("*")
+      .where(function () {
+        this.whereILike("name", `%${search_query}%`)
+          .orWhereILike("description", `%${search_query}%`)
+          .orWhereILike("site_description", `%${search_query}%`)
+          .orWhereILike("keywords", `%${search_query}%`)
+          .orWhereRaw("similarity(name, ?::text) > 0.2", [search_query])
+          .orWhereRaw("similarity(description, ?::text) > 0.2", [search_query])
+          .orWhereRaw("similarity(site_description, ?::text) > 0.2", [
+            search_query,
+          ])
+          .orWhereRaw("similarity(keywords, ?::text) > 0.2", [search_query]);
+      })
+      .orderByRaw(
+        `
+      GREATEST(
+        similarity(name, ?::text),
+        similarity(description, ?::text),
+        similarity(keywords, ?::text),
+        similarity(site_description, ?::text)
+      ) DESC
+      `,
+        [search_query, search_query, search_query, search_query],
+      );
+
+    return links;
   }
 }

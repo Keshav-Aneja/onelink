@@ -11,6 +11,7 @@ export default (app: Router) => {
   route.get("/starred", LinkAdapter.getStarredLinks);
   route.post("/", LinkAdapter.createLink);
   route.post("/feed", LinkAdapter.getUpdatedFeed);
+  route.get("/search", LinkAdapter.searchLinks);
   route.get("/:id?", LinkAdapter.getLinks);
   route.patch("/:id", LinkAdapter.updateLink);
   route.delete("/:id", LinkAdapter.deleteLink);

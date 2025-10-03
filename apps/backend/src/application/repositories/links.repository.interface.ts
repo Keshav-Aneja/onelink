@@ -23,4 +23,5 @@ export interface ILinkRepository {
     owner_id: string,
     parent_id: string | null,
   ): Promise<number>;
+  getSearchLinks(search_query: string): Promise<Link[] | undefined>;
 }

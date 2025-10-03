@@ -2,14 +2,12 @@ import express from "express";
 import env from "./config/env";
 import logger from "./helpers/logger";
 import loaders from "./loaders";
-import db from "@onelink/db";
 
 async function startServer() {
   const app = express();
-  app.get("/test-db", async (req, res) => {
+  app.get("/", async (req, res) => {
     try {
-      const result = await db.raw("SELECT 1+2 AS result");
-      res.json({ database: "connected", result: result.rows[0] });
+      res.json({ status: true, message: "Success" });
     } catch (err: any) {
       res.status(500).json({ error: err.message });
     }
@@ -30,9 +28,3 @@ async function startServer() {
 }
 
 startServer();
-
-// app.get("/api/auth/google", AuthenticationAdaptor.authenticateUser);
-// app.get(
-//   "/api/auth/google/callback",
-//   AuthenticationAdaptor.processOAuthCallback,
-// );

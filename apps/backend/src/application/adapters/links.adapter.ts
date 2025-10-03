@@ -3,6 +3,7 @@ import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
 import { ActionResponse } from "@onelink/action";
 import { getRedisClient } from "../../loaders/redis.loader";
+import logger from "../../helpers/logger";
 import { formatGetQueries } from "../../helpers/format-query";
 
 export default class LinkAdapter {
@@ -88,5 +89,22 @@ export default class LinkAdapter {
     const linkService = new LinkService();
     const deletedId = await linkService.deleteLink(req.session.user_id!, id!);
     ActionResponse.success(res, deletedId, 200, "Link Deleted");
+  });
+
+  static searchLinks = asyncHandler(async (req: Request, res: Response) => {
+    const { q: search_query } = req.query;
+    if (typeof search_query !== "string" || search_query.length === 0) {
+      ActionResponse.error(res, "Invalid search query", 200, undefined);
+      return;
+    }
+
+    const linkService = new LinkService();
+    const queriedLinks = await linkService.searchLinks(search_query);
+    ActionResponse.success(
+      res,
+      queriedLinks,
+      200,
+      "Links fetched successfully",
+    );
   });
 }
