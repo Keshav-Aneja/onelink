@@ -21,7 +21,12 @@ export default CreateLink;
 export function LinkTrigger() {
   const pathId = getParentIdFromPath();
   return (
-    <Button Icon={MdAddLink} iconSize="lg" disabled={pathId === undefined}>
+    <Button
+      Icon={MdAddLink}
+      iconSize="lg"
+      disabled={pathId === undefined}
+      className="text-xs md:text-sm px-2.5 md:px-6 py-1.5 md:py-2"
+    >
       Link
     </Button>
   );

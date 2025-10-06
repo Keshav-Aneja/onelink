@@ -47,7 +47,7 @@ const CollectionsContent = ({ pathId }: CollectionsContent) => {
   return (
     <Fragment>
       {/* {collections.length === 0 && <Mascot />} */}
-      <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
+      <div className="w-full grid grid-cols-3 md:grid-cols-6 xxl:grid-cols-7 gap-1 md:gap-3">
         {collections.map((collection) => (
           <CollectionCard data={collection} key={collection.id} />
         ))}

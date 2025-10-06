@@ -18,7 +18,7 @@ const LinkCard = ({ data }: LinkCardProps) => {
   };
   return (
     <GlowCard
-      className="w-full h-[15rem] xxl:h-[17rem] rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white cursor-pointer "
+      className="w-full h-[13rem] md:h-[15rem] xxl:h-[17rem] rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white cursor-pointer "
       style={{ "--color-gradient": "red" }}
       containerClassName="flex-col gap-2 rounded-md p-2 justify-between items-start"
       onDoubleClick={() => {
@@ -32,7 +32,7 @@ const LinkCard = ({ data }: LinkCardProps) => {
           ) : (
             <RiFileMarkedFill className="text-4xl" />
           )}
-          <span className="text-xs text-theme_secondary_white font-bold absolute bottom-2 right-3">
+          <span className="text-[0.55rem] md:text-xs text-theme_secondary_white font-bold absolute bottom-1 md:bottom-2 right-2 md:right-3">
             {formatLink(data.link)}
           </span>
           <section className="absolute top-2 right-2 w-full flex items-center gap-1 justify-end">
@@ -40,20 +40,19 @@ const LinkCard = ({ data }: LinkCardProps) => {
           </section>
         </section>
         <span>
-          <p className="text-sm xxl:text-base font-semibold line-clamp-2 text-theme_secondary_white select-none">
+          <p className="text-xs md:text-sm xxl:text-base font-semibold line-clamp-2 text-theme_secondary_white select-none">
             {data.name}
           </p>
 
-          <p className="text-xs text-theme_secondary_white/70 line-clamp-2 select-none">
+          <p className="text-[0.55rem] md:text-xs text-theme_secondary_white/70 line-clamp-2 select-none">
             {data.site_description}
           </p>
         </span>
       </div>
       <section className="w-full flex justify-between items-center relative">
         <DeleteLinkButton id={data.id} />
-
         <Button
-          className="text-xs xxl:text-sm py-1 hover:bg-primary focus:bg-primary select-none"
+          className="text-[0.6rem] md:text-xs xxl:text-sm py-1 hover:bg-primary focus:bg-primary select-none"
           onClick={handleSelectLink}
         >
           Detail

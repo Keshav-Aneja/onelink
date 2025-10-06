@@ -88,11 +88,11 @@ const SearchBar = () => {
         className="relative min-w-60 bg-theme_secondary_black/20 border-1 border-white/20 h-10 xxl:h-12 rounded-lg grow font-kustom cursor-pointer"
         onClick={handleInlineSearchClick}
       >
-        <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-lg xxl:text-xl text-white/60" />
-        <div className="w-full h-full flex items-center px-6 pl-12 text-white/40">
+        <IoSearchOutline className="absolute top-1/2 left-2 md:left-4 -translate-y-1/2 text-sm md:text-lg xxl:text-xl text-white/60" />
+        <div className="w-full h-full flex items-center px-6 pl-8 md:pl-12 text-white/40 text-sm md:text-base">
           Search for your links...
         </div>
-        <kbd className="absolute top-1/2 right-4 -translate-y-1/2 px-2 py-1 text-xs bg-white/10 border border-white/20 rounded text-white/60">
+        <kbd className="hidden md:block absolute top-1/2 right-4 -translate-y-1/2 px-2 py-1 text-xs bg-white/10 border border-white/20 rounded text-white/60">
           ⌘K
         </kbd>
       </div>
@@ -108,7 +108,7 @@ const SearchBar = () => {
             }}
           />
 
-          <div className="fixed top-1/4 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 font-kustom px-4">
+          <div className="fixed top-4 md:top-1/4 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 font-kustom px-4">
             <div className="bg-theme_secondary_black/95 border border-white/20 rounded-lg shadow-2xl overflow-hidden">
               <div className="relative h-14 border-b border-white/10">
                 <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-xl text-white/60" />
@@ -121,14 +121,13 @@ const SearchBar = () => {
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
                 />
-                <kbd className="absolute top-1/2 right-4 -translate-y-1/2 px-2 py-1 text-xs bg-primary border border-white/20 rounded text-white font-bold">
+                <kbd className="hidden md:block absolute top-1/2 right-4 -translate-y-1/2 px-2 py-1 text-xs bg-primary border border-white/20 rounded text-white font-bold">
                   ESC
                 </kbd>
               </div>
 
-              {/* Results */}
               {results.length > 0 && (
-                <div className="max-h-96 overflow-y-auto">
+                <div className="max-h-[50vh] md:max-h-96 overflow-y-auto">
                   {results.map((link, idx) => (
                     <div
                       key={link.id}

@@ -15,7 +15,6 @@ import {
 import { Scraper } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
-import e, { query } from "express";
 export default class LinkService implements ILinksService {
   constructor(private readonly linkRepository = new LinksRepository()) {}
 

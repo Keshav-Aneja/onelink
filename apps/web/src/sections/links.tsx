@@ -59,7 +59,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
 
   return (
     <Fragment>
-      <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
+      <div className="w-full grid grid-cols-2 md:grid-cols-6 xxl:grid-cols-7 gap-1 md:gap-3">
         {links.map((link) => (
           <LinkCard data={link} key={link.id} />
         ))}
