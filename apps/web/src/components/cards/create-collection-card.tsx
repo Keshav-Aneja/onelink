@@ -68,7 +68,7 @@ const CreateCollectionCard = ({
       <div
         className={cn(
           className,
-          "w-full md:w-3/4 lg:w-1/3 h-screen md:h-fit fixed top-0 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] p-8",
+          "w-full md:w-3/4 lg:w-1/3 h-svh md:h-fit fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] p-8",
         )}
       >
         <CloseButton close={closeModal} />
