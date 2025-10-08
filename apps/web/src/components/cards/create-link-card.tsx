@@ -8,7 +8,7 @@ import { FaPlus } from "react-icons/fa";
 import Textarea from "@components/form/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { LinkSchema } from "@onelink/entities/models";
-import { getParentIdFromPath } from "@lib/utils/get-paths";
+import { useParentIdFromPath } from "@lib/utils/get-paths";
 import CloseButton from "@components/buttons/close-button";
 import { nanoid } from "@reduxjs/toolkit";
 import { useCreateLink } from "@features/links/create-link";
@@ -26,7 +26,7 @@ const linkSchema = LinkSchema.pick({ description: true, link: true }).and(
 );
 export type CreateLink = z.infer<typeof linkSchema>;
 const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
-  const pathId = getParentIdFromPath();
+  const pathId = useParentIdFromPath();
   if (pathId === undefined) {
     return null;
   }

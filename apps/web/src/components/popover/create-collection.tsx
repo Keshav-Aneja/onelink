@@ -2,7 +2,7 @@ import Button from "@components/buttons/button";
 import { FaFolderPlus } from "react-icons/fa";
 import Popover from "./popover";
 import CreateCollectionCard from "@components/cards/create-collection-card";
-import { getParentIdFromPath } from "@lib/utils/get-paths";
+import { useParentIdFromPath } from "@lib/utils/get-paths";
 
 const CreateCollection = () => {
   return (
@@ -19,7 +19,7 @@ const CreateCollection = () => {
 export default CreateCollection;
 
 export function CollectionTrigger() {
-  const pathId = getParentIdFromPath();
+  const pathId = useParentIdFromPath();
   return (
     <Button
       Icon={FaFolderPlus}

@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useState } from "react";
-import { getParentIdFromPath } from "@lib/utils/get-paths";
+import { useParentIdFromPath } from "@lib/utils/get-paths";
 import CollectionsContent from "@sections/collections";
 import LinksContent from "@sections/links";
 import LinkDetailCard from "@components/cards/link-details-card";
@@ -8,7 +8,7 @@ import { useCollectionByPath } from "@hooks/collections";
 import VerifyPassordCard from "@components/cards/verify-password-card";
 
 const CollectionsPage = () => {
-  const pathId = getParentIdFromPath();
+  const pathId = useParentIdFromPath();
   const parentCollection = useCollectionByPath(pathId);
   //This is temporary will include the logic for password verification while fetching also
   const [verificationNeeded, setVerificationNeeded] = useState<boolean>(false);

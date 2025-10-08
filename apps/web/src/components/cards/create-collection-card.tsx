@@ -10,7 +10,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { getRandomColor } from "@lib/utils/get-random-color";
 import Checkbox from "@components/form/checkbox";
 import { useCreateCollection } from "@features/collections/create-collection";
-import { getParentIdFromPath } from "@lib/utils/get-paths";
+import { useParentIdFromPath } from "@lib/utils/get-paths";
 import CloseButton from "@components/buttons/close-button";
 interface CreateCollectionCardProps {
   className?: string;
@@ -28,7 +28,7 @@ const CreateCollectionCard = ({
   className,
   closeModal,
 }: CreateCollectionCardProps) => {
-  const pathId = getParentIdFromPath();
+  const pathId = useParentIdFromPath();
   if (pathId === undefined) {
     return null;
   }

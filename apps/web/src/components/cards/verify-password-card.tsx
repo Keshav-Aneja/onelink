@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@components/form/Input";
 import Button from "@components/buttons/button";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { getParentIdFromPath } from "@lib/utils/get-paths";
+import { useParentIdFromPath } from "@lib/utils/get-paths";
 import { ImSpinner2 } from "react-icons/im";
 import { CiUnlock } from "react-icons/ci";
 import { useVerifyCollection } from "@features/collections/verify-collection-password";
@@ -25,7 +25,7 @@ const passwordSchema = z.object({
 });
 export type Password = z.infer<typeof passwordSchema>;
 const VerifyPassordCard = ({ setVerificationNeeded }: Props) => {
-  const pathId = getParentIdFromPath();
+  const pathId = useParentIdFromPath();
   const dispatch = useAppDispatch();
   const securedCollections = useAppSelector(getSecuredCollection);
   if (!pathId) {
