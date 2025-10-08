@@ -73,4 +73,25 @@ export class CollectionAdapter {
       ActionResponse.success(res, { verified }, 200, "Verification complete");
     },
   );
+
+  static deleteCollection = asyncHandler(
+    async (req: Request, res: Response): Promise<void> => {
+      const { id } = req.params;
+      if (!id) {
+        ActionResponse.error(res, "Collection ID is required", 400);
+        return;
+      }
+      const collectionsService = new CollectionsService();
+      const result = await collectionsService.deleteCollection(
+        id,
+        req.session.user_id!,
+      );
+      ActionResponse.success(
+        res,
+        result,
+        200,
+        "Collection and all its contents deleted successfully",
+      );
+    },
+  );
 }

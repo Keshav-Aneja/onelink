@@ -4,7 +4,7 @@ import Button from "@components/buttons/button";
 const LinkCardSuspense = () => {
   return (
     <GlowCard
-      className="w-full h-[15rem] xxl:h-[17rem] rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white animate-pulse duration-300 ease-linear cursor-progress"
+      className="w-full h-[13rem] md:h-[15rem] xxl:h-[17rem] rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white animate-pulse duration-300 ease-linear cursor-progress"
       style={{ "--color-gradient": "red" }}
       containerClassName="flex-col gap-2 rounded-md p-2 justify-between items-start"
     >

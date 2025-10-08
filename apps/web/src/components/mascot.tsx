@@ -4,8 +4,8 @@ interface Props {
 }
 const Mascot = ({ children }: Props) => {
   return (
-    <div className="flex flex-col gap-4 items-center justify-center">
-      <div className="w-[14rem] h-[12rem] relative left-1 scale-75">
+    <div className="flex flex-col md:gap-4 items-center justify-center">
+      <div className="w-[14rem] h-[12rem] relative left-1 scale-40 md:scale-75">
         <div className="absolute w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
           <div className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 w-[2rem] h-[12rem]">
             <div className="w-[1rem] h-[6rem] bg-primary absolute top-0  rounded-[100%]"></div>
@@ -47,7 +47,10 @@ const Mascot = ({ children }: Props) => {
           </div>
         </div>
       </div>
-      <p role="alert" className="text-theme_secondary_white text-xl">
+      <p
+        role="alert"
+        className="text-theme_secondary_white text-sm md:text-xl -mt-8 md:mt-0"
+      >
         {children}
       </p>
     </div>

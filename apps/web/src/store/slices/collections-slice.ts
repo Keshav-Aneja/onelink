@@ -24,6 +24,9 @@ const collectionSlice = createSlice({
         state.push(collection);
       });
     },
+    deleteCollection: (state, action: { payload: string }) => {
+      return state.filter((collection) => collection.id !== action.payload);
+    },
   },
   selectors: {
     getCollection: (state: Collection[], index: number) => state[index],
@@ -38,5 +41,6 @@ export const {
   addCollection,
   deleteAllCollections,
   addMultipleCollections,
+  deleteCollection,
 } = collectionSlice.actions;
 export default collectionSlice.reducer;

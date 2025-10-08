@@ -32,9 +32,9 @@ const Input = <T extends Record<string, any>>({
   );
   return (
     <div className="flex flex-col gap-1">
-      <label className=" first-letter:uppercase text-theme_secondary_white font-medium text-base">
+      <label className=" first-letter:uppercase text-theme_secondary_white font-medium text-sm md:text-base">
         {label}
-        {required && <span className="text-primary text-lg">*</span>}
+        {required && <span className="text-primary text-md md:text-lg">*</span>}
       </label>
       <input
         {...registerRest}

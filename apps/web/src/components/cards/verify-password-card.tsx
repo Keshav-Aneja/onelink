@@ -66,10 +66,10 @@ const VerifyPassordCard = ({ setVerificationNeeded }: Props) => {
     <Fragment>
       <div
         className={cn(
-          "w-1/3 h-fit fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] p-8 border-1 border-theme_secondary_white/50 rounded-lg",
+          "w-full md:w-3/4 lg:w-1/3 h-screen md:h-fit fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-[100] p-8 border-1 border-theme_secondary_white/50 rounded-lg bg-theme_primary_black",
         )}
       >
-        <h1 className="text-2xl xxl:text-3xl border-b-1 border-theme_secondary_white/40 pb-3 mb-4">
+        <h1 className="text-lg md:text-2xl xxl:text-3xl border-b-1 border-theme_secondary_white/40 pb-1 md:pb-3 mb-2 md:mb-4">
           Verify Password
         </h1>
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6">

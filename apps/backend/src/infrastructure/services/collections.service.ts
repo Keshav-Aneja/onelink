@@ -9,6 +9,7 @@ import { DatabaseOperationError } from "@onelink/entities/errros";
 import { CollectionDTO } from "../dtos/collections.dto";
 import crypto from "node:crypto";
 import logger from "../../helpers/logger";
+import LinkService from "./links.service";
 export default class CollectionsService implements ICollectionsService {
   constructor(private collectionRepository = new CollectionRepository()) {}
 
@@ -60,14 +61,47 @@ export default class CollectionsService implements ICollectionsService {
       id: collectionId,
     });
 
+    // Recursively delete all nested collections and their links
+    await this.deleteCollectionRecursive(data.id, data.owner_id);
+
+    return { id: data.id };
+  }
+
+  private async deleteCollectionRecursive(
+    collectionId: string,
+    ownerId: string,
+  ): Promise<void> {
+    // Get all child collections
+    const childCollections =
+      await this.collectionRepository.getAllCollectionsOfCollection(
+        collectionId,
+        ownerId,
+      );
+
+    // Recursively delete child collections
+    if (childCollections && childCollections.length > 0) {
+      for (const child of childCollections) {
+        await this.deleteCollectionRecursive(child.id, ownerId);
+      }
+    }
+
+    // Delete all links in this collection
+    const linkService = new LinkService();
+    const links = await linkService.getAllChildLinks(collectionId, ownerId, {});
+    if (links && links.length > 0) {
+      for (const link of links) {
+        await linkService.deleteLink(ownerId, link.id);
+      }
+    }
+
+    // Finally, delete the collection itself
     const deletedCollection = await this.collectionRepository.deleteCollection(
-      data.id,
-      data.owner_id,
+      collectionId,
+      ownerId,
     );
     if (!deletedCollection) {
       throw new DatabaseOperationError("Cannot delete collection");
     }
-    return { id: deletedCollection };
   }
 
   async getAllChildCollections(

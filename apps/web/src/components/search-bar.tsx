@@ -85,7 +85,7 @@ const SearchBar = () => {
   return (
     <>
       <div
-        className="relative min-w-32 md:min-w-60 bg-theme_secondary_black/20 border-1 border-white/20 h-10 xxl:h-12 rounded-lg grow font-kustom cursor-pointer"
+        className="relative min-w-32 md:min-w-60 bg-theme_primary_black border-1 border-white/20 h-10 xxl:h-12 rounded-lg grow font-kustom cursor-pointer"
         onClick={handleInlineSearchClick}
       >
         <IoSearchOutline className="absolute top-1/2 left-2 md:left-4 -translate-y-1/2 text-sm md:text-lg xxl:text-xl text-white/60" />
@@ -109,7 +109,7 @@ const SearchBar = () => {
           />
 
           <div className="fixed top-4 md:top-1/4 left-1/2 -translate-x-1/2 w-full max-w-2xl z-50 font-kustom px-4">
-            <div className="bg-theme_secondary_black/95 border border-white/20 rounded-lg shadow-2xl overflow-hidden">
+            <div className="bg-theme_primary_black border border-white/20 rounded-lg shadow-2xl overflow-hidden">
               <div className="relative h-14 border-b border-white/10">
                 <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-xl text-white/60" />
                 <input
