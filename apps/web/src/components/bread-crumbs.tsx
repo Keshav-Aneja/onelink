@@ -16,7 +16,7 @@ const Breadcrumbs = () => {
   return (
     <div
       className={cn(
-        "w-full px-3 flex items-center gap-2",
+        "w-full px-1 md:px-3 flex items-center gap-1 md:gap-2",
         pathId === undefined && "pointer-events-none opacity-50",
       )}
     >
@@ -36,9 +36,12 @@ export const Crumb = ({ label }: CrumbProps) => {
   const linkPath = usePath(label);
 
   return (
-    <Link to={linkPath} className="flex items-center gap-1 text-lg group">
+    <Link
+      to={linkPath}
+      className="flex items-center gap-1 text-sm md:text-lg group"
+    >
       <IoFolderOpen className=" group-first:block hidden group-hover:text-primary group-last:text-primary" />
-      <span className="group-last:underline group-last:text-primary group-last:font-medium px-2  group-hover:text-primary group-hover:underline underline-offset-4 cursor-pointer text-sm">
+      <span className="group-last:underline group-last:text-primary group-last:font-medium px-2  group-hover:text-primary group-hover:underline underline-offset-4 cursor-pointer text-xs md:text-sm">
         {label}
       </span>
       <span className="group-last:hidden">/</span>

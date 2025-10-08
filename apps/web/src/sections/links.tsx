@@ -34,11 +34,11 @@ const LinksContent = ({ pathId }: LinksContent) => {
         dispatch(addMultipleLinks(linkQuery.data.data));
       }
     }
-  }, [linkQuery.isSuccess, linkQuery.data, dispatch]);
+  }, [linkQuery.isSuccess, linkQuery.data]);
 
   if (linkQuery.isLoading) {
     return (
-      <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
+      <div className="w-full grid grid-cols-2 md:grid-cols-6 xxl:grid-cols-7 gap-3">
         {Array.from({ length: 6 }).map((_, i) => (
           <LinkCardSuspense key={i} />
         ))}
@@ -59,7 +59,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
 
   return (
     <Fragment>
-      <div className="w-full grid grid-cols-2 md:grid-cols-6 xxl:grid-cols-7 gap-1 md:gap-3">
+      <div className="w-full grid grid-cols-2 md:grid-cols-6 xxl:grid-cols-7 gap-1 md:gap-3 ">
         {links.map((link) => (
           <LinkCard data={link} key={link.id} />
         ))}

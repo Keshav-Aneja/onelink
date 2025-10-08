@@ -29,11 +29,11 @@ const CollectionsContent = ({ pathId }: CollectionsContent) => {
         dispatch(addMultipleCollections(collectionsQuery.data.data));
       }
     }
-  }, [collectionsQuery.isSuccess, collectionsQuery.data, dispatch]);
+  }, [collectionsQuery.isSuccess, collectionsQuery.data]);
 
   if (collectionsQuery.isLoading) {
     return (
-      <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
+      <div className="w-full grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 xxl:grid-cols-7 gap-3">
         {Array.from({ length: 4 }).map((_, i) => (
           <CollectionCardSuspense key={i} />
         ))}
@@ -47,7 +47,7 @@ const CollectionsContent = ({ pathId }: CollectionsContent) => {
   return (
     <Fragment>
       {/* {collections.length === 0 && <Mascot />} */}
-      <div className="w-full grid grid-cols-3 md:grid-cols-6 xxl:grid-cols-7 gap-1 md:gap-3">
+      <div className="w-full grid grid-cols-1 md:grid-cols-6 xxl:grid-cols-7 gap-1 md:gap-3">
         {collections.map((collection) => (
           <CollectionCard data={collection} key={collection.id} />
         ))}

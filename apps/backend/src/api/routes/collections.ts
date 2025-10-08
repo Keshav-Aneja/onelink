@@ -11,5 +11,6 @@ export default (app: Router) => {
   route.get("/stats/:id?", CollectionAdapter.getCollectionStats);
   route.post("/", CollectionAdapter.createCollection);
   route.post("/verify/:id?", CollectionAdapter.verifyPassword);
+  route.delete("/:id", CollectionAdapter.deleteCollection);
   route.get("/:id?", CollectionAdapter.getCollections);
 };

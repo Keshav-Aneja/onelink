@@ -1,6 +1,7 @@
 import React from "react";
 import { FieldError, Path, UseFormRegister } from "react-hook-form";
 import FormError from "./form-error";
+import { cn } from "@lib/tailwind-utils";
 
 type CheckboxProps<T extends Record<string, any>> = {
   label: Path<T>;
@@ -15,11 +16,12 @@ const Checkbox = <T extends Record<string, any>>({
   error,
   falseLabel,
   label,
+  className,
   ...props
 }: CheckboxProps<T>) => {
   const labelInput = label.split("_").join(" ");
   return (
-    <div className="flex  gap-2">
+    <div className={cn("flex  gap-2", className)}>
       <input
         type="checkbox"
         {...register(label, { required })}
@@ -27,7 +29,7 @@ const Checkbox = <T extends Record<string, any>>({
         aria-invalid={error ? "true" : "false"}
         className="--ol-checkbox"
       />
-      <label className="first-letter:uppercase text-theme_secondary_white font-medium text-base">
+      <label className="first-letter:uppercase text-theme_secondary_white font-medium text-xs md:text-base">
         {falseLabel ? falseLabel : labelInput}
       </label>
       {error && <FormError error={error} />}
