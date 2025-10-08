@@ -90,7 +90,7 @@ const SearchBar = () => {
       >
         <IoSearchOutline className="absolute top-1/2 left-2 md:left-4 -translate-y-1/2 text-sm md:text-lg xxl:text-xl text-white/60" />
         <div className="w-full h-full flex items-center px-6 pl-8 md:pl-12 text-white/40 text-sm md:text-base">
-          Search for your links...
+          Search links...
         </div>
         <kbd className="hidden md:block absolute top-1/2 right-4 -translate-y-1/2 px-2 py-1 text-xs bg-white/10 border border-white/20 rounded text-white/60">
           ⌘K
@@ -114,9 +114,9 @@ const SearchBar = () => {
                 <IoSearchOutline className="absolute top-1/2 left-4 -translate-y-1/2 text-xl text-white/60" />
                 <input
                   type="text"
-                  placeholder="Search for your links..."
+                  placeholder="Search links..."
                   name="link_search"
-                  className="w-full h-full bg-transparent outline-none border-0 px-6 pl-12 text-white placeholder:text-white/40"
+                  className="w-full h-full bg-transparent outline-none border-0 px-6 pl-12 text-white placeholder:text-white/40 text-sm md:text-base"
                   autoFocus
                   value={searchVal}
                   onChange={(e) => setSearchVal(e.target.value)}
@@ -131,7 +131,7 @@ const SearchBar = () => {
                   {results.map((link, idx) => (
                     <div
                       key={link.id}
-                      className={`px-4 py-3 cursor-pointer transition-colors border-b border-white/5 last:border-b-0 ${
+                      className={`px-4 py-2 md:py-3 cursor-pointer transition-colors border-b border-white/5 last:border-b-0 ${
                         idx === selectedIndex
                           ? "bg-white/10"
                           : "hover:bg-white/5"
@@ -145,12 +145,12 @@ const SearchBar = () => {
                             {link.is_starred && (
                               <span className="text-yellow-400 text-sm">★</span>
                             )}
-                            <h3 className="text-white font-medium truncate">
+                            <h3 className="text-white font-medium truncate text-sm md:text-base">
                               {link.name || link.link}
                             </h3>
                           </div>
                           {link.description && (
-                            <p className="text-white/60 text-sm mt-1 line-clamp-2">
+                            <p className="text-white/60 text-[0.8rem] mt-1 line-clamp-2">
                               {link.description}
                             </p>
                           )}
