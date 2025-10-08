@@ -30,7 +30,6 @@ const LinksContent = ({ pathId }: LinksContent) => {
     if (linkQuery.isSuccess && linkQuery.data?.data) {
       setShouldFetchLinks(false);
       if (!links || links.length === 0) {
-        console.log(securedCollections);
         dispatch(addMultipleLinks(linkQuery.data.data));
       }
     }

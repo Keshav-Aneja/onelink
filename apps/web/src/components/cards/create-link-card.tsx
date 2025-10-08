@@ -61,7 +61,6 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
       fingerprint: nanoid(10),
       subscribed: data.notification,
     };
-    console.log(linkData);
     createLinkMutation.mutate(linkData);
     // await createLink(linkData);
   };

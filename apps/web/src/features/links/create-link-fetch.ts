@@ -52,17 +52,13 @@ export const createLink = async (data: CreateLink) => {
           // Empty line indicates the end of an event
           try {
             const parsedData = JSON.parse(eventData);
-            console.log("Received event:", parsedData);
 
             // Handle different status messages immediately
             if (parsedData.status === "CREATED") {
-              console.log("Link creation started");
               // You can emit an event or update UI here
             } else if (parsedData.status === "ADDED") {
-              console.log("RSS feed added");
               // You can emit an event or update UI here
             } else if (parsedData.success === true && parsedData.link) {
-              console.log("Link created successfully:", parsedData.link);
               return parsedData.link;
             }
           } catch (e) {

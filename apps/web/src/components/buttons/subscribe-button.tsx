@@ -14,7 +14,6 @@ const SubscribeButton = ({ subscribed, id }: Props) => {
     mutationConfig: {
       onSuccess: () => {
         setSubscribe(!subscribe);
-        console.log("SUCCESS");
       },
     },
   });

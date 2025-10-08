@@ -24,8 +24,6 @@ const ProtectedRoute = ({ children }: AuthProps) => {
   // Only fetch when needed
   const userQuery = useUser(shouldFetchUser);
   useEffect(() => {
-    console.log(user);
-    console.log(sessionExists);
     if (shouldFetchUser && userQuery.data && userQuery.data.success) {
       dispatch(addUser(userQuery.data.data));
       setShouldFetchUser(false);

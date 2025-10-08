@@ -6,11 +6,7 @@ import { ImSpinner2 } from "react-icons/im";
 const DeleteLinkButton = ({ id }: { id: string }) => {
   const deleteMutation = useDeleteLink({
     mutationConfig: {
-      onSuccess: () => {
-        //Notification
-
-        console.log("DELETED");
-      },
+      onSuccess: () => {},
     },
   });
   const handleDeleteLink = () => {

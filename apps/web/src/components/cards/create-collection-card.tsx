@@ -36,7 +36,6 @@ const CreateCollectionCard = ({
     parentId: pathId,
     mutationConfig: {
       onSuccess: () => {
-        console.log("Collection added successfull");
         closeModal && closeModal();
       },
     },

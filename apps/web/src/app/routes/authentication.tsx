@@ -4,11 +4,20 @@ import { FaGithub } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import { Provider } from "@onelink/entities";
 import { BACKEND_URL } from "@config/constants";
-import { useSearchParams } from "react-router";
+import { useSearchParams, useNavigate } from "react-router";
+import { useCheckSession } from "@hooks/user";
+import { useEffect } from "react";
 const AuthenticationPage = () => {
-  //TODO: Check the redirectTO and after authentication redirect them to that URL
   const [params] = useSearchParams();
   const redirectTo = params.get("redirectTo");
+  const session = useCheckSession();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (redirectTo && session) {
+      navigate(decodeURIComponent(redirectTo));
+    }
+  }, [redirectTo, session, navigate]);
   function handleAuthentication(provider: Provider) {
     if (
       !provider ||

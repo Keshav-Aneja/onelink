@@ -12,7 +12,6 @@ const DeleteCollectionButton = ({ id, name }: { id: string; name: string }) => {
     mutationConfig: {
       onSuccess: () => {
         setIsConfirmOpen(false);
-        console.log("Collection deleted successfully");
       },
       onError: (error) => {
         console.error("Failed to delete collection:", error);

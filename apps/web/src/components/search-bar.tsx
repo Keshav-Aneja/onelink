@@ -19,7 +19,6 @@ const SearchBar = () => {
       setResults(links.data || []);
       setSelectedIndex(0);
     } catch (error) {
-      console.log(error);
       setResults([]);
     } finally {
       setLoading(false);
