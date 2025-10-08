@@ -10,7 +10,7 @@ const Breadcrumbs = () => {
 
   const displayPaths = useMemo(
     () => (paths.length > 6 ? paths.slice(-6) : paths),
-    [paths]
+    [paths],
   );
 
   return (
