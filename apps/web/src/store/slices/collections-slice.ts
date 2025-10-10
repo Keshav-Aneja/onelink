@@ -1,5 +1,6 @@
 import { Collection } from "@onelink/entities/models";
 import { createSlice } from "@reduxjs/toolkit";
+import { syncDataThunk } from "@store/thunks/sync-data.thunk";
 
 const initialState: Collection[] = [];
 
@@ -27,10 +28,71 @@ const collectionSlice = createSlice({
     deleteCollection: (state, action: { payload: string }) => {
       return state.filter((collection) => collection.id !== action.payload);
     },
+    syncCollections: (state, action: { payload: Collection[] | undefined }) => {
+      if (!action.payload) return state;
+
+      // Create a map of incoming collections by ID for fast lookup
+      const incomingMap = new Map(
+        action.payload.map((collection) => [collection.id, collection])
+      );
+
+      // Create a map of existing collections by ID
+      const existingMap = new Map(state.map((collection) => [collection.id, collection]));
+
+      // Update existing collections and track which ones we've seen
+      const updatedCollections: Collection[] = [];
+
+      // Add or update collections from the server
+      action.payload.forEach((serverCollection) => {
+        updatedCollections.push(serverCollection);
+      });
+
+      // Keep collections that are in state but not in the incoming payload
+      // (they might belong to different parent_ids)
+      state.forEach((localCollection) => {
+        if (!incomingMap.has(localCollection.id)) {
+          // Only keep if it has a different parent_id than the synced ones
+          const sampleParentId = action.payload[0]?.parent_id;
+          if (localCollection.parent_id !== sampleParentId) {
+            updatedCollections.push(localCollection);
+          }
+        }
+      });
+
+      return updatedCollections;
+    },
   },
   selectors: {
     getCollection: (state: Collection[], index: number) => state[index],
     getAllCollections: (state: Collection[]) => state,
+  },
+  extraReducers: (builder) => {
+    builder.addCase(syncDataThunk.fulfilled, (state, action) => {
+      if (!action.payload.collections) return state;
+
+      const incomingMap = new Map(
+        action.payload.collections.map((collection) => [collection.id, collection])
+      );
+
+      const updatedCollections: Collection[] = [];
+
+      // Add or update collections from the server
+      action.payload.collections.forEach((serverCollection) => {
+        updatedCollections.push(serverCollection);
+      });
+
+      // Keep collections that belong to different parent_ids
+      state.forEach((localCollection) => {
+        if (!incomingMap.has(localCollection.id)) {
+          const sampleParentId = action.payload.collections?.[0]?.parent_id;
+          if (localCollection.parent_id !== sampleParentId) {
+            updatedCollections.push(localCollection);
+          }
+        }
+      });
+
+      return updatedCollections;
+    });
   },
 });
 
@@ -42,5 +104,6 @@ export const {
   deleteAllCollections,
   addMultipleCollections,
   deleteCollection,
+  syncCollections,
 } = collectionSlice.actions;
 export default collectionSlice.reducer;

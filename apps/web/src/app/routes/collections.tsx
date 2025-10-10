@@ -6,12 +6,15 @@ import LinkDetailCard from "@components/cards/link-details-card";
 import CollectionsDetailCard from "@components/cards/collection-details-card";
 import { useCollectionByPath } from "@hooks/collections";
 import VerifyPassordCard from "@components/cards/verify-password-card";
+import { useDataSync } from "@hooks/sync";
 
 const CollectionsPage = () => {
   const pathId = useParentIdFromPath();
   const parentCollection = useCollectionByPath(pathId);
   //This is temporary will include the logic for password verification while fetching also
   const [verificationNeeded, setVerificationNeeded] = useState<boolean>(false);
+
+  useDataSync(pathId);
 
   useEffect(() => {
     if (parentCollection?.is_protected) {
