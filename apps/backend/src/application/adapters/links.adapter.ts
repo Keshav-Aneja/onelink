@@ -41,15 +41,24 @@ export default class LinkAdapter {
   });
 
   static getUpdatedFeed = asyncHandler(async (req: Request, res: Response) => {
+    const { sinceDays, startDate, endDate } = req.body;
+    const linkService = new LinkService();
+
+    // Convert date strings to Date objects if provided
+    const parsedStartDate = startDate ? new Date(startDate) : undefined;
+    const parsedEndDate = endDate ? new Date(endDate) : undefined;
+
+    // Create a unique cache key based on the filter parameters
     const redisClient = getRedisClient();
-    const cacheKey = `feed:${req.session.user_id ?? ""}`;
+    const cacheKey = `feed:${req.session.user_id ?? ""}:${sinceDays ?? ""}:${startDate ?? ""}:${endDate ?? ""}`;
     const cachedFeed = await redisClient.get(cacheKey);
+
     if (!cachedFeed) {
-      const { sinceDays } = req.body;
-      const linkService = new LinkService();
       const feed = await linkService.getRSSFeed(
-        sinceDays,
         req.session.user_id ?? "",
+        sinceDays,
+        parsedStartDate,
+        parsedEndDate,
       );
       ActionResponse.success(res, feed, 200, "New feed fetched successfully");
       await redisClient.set(cacheKey, JSON.stringify(feed), { EX: 3600 * 3 });

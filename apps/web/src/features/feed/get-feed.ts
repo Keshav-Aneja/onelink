@@ -5,19 +5,23 @@ import type { RSSFeed } from "@onelink/entities/models";
 
 import { queryOptions, useQuery } from "@tanstack/react-query";
 
-export const getFeed = (
-  sinceDays: number,
-): Promise<IActionResponse<RSSFeed[] | null>> => {
-  return action.post("/links/feed", {
-    sinceDays,
-  });
+type FeedParams = {
+  sinceDays?: number;
+  startDate?: string;
+  endDate?: string;
 };
 
-export const getFeedQueryOptions = (sinceDays: number) => {
+export const getFeed = (
+  params: FeedParams,
+): Promise<IActionResponse<RSSFeed[] | null>> => {
+  return action.post("/links/feed", params);
+};
+
+export const getFeedQueryOptions = (params: FeedParams) => {
   return queryOptions({
-    queryKey: ["feed"],
+    queryKey: ["feed", params],
     queryFn: () => {
-      return getFeed(sinceDays);
+      return getFeed(params);
     },
     staleTime: 60 * 60 * 1000,
     gcTime: 60 * 60 * 1000,
@@ -29,11 +33,11 @@ type UseFeedQueryOptions = {
 };
 
 export const useFeed = (
-  sinceDays: number,
+  params: FeedParams,
   { queryConfig }: UseFeedQueryOptions = {},
 ) => {
   return useQuery({
-    ...getFeedQueryOptions(sinceDays),
+    ...getFeedQueryOptions(params),
     ...queryConfig,
   });
 };

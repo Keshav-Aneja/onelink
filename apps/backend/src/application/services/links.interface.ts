@@ -8,8 +8,10 @@ export default interface ILinksService {
   ): Promise<Link[] | undefined>;
   createLink(link: LinkInsert): Promise<Link>;
   getRSSFeed(
-    sinceDays: number,
     owner_id: string,
+    sinceDays?: number,
+    startDate?: Date,
+    endDate?: Date,
   ): Promise<RSSFeed[] | undefined>;
   updateLink(
     ownerId: string,

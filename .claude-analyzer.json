@@ -1,0 +1,33 @@
+{
+  "exclude": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/.git/**",
+    "**/.next/**",
+    "**/.turbo/**",
+    "**/coverage/**",
+    "**/.storybook-static/**",
+    "**/storybook-static/**",
+    "**/*.min.js",
+    "**/*.bundle.js",
+    "**/.claude-analyzer-history/**"
+  ],
+  "include": ["**/*.{js,jsx,ts,tsx,vue,svelte}"],
+  "severity": {
+    "any-type": "error",
+    "console-log": "warning",
+    "todo-comments": "info"
+  },
+  "integrations": {
+    "eslint": true,
+    "typescript": true,
+    "npmAudit": true
+  },
+  "customPatterns": [],
+  "thresholds": {
+    "maxFunctionLines": 50,
+    "maxFileLines": 500,
+    "maxComplexity": 10
+  }
+}

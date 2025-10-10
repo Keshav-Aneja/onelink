@@ -203,11 +203,27 @@ export class RSS {
     }
   }
 
-  async scrapeRSS(days: number = 1) {
+  async scrapeRSS(days?: number, startDate?: Date, endDate?: Date) {
     try {
-      const now = new Date();
-      const daysAgo = new Date();
-      daysAgo.setDate(now.getDate() - days);
+      let filterStartDate: Date;
+      let filterEndDate: Date;
+
+      if (startDate && endDate) {
+        filterStartDate = startDate;
+        filterEndDate = endDate;
+      } else if (days !== undefined) {
+        const now = new Date();
+        filterEndDate = now;
+        filterStartDate = new Date();
+        filterStartDate.setDate(now.getDate() - days);
+      } else {
+        // Default to last 1 day if no parameters provided
+        const now = new Date();
+        filterEndDate = now;
+        filterStartDate = new Date();
+        filterStartDate.setDate(now.getDate() - 1);
+      }
+
       const rssURL = await this.findValidRSS();
       if (!rssURL) {
         return null;
@@ -224,7 +240,7 @@ export class RSS {
       $("item").each((_, el) => {
         const pubDate = $(el).find("pubDate").text();
         const date = pubDate ? new Date(pubDate) : undefined;
-        if (date && date >= daysAgo) {
+        if (date && date >= filterStartDate && date <= filterEndDate) {
           rssFeed.push({
             title: $(el).find("title").text(),
             published_date: date.toISOString(),
@@ -236,7 +252,7 @@ export class RSS {
         const pubDate =
           $(el).find("published").text() || $(el).find("updated").text();
         const date = pubDate ? new Date(pubDate) : undefined;
-        if (date && date >= daysAgo) {
+        if (date && date >= filterStartDate && date <= filterEndDate) {
           rssFeed.push({
             title: this.formatCommitTitle($(el).find("title").text(), rssURL),
             published_date: date.toISOString(),

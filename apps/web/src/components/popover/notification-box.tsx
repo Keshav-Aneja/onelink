@@ -13,7 +13,7 @@ import { useFeed } from "@features/feed/get-feed";
 import { paths } from "@config/paths";
 import { useEffect } from "react";
 const NotificationBox = () => {
-  const feed = useFeed(1);
+  const feed = useFeed({ sinceDays: 1 });
   const dispatch = useAppDispatch();
 
   useEffect(() => {
