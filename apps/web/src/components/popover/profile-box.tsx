@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "@store/slices/user-slice";
 import { useLogoutUserMutation } from "@features/users/logout-user";
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 import { cn } from "@lib/tailwind-utils";
 
 const ProfileBox = () => {
@@ -33,14 +33,13 @@ export function ProfileContent({ className }: ContentProps) {
   const user = useSelector(selectUser);
   const [mutex, setMutex] = useState(false);
   const { mutateAsync } = useLogoutUserMutation();
-  const navigate = useNavigate();
   const handleLogout = async () => {
     setMutex(true);
     const response = await mutateAsync();
     setMutex(false);
     if (response && response.success) {
       localStorage.removeItem("persist:onelink");
-      navigate(`/auth?redirectTo=${encodeURIComponent(location.pathname)}`);
+      window.location.href = `/auth?redirectTo=${encodeURIComponent(location.pathname)}`;
     }
   };
   return (

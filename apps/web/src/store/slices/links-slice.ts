@@ -28,25 +28,20 @@ const linkSlice = createSlice({
     syncLinks: (state, action: { payload: Link[] | undefined }) => {
       if (!action.payload) return state;
 
-      // Create a map of incoming links by ID for fast lookup
       const incomingMap = new Map(
-        action.payload.map((link) => [link.id, link])
+        action.payload.map((link) => [link.id, link]),
       );
 
-      // Update existing links and track which ones we've seen
       const updatedLinks: Link[] = [];
 
-      // Add or update links from the server
       action.payload.forEach((serverLink) => {
         updatedLinks.push(serverLink);
       });
 
       // Keep links that are in state but not in the incoming payload
-      // (they might belong to different parent_ids)
       state.forEach((localLink) => {
         if (!incomingMap.has(localLink.id)) {
-          // Only keep if it has a different parent_id than the synced ones
-          const sampleParentId = action.payload[0]?.parent_id;
+          const sampleParentId = action.payload?.[0]?.parent_id;
           if (localLink.parent_id !== sampleParentId) {
             updatedLinks.push(localLink);
           }
@@ -64,7 +59,7 @@ const linkSlice = createSlice({
       if (!action.payload.links) return state;
 
       const incomingMap = new Map(
-        action.payload.links.map((link) => [link.id, link])
+        action.payload.links.map((link) => [link.id, link]),
       );
 
       const updatedLinks: Link[] = [];

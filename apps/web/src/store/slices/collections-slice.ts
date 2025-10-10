@@ -31,28 +31,20 @@ const collectionSlice = createSlice({
     syncCollections: (state, action: { payload: Collection[] | undefined }) => {
       if (!action.payload) return state;
 
-      // Create a map of incoming collections by ID for fast lookup
       const incomingMap = new Map(
-        action.payload.map((collection) => [collection.id, collection])
+        action.payload.map((collection) => [collection.id, collection]),
       );
 
-      // Create a map of existing collections by ID
-      const existingMap = new Map(state.map((collection) => [collection.id, collection]));
-
-      // Update existing collections and track which ones we've seen
       const updatedCollections: Collection[] = [];
 
-      // Add or update collections from the server
       action.payload.forEach((serverCollection) => {
         updatedCollections.push(serverCollection);
       });
 
       // Keep collections that are in state but not in the incoming payload
-      // (they might belong to different parent_ids)
       state.forEach((localCollection) => {
         if (!incomingMap.has(localCollection.id)) {
-          // Only keep if it has a different parent_id than the synced ones
-          const sampleParentId = action.payload[0]?.parent_id;
+          const sampleParentId = action.payload?.[0]?.parent_id;
           if (localCollection.parent_id !== sampleParentId) {
             updatedCollections.push(localCollection);
           }
@@ -71,7 +63,10 @@ const collectionSlice = createSlice({
       if (!action.payload.collections) return state;
 
       const incomingMap = new Map(
-        action.payload.collections.map((collection) => [collection.id, collection])
+        action.payload.collections.map((collection) => [
+          collection.id,
+          collection,
+        ]),
       );
 
       const updatedCollections: Collection[] = [];
