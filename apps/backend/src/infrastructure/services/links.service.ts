@@ -12,7 +12,7 @@ import {
   AuthenticationError,
   DatabaseOperationError,
 } from "@onelink/entities/errros";
-import { Scraper } from "@onelink/scraper";
+import { Scraper, type WebsiteMetadata } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
 export default class LinkService implements ILinksService {
@@ -45,9 +45,10 @@ export default class LinkService implements ILinksService {
     const scraper = new Scraper(link.link);
     const data = LinkSchema.omit({ id: true }).parse(link);
     const content = await scraper.scrape();
-    console.log(content);
-    const metadata = await scraper.extractMetadata(content);
-    console.log(metadata);
+    let metadata = {} as WebsiteMetadata;
+    if (content) {
+      metadata = await scraper.extractMetadata(content);
+    }
     const newLink = await this.linkRepository.createLink(
       LinkDTO.toDB(data, metadata),
     );
@@ -83,7 +84,12 @@ export default class LinkService implements ILinksService {
     startDate?: Date,
     endDate?: Date,
   ): Promise<RSSFeed[] | undefined> {
-    const parsed = RSSInputSchema.parse({ owner_id, sinceDays, startDate, endDate });
+    const parsed = RSSInputSchema.parse({
+      owner_id,
+      sinceDays,
+      startDate,
+      endDate,
+    });
     const rssLinks = await this.linkRepository.getRSSLinks(parsed.owner_id);
 
     if (!rssLinks) {
