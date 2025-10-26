@@ -14,6 +14,10 @@ interface IApplicationConfig {
   feed: RSSFeed[] | null;
   activeTab: string;
   securedCollections: string[];
+  clipboardLink: {
+    isAdding: boolean;
+    urlCount: number;
+  };
 }
 
 const initialState: IApplicationConfig = {
@@ -28,6 +32,10 @@ const initialState: IApplicationConfig = {
   feed: null,
   activeTab: sidebarItems[0].label,
   securedCollections: [],
+  clipboardLink: {
+    isAdding: false,
+    urlCount: 0,
+  },
 };
 
 export const applicationSlice = createSlice({
@@ -64,6 +72,12 @@ export const applicationSlice = createSlice({
     addToSecuredCollection: (state, action: { payload: string }) => {
       state.securedCollections.push(action.payload);
     },
+    setClipboardLinkLoading: (
+      state,
+      action: { payload: { isAdding: boolean; urlCount: number } },
+    ) => {
+      state.clipboardLink = action.payload;
+    },
   },
   selectors: {
     getParentId: (state) => state.parent_id,
@@ -73,6 +87,7 @@ export const applicationSlice = createSlice({
     getFeed: (state) => state.feed,
     getActiveTab: (state) => state.activeTab,
     getSecuredCollection: (state) => state.securedCollections,
+    getClipboardLinkState: (state) => state.clipboardLink,
   },
 });
 
@@ -85,6 +100,7 @@ export const {
   setActiveTab,
   setSelectedCollection,
   addToSecuredCollection,
+  setClipboardLinkLoading,
 } = applicationSlice.actions;
 export const {
   getParentId,
@@ -94,5 +110,6 @@ export const {
   getActiveTab,
   getSelectedCollection,
   getSecuredCollection,
+  getClipboardLinkState,
 } = applicationSlice.selectors;
 export default applicationSlice.reducer;
