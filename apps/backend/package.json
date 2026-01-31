@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "bun --watch src/index.ts",
-    "build": "bun build --entry src/index.ts --minify --target=bun --outfile dist/bundle.js",
+    "build": "bun build --entry src/index.ts --minify --target=bun --outfile dist/bundle.js && cp dist/bundle.js dist/index.js",
     "start": "bun run dist/bundle.js"
   },
   "devDependencies": {
