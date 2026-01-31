@@ -1,17 +1,7 @@
 {
   "version": 2,
   "outputDirectory": "dist",
-  "functions": {
-    "dist/bundle.js": {
-      "runtime": "nodejs18.x"
-    }
-  },
-  "routes": [
-    {
-      "src": "/(.*)",
-      "dest": "/dist/bundle.js"
-    }
-  ],
+  "rewrites": [{ "source": "/(.*)", "destination": "/" }],
   "headers": [
     {
       "source": "/src/(.*)",
