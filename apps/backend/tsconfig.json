@@ -10,7 +10,7 @@
     "outDir": "dist",
     "rootDir": "src",
     // "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
+    "verbatimModuleSyntax": false,
     // "noEmit": true,
     "noFallthroughCasesInSwitch": true,
 
