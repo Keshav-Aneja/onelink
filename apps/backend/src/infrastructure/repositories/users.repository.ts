@@ -9,7 +9,7 @@ export class UsersRepository implements IUsersRepository {
    * @param id
    * @returns User
    */
-  async getUser(id: number): Promise<User | undefined> {
+  async getUser(id: any): Promise<User | undefined> {
     const [user] = await db("users").where({ id }).returning("*");
     return user;
   }
