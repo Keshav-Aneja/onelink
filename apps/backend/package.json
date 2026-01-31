@@ -38,6 +38,10 @@
     "pg": "^8.13.3",
     "pkce-challenge": "^4.1.0",
     "redis": "^4.7.0",
+    "vercel": "^50.9.6",
     "winston": "^3.17.0"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
