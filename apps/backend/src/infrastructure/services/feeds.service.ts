@@ -124,6 +124,21 @@ export default class FeedsService {
     });
   }
 
+  async getFeedItemsFromCache(
+    owner_id: string,
+    sinceDays: number = 1,
+    feedId?: string,
+  ): Promise<RSSFeed[]> {
+    const cached = await this.repo.getCachedItems(owner_id, sinceDays, feedId);
+    return cached.map((item) => ({
+      item_hash: item.item_hash,
+      title: item.title,
+      link: item.link,
+      published_date: item.published_date,
+      feed_id: item.feed_id,
+    }));
+  }
+
   async getReadHashes(owner_id: string): Promise<string[]> {
     const set = await this.repo.getReadHashes(owner_id);
     return Array.from(set);

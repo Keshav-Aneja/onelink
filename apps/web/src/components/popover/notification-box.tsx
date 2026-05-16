@@ -2,31 +2,44 @@ import CircularButton from "@components/buttons/circular-button";
 import { RiNotification4Fill } from "react-icons/ri";
 import Popover from "./popover";
 import { cn } from "@lib/tailwind-utils";
-import Button from "@components/buttons/button";
-import { useAppDispatch, useAppSelector } from "@store/store";
-import { getFeed, setFeed } from "@store/slices/application-slice";
+import { BiCalendar } from "react-icons/bi";
+import { GoLinkExternal } from "react-icons/go";
 import type { RSSFeed } from "@onelink/entities/models";
+import { useNotifications } from "@features/feeds/get-feed-items";
+import { useReadHashes } from "@features/feeds/get-read-hashes";
+import { useSubscriptions } from "@features/feeds/get-subscriptions";
+import { useMemo } from "react";
 
-import { Link, useNavigate } from "react-router";
-import NotificationItemSkeleton from "@components/loaders/notification-item-skeleton";
-import { useFeed } from "@features/feed/get-feed";
-import { paths } from "@config/paths";
-import { useEffect } from "react";
 const NotificationBox = () => {
-  const feed = useFeed({ sinceDays: 1 });
-  const dispatch = useAppDispatch();
+  const subsQuery = useSubscriptions();
+  const subs = subsQuery.data?.data ?? [];
 
-  useEffect(() => {
-    if (feed.isSuccess && feed.data?.data) {
-      dispatch(setFeed(feed.data.data));
-    }
-  }, [feed]);
+  const itemsQuery = useNotifications(
+    { sinceDays: 1 },
+    { queryConfig: { enabled: subs.length > 0 } },
+  );
+  const readHashesQuery = useReadHashes();
+
+  const serverHashes: string[] = readHashesQuery.data?.data ?? [];
+  const readSet = useMemo(() => new Set(serverHashes), [serverHashes]);
+  const items: RSSFeed[] = itemsQuery.data?.data ?? [];
+  const unreadItems = useMemo(
+    () => items.filter((i) => i.item_hash && !readSet.has(i.item_hash)),
+    [items, readSet],
+  );
+
+  const isLoading = subsQuery.isLoading || itemsQuery.isLoading;
+
   return (
     <section className="relative">
       <Popover
-        Trigger={<NotificationTrigger />}
+        Trigger={<NotificationTrigger unreadCount={unreadItems.length} />}
         Content={({ className }) => (
-          <NotificaitonContent className={className} />
+          <NotificationContent
+            className={className}
+            isLoading={isLoading}
+            unreadItems={unreadItems.slice(0, 5)}
+          />
         )}
       />
     </section>
@@ -35,55 +48,12 @@ const NotificationBox = () => {
 
 export default NotificationBox;
 
-type ContentProps = {
-  className?: string;
-};
-export function NotificaitonContent({ className }: ContentProps) {
-  const feed = useAppSelector(getFeed);
-  const navigate = useNavigate();
-  return (
-    <div className={cn(className, "w-88 xxl:w-100 p-3 xxl:p-4 z-[100]")}>
-      <span className="w-full text-left text-lg xxl:text-xl  tracking-wide truncate font-semibold border-b-1 border-b-white/40 pb-2">
-        Notifiations
-      </span>
-      <div className="flex flex-col">
-        {!feed && (
-          <>
-            {[1, 2, 3].map((item, _) => (
-              <NotificationItemSkeleton key={item} />
-            ))}
-          </>
-        )}
-        {feed?.length === 0 ? (
-          <div className="text-xs text-theme_secondary_white text-center h-12 flex items-center justify-center">
-            No notifications here.
-          </div>
-        ) : (
-          feed
-            ?.slice(0, 3)
-            .map((item, _i) => <NotificationItem key={_i} data={item} />)
-        )}
-      </div>
-      <button
-        className="w-full text-sm bg-theme_secondary_black hover:bg-theme_secondary_black/80 rounded-md py-1 cursor-pointer"
-        onClick={() => {
-          navigate(paths.notifications.getHref());
-        }}
-      >
-        View All
-      </button>
-    </div>
-  );
-}
-
-export function NotificationTrigger() {
-  const feed = useAppSelector(getFeed);
+function NotificationTrigger({ unreadCount }: { unreadCount: number }) {
   return (
     <CircularButton name="notifications">
-      {/* TODO: Render the notifications blob based on the availability */}
-      {feed?.length !== 0 && (
-        <span className=" bg-primary w-5 h-5 rounded-full flex items-center justify-center absolute -top-1 -right-1 text-xs font-bold">
-          {feed ? feed.length : ""}
+      {unreadCount > 0 && (
+        <span className="bg-primary w-4 h-4 rounded-full flex items-center justify-center absolute -top-1 -right-1 text-[10px] font-bold">
+          {unreadCount > 99 ? "99+" : unreadCount}
         </span>
       )}
       <RiNotification4Fill className="text-xl xxl:text-2xl" />
@@ -91,32 +61,71 @@ export function NotificationTrigger() {
   );
 }
 
-export function NotificationItem({ data }: { data: RSSFeed }) {
-  if (!data) return null;
-  let pubDate: Date | null = null;
-  if (data.published_date) {
-    pubDate = new Date(data.published_date);
-  }
+type ContentProps = {
+  className?: string;
+  isLoading: boolean;
+  unreadItems: RSSFeed[];
+};
+
+function NotificationContent({ className, isLoading, unreadItems }: ContentProps) {
   return (
-    <div className="w-full flex flex-col gap-2 not-first:border-t-1 border-white/20 not-first:-mt-4 pt-2 xxl:pt-4 last:-mb-4">
-      <section className="relative">
-        <h3 className="text-sm xxl:text-base font-medium">
-          {data.title && data.title.length < 100
-            ? data.title
-            : data.title?.slice(0, 100) + "..."}
-        </h3>
-        <p className="text-xs xxl:text-sm text-secondary_text h-8 w-full text-wrap truncate pt-1">
-          {pubDate?.toLocaleTimeString()} - {pubDate?.toLocaleDateString()}
-        </p>
-        <div className="absolute bottom-0 left-0 h-1/3 bg-linear-0 from-black to-transparent w-full"></div>
-      </section>
-      <aside className="self-end relative bottom-8">
-        <Link to={data.link || ""} target="_blank">
-          <Button className="text-xs xxl:text-sm hover:bg-primary">
-            Read more
-          </Button>
-        </Link>
-      </aside>
+    <div className={cn(className, "w-80 xxl:w-96 p-3 z-[100] flex flex-col gap-2")}>
+      <div className="flex items-center justify-between pb-2 border-b border-white/10">
+        <span className="text-sm font-semibold">Unread today</span>
+        {unreadItems.length > 0 && (
+          <span className="text-xs text-primary font-medium">{unreadItems.length} new</span>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-1">
+        {isLoading && (
+          [1, 2, 3].map((i) => (
+            <div key={i} className="px-2 py-2.5 rounded-lg flex flex-col gap-1.5">
+              <div className="h-3.5 w-4/5 rounded bg-theme_secondary_black animate-pulse" />
+              <div className="h-2.5 w-1/3 rounded bg-theme_secondary_black/60 animate-pulse" />
+            </div>
+          ))
+        )}
+
+        {!isLoading && unreadItems.length === 0 && (
+          <p className="text-xs text-secondary_text text-center py-6">
+            All caught up — nothing new in the last 24h.
+          </p>
+        )}
+
+        {!isLoading && unreadItems.map((item, i) => (
+          <NotificationItem key={item.item_hash ?? i} data={item} />
+        ))}
+      </div>
     </div>
+  );
+}
+
+function NotificationItem({ data }: { data: RSSFeed }) {
+  if (!data) return null;
+  const pubDate = data.published_date ? new Date(data.published_date) : null;
+  const timeStr = pubDate?.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+
+  return (
+    <a
+      href={data.link ?? ""}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="group flex items-start justify-between gap-3 px-2 py-2.5 rounded-lg hover:bg-theme_secondary_black/60 transition-colors cursor-pointer"
+    >
+      <div className="flex-1 min-w-0">
+        <p className="text-xs font-medium leading-snug line-clamp-2">{data.title}</p>
+        {pubDate && (
+          <div className="flex items-center gap-1 mt-1 text-[10px] text-secondary_text">
+            <BiCalendar className="flex-shrink-0" />
+            <span>{timeStr}</span>
+          </div>
+        )}
+      </div>
+      <GoLinkExternal className="text-secondary_text text-xs flex-shrink-0 mt-0.5 opacity-0 group-hover:opacity-100 transition-opacity" />
+    </a>
   );
 }
