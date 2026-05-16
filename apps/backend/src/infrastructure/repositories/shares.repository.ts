@@ -37,4 +37,23 @@ export class SharesRepository implements ISharesRepository {
     }
     return shares.id;
   }
+
+  async findByCollectionAndUser(collection_id: string, user_id: string): Promise<Share | undefined> {
+    const [share] = await db("shares").where({ collection_id, shared_with: user_id }).select("*");
+    return share;
+  }
+
+  async getCollectionInvitees(collection_id: string): Promise<Share[]> {
+    return db("shares").where({ collection_id }).select("*");
+  }
+
+  async updateCollectionShareType(collection_id: string, owner_id: string, share_type: string): Promise<void> {
+    await db("shares")
+      .where({ collection_id, shared_by: owner_id })
+      .update({ share_type, updated_at: db.fn.now() });
+  }
+
+  async getSharedWithMe(user_id: string): Promise<Share[]> {
+    return db("shares").where({ shared_with: user_id }).select("*");
+  }
 }

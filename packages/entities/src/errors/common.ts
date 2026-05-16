@@ -17,8 +17,10 @@ export class ValidationError extends Error {
 }
 
 export class RequestError extends Error {
-  constructor(message: string) {
+  statusCode: number;
+  constructor(message: string, statusCode = 400) {
     super(message);
+    this.statusCode = statusCode;
   }
 }
 

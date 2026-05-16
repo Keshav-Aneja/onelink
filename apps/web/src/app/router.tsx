@@ -50,6 +50,11 @@ export const createAppRouter = (queryClient: QueryClient) => {
         import("./routes/collections-root").then(protectedLoader(queryClient)),
       children: [
         {
+          path: paths.sharedCollection.path,
+          lazy: () =>
+            import("./routes/shared-collection").then(protectedLoader(queryClient)),
+        },
+        {
           index: true,
           path: paths.collections.collection.path,
           lazy: () =>
@@ -66,6 +71,10 @@ export const createAppRouter = (queryClient: QueryClient) => {
       path: paths.favourite.path,
       lazy: () =>
         import("./routes/favourite").then(protectedLoader(queryClient)),
+    },
+    {
+      path: paths.publicShare.path,
+      lazy: () => import("./routes/public-collection").then(convert(queryClient)),
     },
     {
       path: "*",

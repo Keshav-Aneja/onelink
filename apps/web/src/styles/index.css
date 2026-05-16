@@ -104,6 +104,13 @@
   .--collection-box:hover .--delete-collection-btn {
     opacity: 1;
   }
+
+  .--share-btn {
+    opacity: 0;
+  }
+  .--collection-box:hover .--share-btn {
+    opacity: 1;
+  }
 }
 
 .--auth-background {

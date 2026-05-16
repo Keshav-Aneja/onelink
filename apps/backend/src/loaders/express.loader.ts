@@ -7,6 +7,7 @@ import env from "../config/env";
 import Routes from "../api";
 import type { Request, Response, NextFunction, Errback } from "express";
 import { ActionResponse } from "@onelink/action";
+import { RequestError } from "@onelink/entities/errros";
 import compression from "compression";
 export default async (app: Express) => {
   app.use(cors({ origin: FRONTEND_URL, credentials: true }));
@@ -22,9 +23,9 @@ export default async (app: Express) => {
 
   app.use(apiPrefix, Routes());
   app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
-    // Error handler
     console.error("ERROR: ", err);
-    ActionResponse.error(res, err, 400);
+    const status = err instanceof RequestError ? err.statusCode : 400;
+    ActionResponse.error(res, err, status);
   });
   return app;
 };

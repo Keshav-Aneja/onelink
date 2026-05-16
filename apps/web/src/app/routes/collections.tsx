@@ -2,6 +2,7 @@ import { Fragment, useEffect, useState } from "react";
 import { useParentIdFromPath } from "@lib/utils/get-paths";
 import CollectionsContent from "@sections/collections";
 import LinksContent from "@sections/links";
+import SharedWithMe from "@sections/shared-with-me";
 import LinkDetailCard from "@components/cards/link-details-card";
 import CollectionsDetailCard from "@components/cards/collection-details-card";
 import { useCollectionByPath } from "@hooks/collections";
@@ -42,6 +43,7 @@ const CollectionsPage = () => {
     <Fragment>
       <CollectionsContent pathId={pathId} />
       <LinksContent pathId={pathId} />
+      {pathId === null && <SharedWithMe />}
       <LinkDetailCard />
       <CollectionsDetailCard />
     </Fragment>

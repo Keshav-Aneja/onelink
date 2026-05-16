@@ -43,6 +43,14 @@ export const paths = {
     path: "/favourite",
     getHref: () => "/favourite",
   },
+  publicShare: {
+    path: "/s/:token",
+    getHref: (token: string) => `/s/${token}`,
+  },
+  sharedCollection: {
+    path: "/collections/shared/:collection_id",
+    getHref: (id: string) => `/collections/shared/${id}`,
+  },
 } as const;
 
 //Learning: here exporting it as const preserves the contents of the object making it immutable.
