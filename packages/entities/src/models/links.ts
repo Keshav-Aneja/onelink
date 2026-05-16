@@ -15,6 +15,7 @@ export const LinkSchema = z.object({
   owner_id: z.string().uuid().nonempty(),
   parent_id: z.string().nullable(),
   subscribed: z.boolean().default(false).optional(),
+  created_at: z.string().optional(),
 });
 
 export type Link = z.infer<typeof LinkSchema>;
