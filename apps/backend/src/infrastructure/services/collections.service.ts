@@ -7,7 +7,7 @@ import type { ICollectionsService } from "../../application/services/collections
 import { CollectionRepository } from "../repositories/collections.repository";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 import { CollectionDTO } from "../dtos/collections.dto";
-import crypto from "node:crypto";
+import bcrypt from "bcryptjs";
 import logger from "../../helpers/logger";
 import LinkService from "./links.service";
 export default class CollectionsService implements ICollectionsService {
@@ -29,10 +29,7 @@ export default class CollectionsService implements ICollectionsService {
   async createCollection(collection: CollectionInsert): Promise<Collection> {
     const data = CollectionSchema.omit({ id: true }).parse(collection);
     if (data.is_protected && data.password) {
-      const hash = crypto
-        .createHash("sha256")
-        .update(data.password)
-        .digest("hex");
+      const hash = await bcrypt.hash(data.password, 12);
       data["password"] = hash;
     } else {
       data.is_protected = false;
@@ -168,14 +165,7 @@ export default class CollectionsService implements ICollectionsService {
       data.owner_id,
     );
     if (collection && password) {
-      const verifyHash = crypto
-        .createHash("sha256")
-        .update(password)
-        .digest("hex");
-      console.log(verifyHash);
-      console.log("_______");
-      console.log(collection.password);
-      return verifyHash === collection.password;
+      return bcrypt.compare(password, collection.password);
     }
     return false;
   }

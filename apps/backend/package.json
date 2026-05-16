@@ -10,6 +10,7 @@
   },
   "devDependencies": {
     "@onelink/typescript-config": "*",
+    "@types/bcryptjs": "^2.4.6",
     "@types/bun": "latest",
     "@types/compression": "^1.7.5",
     "@types/cookie-parser": "^1.4.8",
@@ -28,6 +29,7 @@
     "@onelink/db": "*",
     "@onelink/entities": "*",
     "@onelink/scraper": "*",
+    "bcryptjs": "^2.4.3",
     "better-sqlite3": "^12.6.2",
     "compression": "^1.8.0",
     "connect-redis": "^8.0.1",
