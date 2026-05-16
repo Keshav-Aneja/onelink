@@ -5,4 +5,5 @@ export interface IUsersRepository {
   getUserByEmail(email: string): Promise<User | undefined>;
   getUserByProviderID(providerID: string): Promise<User | undefined>;
   createUser(input: UserInsert): Promise<User>;
+  findByEmail(email: string): Promise<User | undefined>;
 }
