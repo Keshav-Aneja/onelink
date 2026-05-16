@@ -15,36 +15,43 @@ const NavigationMenu = () => {
   }, []);
 
   return (
-    <div className="sticky top-3 z-50 px-4">
+    <div className="sticky top-3 z-[1000] px-4 ">
       <div className="mx-auto max-w-295">
-        <div data-scrolled={scrolled} className="lp-nav-pill px-2 py-2 flex items-center gap-2">
-          <a href="#top" className="relative z-10 flex items-center gap-2 pl-3 pr-2 py-1 rounded-full">
-            <span className="relative inline-block w-7 h-7">
-              <span className="absolute inset-0 rounded-md bg-primary" />
-              <span className="absolute inset-0.75 rounded-[5px] bg-theme_primary_black flex items-center justify-center text-primary text-[12px] font-bold">
-                ◉
-              </span>
+        <div
+          data-scrolled={scrolled}
+          className="lp-nav-pill px-2 py-2 flex items-center gap-2"
+        >
+          <a
+            href="#top"
+            className="relative z-10 flex items-center gap-2 pl-3 pr-2 py-1 rounded-full"
+          >
+            <img
+              src="/images/logo.webp"
+              alt="OneLink"
+              className="w-6 h-auto hue-rotate-90"
+            />
+            <span className="text-[15px] font-semibold tracking-tight">
+              OneLink
             </span>
-            <span className="text-[15px] font-semibold tracking-tight">OneLink</span>
           </a>
 
           <div className="flex-1" />
 
           <nav className="hidden md:flex relative z-10 items-center gap-1 text-sm text-theme_secondary_white">
-            <a href="#features" className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition">
-              Features
-            </a>
-            <a href="#preview" className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition">
-              Preview
-            </a>
-            <Link
-              to={paths.auth.root.getHref()}
+            <a
+              href="#features"
               className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition"
             >
-              Login
-            </Link>
+              Features
+            </a>
             <a
-              href="https://keshavaneja.in"
+              href="#preview"
+              className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition"
+            >
+              Preview
+            </a>
+            <a
+              href="https://www.linkedin.com/in/keshav-aneja/"
               target="_blank"
               rel="noreferrer"
               className="px-3 py-1.5 rounded-full hover:text-white hover:bg-white/5 transition"

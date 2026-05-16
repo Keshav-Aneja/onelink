@@ -18,32 +18,75 @@ const collections = [
   { name: "Design Systems", count: 42, color: "#dd4e52", open: true },
   { name: "Rust & Systems", count: 88, color: "#7c9eff", open: false },
   { name: "AI Papers", count: 134, color: "#5fd0a5", open: false },
-  { name: "Side Quests", count: 27, color: "#f0a557", open: false, locked: true },
+  {
+    name: "Side Quests",
+    count: 27,
+    color: "#f0a557",
+    open: false,
+    locked: true,
+  },
   { name: "Reading List", count: 312, color: "#cfcfcf", open: false },
 ];
 
 const mockLinks = [
-  { site: "Vercel", title: "Designing for the web is changing fast — here's what we learned", tag: "Design", hue: 0 },
-  { site: "Linear", title: "How we built our keyboard-first navigation model", tag: "UX", hue: 220 },
-  { site: "Stripe", title: "The mechanics of a great pricing page", tag: "Marketing", hue: 30 },
-  { site: "GitHub Blog", title: "Inside the editor: how Copilot ranks suggestions", tag: "Engineering", hue: 120 },
-  { site: "Figma", title: "Auto-layout, finally, makes sense — a deep dive", tag: "Design", hue: 280 },
-  { site: "arxiv.org", title: "Sparse attention and the limits of long-context retrieval", tag: "Research", hue: 340 },
+  {
+    site: "Vercel",
+    title: "Designing for the web is changing fast — here's what we learned",
+    tag: "Design",
+    hue: 0,
+  },
+  {
+    site: "Linear",
+    title: "How we built our keyboard-first navigation model",
+    tag: "UX",
+    hue: 220,
+  },
+  {
+    site: "Stripe",
+    title: "The mechanics of a great pricing page",
+    tag: "Marketing",
+    hue: 30,
+  },
+  {
+    site: "GitHub Blog",
+    title: "Inside the editor: how Copilot ranks suggestions",
+    tag: "Engineering",
+    hue: 120,
+  },
+  {
+    site: "Figma",
+    title: "Auto-layout, finally, makes sense — a deep dive",
+    tag: "Design",
+    hue: 280,
+  },
+  {
+    site: "arxiv.org",
+    title: "Sparse attention and the limits of long-context retrieval",
+    tag: "Research",
+    hue: 340,
+  },
 ];
 
 function MockSidebar() {
   return (
     <aside className="hidden md:flex w-55 shrink-0 flex-col gap-1 border-r border-white/10 p-3 bg-[#0d0d0d]">
-      <div className="px-2 py-2 text-[11px] uppercase tracking-widest text-secondary_text">Library</div>
+      <div className="px-2 py-2 text-[11px] uppercase tracking-widest text-secondary_text">
+        Library
+      </div>
       {libraryItems.map((item, i) => (
-        <div key={i} className="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[13px] text-theme_secondary_white hover:bg-white/5">
+        <div
+          key={i}
+          className="flex items-center gap-2.5 px-2 py-1.5 rounded-md text-[13px] text-theme_secondary_white hover:bg-white/5"
+        >
           <item.Icon size={14} />
           <span className="flex-1">{item.label}</span>
           <span className="text-[11px] text-secondary_text">{item.count}</span>
         </div>
       ))}
       <div className="mt-4 flex items-center justify-between px-2">
-        <div className="text-[11px] uppercase tracking-widest text-secondary_text">Collections</div>
+        <div className="text-[11px] uppercase tracking-widest text-secondary_text">
+          Collections
+        </div>
         <FaPlus size={12} className="text-secondary_text" />
       </div>
       <div className="mt-1 flex flex-col gap-0.5">
@@ -51,11 +94,19 @@ function MockSidebar() {
           <div
             key={i}
             className={`flex items-center gap-2 px-2 py-1.5 rounded-md text-[13px] ${
-              i === 0 ? "bg-white/[0.06] text-white" : "text-theme_secondary_white"
+              i === 0
+                ? "bg-white/[0.06] text-white"
+                : "text-theme_secondary_white"
             }`}
           >
-            <IoChevronForward size={12} className={i === 0 ? "rotate-90" : ""} />
-            <span className="w-2 h-2 rounded-sm" style={{ background: c.color }} />
+            <IoChevronForward
+              size={12}
+              className={i === 0 ? "rotate-90" : ""}
+            />
+            <span
+              className="w-2 h-2 rounded-sm"
+              style={{ background: c.color }}
+            />
             <span className="flex-1 truncate">{c.name}</span>
             {c.locked && <FaLock size={11} className="text-secondary_text" />}
             <span className="text-[11px] text-secondary_text">{c.count}</span>
@@ -80,7 +131,9 @@ function MockMain() {
         <div className="hidden md:flex items-center gap-2 px-2.5 py-1.5 rounded-md bg-white/[0.04] border border-white/10 text-[12px] text-secondary_text w-55">
           <FaMagnifyingGlass size={12} />
           <span>Search this collection</span>
-          <span className="ml-auto text-[10px] border border-white/15 rounded px-1.5 py-0.5">⌘ K</span>
+          <span className="ml-auto text-[10px] border border-white/15 rounded px-1.5 py-0.5">
+            ⌘ K
+          </span>
         </div>
         <div className="lp-btn-primary text-[12px] text-white rounded-md px-3 py-1.5 inline-flex items-center gap-1.5 cursor-pointer select-none">
           <FaPlus size={12} /> Add link
@@ -90,7 +143,10 @@ function MockMain() {
       {/* Link cards */}
       <div className="p-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-3">
         {mockLinks.map((l, i) => (
-          <div key={i} className="rounded-lg border border-white/10 bg-[#141414] overflow-hidden hover:border-white/20 transition">
+          <div
+            key={i}
+            className="rounded-lg border border-white/10 bg-[#141414] overflow-hidden hover:border-white/20 transition"
+          >
             <div className="lp-lc-thumb h-24 relative">
               <div
                 className="absolute inset-0"
@@ -104,10 +160,15 @@ function MockMain() {
             </div>
             <div className="p-3">
               <div className="flex items-center gap-2 text-[11px] text-secondary_text">
-                <span className="w-3.5 h-3.5 rounded-sm" style={{ background: `hsl(${l.hue},60%,55%)` }} />
+                <span
+                  className="w-3.5 h-3.5 rounded-sm"
+                  style={{ background: `hsl(${l.hue},60%,55%)` }}
+                />
                 {l.site}
               </div>
-              <div className="text-[13px] font-medium text-white leading-snug mt-1 line-clamp-2">{l.title}</div>
+              <div className="text-[13px] font-medium text-white leading-snug mt-1 line-clamp-2">
+                {l.title}
+              </div>
             </div>
           </div>
         ))}
@@ -118,10 +179,15 @@ function MockMain() {
 
 const ProductMockup = () => {
   return (
-    <section id="preview" className="relative py-16 md:py-24">
+    <section
+      id="preview"
+      className="relative py-16 md:py-24 bg-theme_primary_black "
+    >
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10">
         <div className="text-center max-w-[720px] mx-auto">
-          <div className="text-xs tracking-widest uppercase text-primary/90 font-medium">The Workspace</div>
+          <div className="text-xs tracking-widest uppercase text-primary/90 font-medium">
+            The Workspace
+          </div>
           <h2 className="mt-3 text-[1.75rem] md:text-[2.5rem] font-semibold tracking-tight leading-tight lp-text-grad">
             A workspace built for how you actually browse.
           </h2>
@@ -152,7 +218,10 @@ const ProductMockup = () => {
             {/* Bottom fade */}
             <div
               className="absolute inset-x-0 bottom-0 h-24 pointer-events-none"
-              style={{ background: "linear-gradient(to bottom, transparent, rgba(11,11,11,0.85))" }}
+              style={{
+                background:
+                  "linear-gradient(to bottom, transparent, rgba(11,11,11,0.85))",
+              }}
             />
           </div>
         </div>

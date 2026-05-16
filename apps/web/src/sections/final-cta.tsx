@@ -5,7 +5,7 @@ import { FaGithub } from "react-icons/fa6";
 
 const FinalCTA = () => {
   return (
-    <section className="relative py-24 md:py-32 overflow-hidden">
+    <section className="relative py-24 md:py-32 overflow-hidden bg-theme_primary_black">
       <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[640px] h-[320px] lp-radial-blob pointer-events-none" />
       <div className="w-full max-w-[1440px] mx-auto px-6 md:px-10">
         <div className="text-center max-w-[680px] mx-auto">
