@@ -42,10 +42,6 @@ export const getNotificationsQueryOptions = (params: NotificationParams) =>
     gcTime: 5 * 60 * 1000,
   });
 
-type UseFeedItemsOptions = {
-  queryConfig?: QueryConfig<typeof getFeedItemsQueryOptions>;
-};
-
 type UseNotificationsOptions = {
   queryConfig?: QueryConfig<typeof getNotificationsQueryOptions>;
 };
