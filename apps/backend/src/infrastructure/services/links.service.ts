@@ -7,16 +7,22 @@ import {
 } from "@onelink/entities/models";
 import type ILinksService from "../../application/services/links.interface";
 import { LinksRepository } from "../repositories/links.repository";
+import { TagsRepository } from "../repositories/tags.repository";
 import { LinkDTO } from "../dtos/links.dto";
 import {
   AuthenticationError,
   DatabaseOperationError,
 } from "@onelink/entities/errros";
-import { Scraper, type WebsiteMetadata } from "@onelink/scraper";
+import { Scraper, type WebsiteMetadata, deriveTags } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
+import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
 export default class LinkService implements ILinksService {
-  constructor(private readonly linkRepository = new LinksRepository()) {}
+  constructor(
+    private readonly linkRepository = new LinksRepository(),
+    private readonly tagsRepository = new TagsRepository(),
+    private readonly rssSubsRepo = new RssSubscriptionsRepository(),
+  ) {}
 
   async getAllChildLinks(
     parentId: string | null,
@@ -38,12 +44,26 @@ export default class LinkService implements ILinksService {
     );
     if (!links) return undefined;
 
-    return links.map((link) => LinkDTO.fromObject(link).toObject());
+    const linkIds = links.map((l) => l.id);
+    const allTags = await this.tagsRepository.getTagsForLinks(linkIds);
+    const tagsByLink = new Map<string, typeof allTags>();
+    for (const tag of allTags) {
+      const arr = tagsByLink.get(tag.link_id) ?? [];
+      arr.push(tag);
+      tagsByLink.set(tag.link_id, arr);
+    }
+
+    return links.map((link) => {
+      const obj = LinkDTO.fromObject(link).toObject();
+      obj.tags = tagsByLink.get(link.id) ?? [];
+      return obj;
+    });
   }
 
   async createLink(link: LinkInsert): Promise<Link> {
     const scraper = new Scraper(link.link);
-    const data = LinkSchema.omit({ id: true }).parse(link);
+    const { tags: userTags, ...linkData } = link;
+    const data = LinkSchema.omit({ id: true, tags: true }).parse(linkData);
     const content = await scraper.scrape();
     let metadata = {} as WebsiteMetadata;
     if (content) {
@@ -55,8 +75,35 @@ export default class LinkService implements ILinksService {
     if (!newLink) {
       throw new DatabaseOperationError("Cannot create link");
     }
+
+    // If user provided tags, use those (confirmed=true); otherwise auto-derive
+    const confirmedTags: string[] = userTags && userTags.length > 0 ? userTags : [];
+    const autoTags: string[] =
+      userTags && userTags.length > 0 ? [] : deriveTags(metadata, link.link);
+
+    const [confirmedTagRows, autoTagRows] = await Promise.all([
+      confirmedTags.length > 0
+        ? this.tagsRepository.upsertTagsForLink(
+            newLink.id,
+            data.owner_id,
+            confirmedTags,
+            true,
+          )
+        : Promise.resolve([]),
+      autoTags.length > 0
+        ? this.tagsRepository.upsertTagsForLink(
+            newLink.id,
+            data.owner_id,
+            autoTags,
+            false,
+          )
+        : Promise.resolve([]),
+    ]);
+
     const linkDTO = LinkDTO.fromObject(newLink);
-    return linkDTO.toObject();
+    const result = linkDTO.toObject();
+    result.tags = [...confirmedTagRows, ...autoTagRows];
+    return result;
   }
   async deleteLink(ownerId: string, linkId: string): Promise<{ id: string }> {
     const deleteLinkSchema = LinkSchema.pick({ id: true, owner_id: true });
@@ -133,18 +180,33 @@ export default class LinkService implements ILinksService {
       throw new AuthenticationError("Invalid owner or link id");
     }
     if (parsedData.subscribed === true) {
-      const link = await this.linkRepository.getLinkById(id, ownerId);
-      if (link && !link.rss) {
-        const scraper = new Scraper(link.link);
+      const existingLink = await this.linkRepository.getLinkById(id, ownerId);
+      if (existingLink && !existingLink.rss) {
+        const scraper = new Scraper(existingLink.link);
         const content = await scraper.scrape();
         const metadata = await scraper.extractMetadata(content);
         if (metadata.rssLink || metadata.atomLink) {
           parsedData["rss"] = metadata.rssLink || metadata.atomLink;
         } else {
-          const rss = new RSS(link.link, "");
+          const rss = new RSS(existingLink.link, "");
           const foundRSSLink = await rss.findValidRSS();
           if (foundRSSLink) {
             parsedData["rss"] = foundRSSLink;
+          }
+        }
+      }
+      // Ensure an rss_subscriptions row exists for this link
+      if (existingLink) {
+        const feedUrl = (parsedData["rss"] as string | undefined) || existingLink.rss;
+        if (feedUrl) {
+          const existing = await this.rssSubsRepo.getByFeedUrl(owner_id, feedUrl);
+          if (!existing) {
+            await this.rssSubsRepo.create({
+              owner_id,
+              feed_url: feedUrl,
+              site_url: existingLink.link,
+              link_id: id,
+            });
           }
         }
       }

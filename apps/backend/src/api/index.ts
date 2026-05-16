@@ -4,6 +4,9 @@ import collections from "./routes/collections";
 import links from "./routes/links";
 import share from "./routes/share";
 import publicRoutes from "./routes/public";
+import tags from "./routes/tags";
+import feeds from "./routes/feeds";
+import userSettings from "./routes/user-settings";
 
 export default function Routes() {
   const router = Router();
@@ -12,5 +15,8 @@ export default function Routes() {
   links(router);
   share(router);
   publicRoutes(router);
+  tags(router);
+  feeds(router);
+  userSettings(router);
   return router;
 }

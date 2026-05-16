@@ -13,6 +13,13 @@ export function filterLinks(links: Link[], filterBy: FilterBy): Link[] {
   }
 }
 
+export function filterLinksByTags(links: Link[], tagFilter: string[]): Link[] {
+  if (tagFilter.length === 0) return links;
+  return links.filter((l) =>
+    tagFilter.every((t) => l.tags?.some((lt) => lt.name === t)),
+  );
+}
+
 export function sortLinks(links: Link[], sortBy: SortBy): Link[] {
   const sorted = [...links];
   switch (sortBy) {

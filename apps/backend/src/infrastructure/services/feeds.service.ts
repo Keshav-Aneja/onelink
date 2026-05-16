@@ -63,6 +63,31 @@ export default class FeedsService {
     return { id: deletedId };
   }
 
+  private mapCachedItemToRSSFeed(item: any): RSSFeed {
+    return {
+      item_hash: item.item_hash,
+      title: item.title,
+      link: item.link,
+      published_date: item.published_date,
+      feed_id: item.feed_id,
+    };
+  }
+
+  private mapRSSFeedToCacheItem(
+    item: RSSFeed,
+    subscription_id: string,
+    owner_id: string,
+  ) {
+    return {
+      subscription_id,
+      owner_id,
+      item_hash: item.item_hash!,
+      title: item.title,
+      link: item.link,
+      published_date: item.published_date ? new Date(item.published_date) : null,
+    };
+  }
+
   async getFeedItems(
     owner_id: string,
     sinceDays?: number,
@@ -75,13 +100,7 @@ export default class FeedsService {
     // Try cache first
     const cached = await this.repo.getCachedItems(owner_id, effectiveDays, feedId);
     if (cached.length > 0) {
-      return cached.map((item) => ({
-        item_hash: item.item_hash,
-        title: item.title,
-        link: item.link,
-        published_date: item.published_date,
-        feed_id: item.feed_id,
-      }));
+      return cached.map((item) => this.mapCachedItemToRSSFeed(item));
     }
 
     // Cache miss — fall back to live scrape
@@ -95,14 +114,9 @@ export default class FeedsService {
         await this.repo.updateHealth(sub.id, new Date(), null);
         // Upsert into cache
         if (items && items.length > 0) {
-          const toCache = items.map((i) => ({
-            subscription_id: sub.id,
-            owner_id,
-            item_hash: i.item_hash!,
-            title: i.title,
-            link: i.link,
-            published_date: i.published_date ? new Date(i.published_date) : null,
-          })).filter((i) => i.item_hash);
+          const toCache = items
+            .map((i) => this.mapRSSFeedToCacheItem(i, sub.id, owner_id))
+            .filter((i) => i.item_hash);
           await this.repo.upsertCacheItems(toCache);
         }
         return items || [];
@@ -130,13 +144,7 @@ export default class FeedsService {
     feedId?: string,
   ): Promise<RSSFeed[]> {
     const cached = await this.repo.getCachedItems(owner_id, sinceDays, feedId);
-    return cached.map((item) => ({
-      item_hash: item.item_hash,
-      title: item.title,
-      link: item.link,
-      published_date: item.published_date,
-      feed_id: item.feed_id,
-    }));
+    return cached.map((item) => this.mapCachedItemToRSSFeed(item));
   }
 
   async getReadHashes(owner_id: string): Promise<string[]> {
@@ -210,14 +218,9 @@ ${outlines}
         const items = await rss.scrapeRSS(90, undefined, undefined, sub.id);
         await this.repo.updateHealth(sub.id, new Date(), null);
         if (items && items.length > 0) {
-          const toCache = items.map((i) => ({
-            subscription_id: sub.id,
-            owner_id: sub.owner_id,
-            item_hash: i.item_hash!,
-            title: i.title,
-            link: i.link,
-            published_date: i.published_date ? new Date(i.published_date) : null,
-          })).filter((i) => i.item_hash);
+          const toCache = items
+            .map((i) => this.mapRSSFeedToCacheItem(i, sub.id, sub.owner_id))
+            .filter((i) => i.item_hash);
           await this.repo.upsertCacheItems(toCache);
         }
       } catch (err: any) {

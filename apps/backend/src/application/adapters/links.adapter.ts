@@ -5,22 +5,22 @@ import { ActionResponse } from "@onelink/action";
 import { getRedisClient } from "../../loaders/redis.loader";
 import logger from "../../helpers/logger";
 import { formatGetQueries } from "../../helpers/format-query";
+import { RssDiscoveryQueueRepository } from "../../infrastructure/repositories/rss-discovery-queue.repository";
 
 export default class LinkAdapter {
   static createLink = asyncHandler(async (req: Request, res: Response) => {
     const linkService = new LinkService();
+    const rssQueueRepo = new RssDiscoveryQueueRepository();
     const { notification, ...data } = req.body;
     let link = await linkService.createLink({
       ...data,
       owner_id: req.session.user_id,
     });
     if (notification) {
-      const rss = await linkService.findRSSFeedLink(link.link);
-      if (rss) {
-        link = await linkService.updateLink(link.owner_id, link.id, {
-          rss,
-        });
-      }
+      await rssQueueRepo.addToQueue({
+        link_id: link.id,
+        owner_id: link.owner_id,
+      });
     }
     ActionResponse.success(res, link, 201, "Link created");
   });

@@ -1,6 +1,5 @@
 import type { Link, LinkInsert } from "@onelink/entities/models";
 import type { WebsiteMetadata } from "@onelink/scraper";
-import { subscribe } from "node:diagnostics_channel";
 
 export class LinkDTO {
   private readonly _id: string;
@@ -168,7 +167,7 @@ export class LinkDTO {
     );
   }
 
-  public toObject() {
+  public toObject(): Link {
     return {
       id: this._id,
       name: this._name,
@@ -184,6 +183,7 @@ export class LinkDTO {
       keywords: this._keywords,
       is_starred: this._is_starred,
       subscribed: this._subscribed,
+      tags: [],
     };
   }
 }

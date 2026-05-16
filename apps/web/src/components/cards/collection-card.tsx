@@ -23,7 +23,6 @@ const CollectionCard = ({ data }: CollectionCardProps) => {
     <>
       <GlowCard
         className="w-full min-h-10 md:min-h-12 md:h-32 xxl:h-40 rounded-none md:rounded-md before:md:rounded-md after:md:rounded-md before:w-full before:h-40 before:md:h-60 border-b border-x-0 md:border-2 border-white/20 text-white cursor-pointer group --collection-box"
-        style={{ "--color-gradient": "red" }}
         containerClassName="flex-row md:flex-col gap-2 rounded-none md:rounded-md justify-start md:justify-center"
         onDoubleClick={() => {
           navigate(data.name);

@@ -35,13 +35,21 @@ export const paths = {
       },
     },
   },
-  notifications: {
-    path: "/notifications",
-    getHref: () => "/notifications",
-  },
   favourite: {
     path: "/favourite",
     getHref: () => "/favourite",
+  },
+  feeds: {
+    path: "/feeds",
+    getHref: () => "/feeds",
+  },
+  tags: {
+    path: "/tags",
+    getHref: () => "/tags",
+  },
+  settings: {
+    path: "/settings",
+    getHref: () => "/settings",
   },
   publicShare: {
     path: "/s/:token",

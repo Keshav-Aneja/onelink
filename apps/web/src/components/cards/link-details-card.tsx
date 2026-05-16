@@ -10,6 +10,7 @@ import { IoMdArrowForward } from "react-icons/io";
 import { RiFileMarkedFill } from "react-icons/ri";
 import { FiChevronDown, FiChevronUp, FiUser } from "react-icons/fi";
 import SubscribeButton from "@components/buttons/subscribe-button";
+import LinkTagsSection from "@components/tags/LinkTagsSection";
 
 const LinkDetailCard = () => {
   const link = useAppSelector(getSelectedLink);
@@ -69,6 +70,8 @@ const LinkDetailCard = () => {
               id={link.id}
             />
           </section>
+          <LinkTagsSection link={link} />
+
           <div className="relative">
             <p
               id="description-text"

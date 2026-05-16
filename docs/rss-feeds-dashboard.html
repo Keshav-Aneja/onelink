@@ -1,0 +1,910 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RSS Feeds Dashboard — Feature Plan</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #161b27;
+      --surface2: #1e2535;
+      --border: #2a3347;
+      --accent: #6366f1;
+      --accent2: #818cf8;
+      --accent3: #34d399;
+      --warn: #f59e0b;
+      --danger: #f43f5e;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --code-bg: #0d1117;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    a { color: var(--accent2); text-decoration: none; }
+
+    /* ── Layout ──────────────────────────────────────────────── */
+    .page { max-width: 1100px; margin: 0 auto; padding: 48px 24px 80px; }
+
+    /* ── Header ──────────────────────────────────────────────── */
+    header { margin-bottom: 48px; }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .badge-feature { background: #1e293b; color: var(--accent2); border: 1px solid #334155; }
+    .badge-effort  { background: #2d1e0f; color: var(--warn);    border: 1px solid #78350f; margin-left: 6px; }
+    h1 { font-size: 2.4rem; font-weight: 800; letter-spacing: -.03em; margin-bottom: 10px; }
+    h1 span { color: var(--accent2); }
+    .subtitle { color: var(--muted); font-size: 1rem; max-width: 680px; }
+
+    /* ── Section ─────────────────────────────────────────────── */
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 20px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    h3 { font-size: 1rem; font-weight: 600; margin-bottom: 10px; color: var(--text); }
+
+    /* ── Cards grid ──────────────────────────────────────────── */
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .grid-3 { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+    }
+    .card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .card h3 { margin-bottom: 6px; }
+    .card p  { color: var(--muted); font-size: .875rem; line-height: 1.55; }
+
+    /* ── Status pills ────────────────────────────────────────── */
+    .pill {
+      display: inline-block;
+      padding: 2px 9px;
+      border-radius: 99px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+    .pill-green  { background: #0f2e1e; color: var(--accent3); border: 1px solid #065f46; }
+    .pill-yellow { background: #2d1e0f; color: var(--warn);    border: 1px solid #78350f; }
+    .pill-red    { background: #2d0f14; color: var(--danger);  border: 1px solid #9f1239; }
+    .pill-blue   { background: #1a1f3a; color: var(--accent2); border: 1px solid #3730a3; }
+
+    /* ── Table ───────────────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; font-size: .875rem; }
+    thead th {
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      color: var(--muted);
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      color: var(--text);
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: var(--surface2); }
+    code {
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      font-size: .8rem;
+      color: #a5b4fc;
+    }
+
+    /* ── Flow diagram ────────────────────────────────────────── */
+    .flow {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 0;
+      margin-top: 4px;
+    }
+    .flow-step {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 14px 16px;
+      min-width: 150px;
+      flex: 1;
+      position: relative;
+    }
+    .flow-step .step-num {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent2);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      margin-bottom: 4px;
+    }
+    .flow-step h4 { font-size: .875rem; font-weight: 600; margin-bottom: 4px; }
+    .flow-step p  { font-size: .78rem; color: var(--muted); }
+    .flow-arrow {
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      color: var(--muted);
+      font-size: 1.2rem;
+      align-self: center;
+    }
+
+    /* ── Schema block ────────────────────────────────────────── */
+    .schema {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: .8rem;
+      line-height: 1.8;
+      overflow-x: auto;
+    }
+    .schema .kw  { color: #c084fc; }
+    .schema .ty  { color: #67e8f9; }
+    .schema .cm  { color: #64748b; }
+    .schema .str { color: #86efac; }
+
+    /* ── Wireframe ───────────────────────────────────────────── */
+    .wireframe {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: .78rem;
+      line-height: 1.7;
+      color: var(--muted);
+      overflow-x: auto;
+      white-space: pre;
+    }
+    .wireframe .hl  { color: var(--text); }
+    .wireframe .acc { color: var(--accent2); }
+    .wireframe .grn { color: var(--accent3); }
+    .wireframe .ylw { color: var(--warn); }
+
+    /* ── Timeline ────────────────────────────────────────────── */
+    .timeline { border-left: 2px solid var(--border); padding-left: 24px; }
+    .tl-item  { position: relative; margin-bottom: 28px; }
+    .tl-item::before {
+      content: '';
+      position: absolute;
+      left: -31px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+    .tl-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--accent2);
+      margin-bottom: 4px;
+    }
+    .tl-title { font-weight: 600; margin-bottom: 6px; }
+    .tl-body  { color: var(--muted); font-size: .875rem; }
+    .tl-body ul { padding-left: 18px; margin-top: 4px; }
+    .tl-body li { margin-bottom: 2px; }
+
+    /* ── Callout ─────────────────────────────────────────────── */
+    .callout {
+      border-radius: 10px;
+      padding: 16px 20px;
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+    .callout-info    { background: #0e1a2e; border: 1px solid #1e3a5f; }
+    .callout-warning { background: #1e1408; border: 1px solid #78350f; }
+    .callout-success { background: #0a1f14; border: 1px solid #065f46; }
+    .callout-icon { font-size: 1.2rem; flex-shrink: 0; margin-top: 1px; }
+    .callout-body { font-size: .875rem; color: var(--muted); }
+    .callout-body strong { color: var(--text); }
+
+    /* ── Misc ────────────────────────────────────────────────── */
+    .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+    .tag {
+      display: inline-block;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: .78rem;
+      color: var(--muted);
+      margin: 2px;
+    }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ── HEADER ──────────────────────────────────────────────── -->
+  <header>
+    <div>
+      <span class="badge badge-feature">Feature Plan</span>
+      <span class="badge badge-effort">Effort: Medium-High</span>
+    </div>
+    <h1>RSS <span>Feeds Dashboard</span></h1>
+    <p class="subtitle">
+      Making RSS a first-class citizen in OneLink — a dedicated Feeds section
+      with subscription management, unread tracking, OPML import/export, and
+      feed health monitoring. Zero extra cost, zero AI/LLM dependencies.
+    </p>
+  </header>
+
+  <!-- ── PROBLEM STATEMENT ───────────────────────────────────── -->
+  <section>
+    <h2>Problem Statement</h2>
+    <div class="grid grid-2">
+      <div class="callout callout-warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Hidden subscription model.</strong> Users subscribe per-link with no central view. There is no way to see all subscribed feeds at once, or know which feeds are healthy vs. broken.
+        </div>
+      </div>
+      <div class="callout callout-warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>No read/unread state.</strong> Every notification-list visit re-fetches items from the past N days. Items already seen look identical to new ones — no sense of progress.
+        </div>
+      </div>
+      <div class="callout callout-warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>No portability.</strong> There is no way to import subscriptions from Feedly/NewsBlur (OPML), nor to back up and restore your feed list.
+        </div>
+      </div>
+      <div class="callout callout-warning">
+        <span class="callout-icon">⚠️</span>
+        <div class="callout-body">
+          <strong>Flat, unsorted feed.</strong> All updates from all sources land in one undifferentiated list. No per-source grouping, no "Mark all read" shortcut per feed.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROPOSED SOLUTION ───────────────────────────────────── -->
+  <section>
+    <h2>Proposed Solution</h2>
+    <div class="callout callout-success">
+      <span class="callout-icon">✅</span>
+      <div class="callout-body">
+        <strong>A dedicated "Feeds" route</strong> that surfaces all subscribed RSS sources as manageable cards — with last-fetched time, unread count, and health status — plus OPML import/export and per-feed "Mark all read".
+        <br><br>
+        Unread state is tracked server-side in a new lightweight <code>rss_read_items</code> table (just a set of seen item hashes per user). No AI, no third-party services, no added infrastructure cost.
+      </div>
+    </div>
+    <div class="grid grid-3" style="margin-top: 20px;">
+      <div class="card">
+        <span class="card-icon">📋</span>
+        <h3>Feed Manager</h3>
+        <p>All subscribed feeds as cards. Name, domain favicon, unread count badge, last-fetched time, health indicator, and quick-unsubscribe.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔴</span>
+        <h3>Unread Tracking</h3>
+        <p>Each fetched item gets a stable hash. A lightweight <code>rss_read_items</code> table marks seen items per user. No external service needed.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">📤</span>
+        <h3>OPML Import / Export</h3>
+        <p>Parse standard <code>.opml</code> XML client-side, batch-subscribe backend. Export generates an <code>opml</code> blob server-side — fully portable.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">❤️‍🩹</span>
+        <h3>Feed Health</h3>
+        <p>Track <code>last_fetched_at</code> and <code>last_error</code> on each subscription row. Surface a warning icon when a feed hasn't updated in 7+ days.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">✔️</span>
+        <h3>Mark All Read</h3>
+        <p>Per-feed and global "mark all read" action — bulk-inserts item hashes into <code>rss_read_items</code>. Instant UX with optimistic updates.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🔗</span>
+        <h3>Decoupled Subscriptions</h3>
+        <p>New <code>rss_subscriptions</code> table fully decoupled from the links table. A feed can be subscribed without a saved link (pure RSS reader mode).</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── DATABASE SCHEMA ─────────────────────────────────────── -->
+  <section>
+    <h2>Database Schema Changes</h2>
+
+    <div class="two-col">
+      <div>
+        <h3 style="margin-bottom: 12px;">New table: <code>rss_subscriptions</code></h3>
+        <div class="schema">
+<span class="kw">CREATE TABLE</span> rss_subscriptions (
+  id          <span class="ty">UUID</span>        <span class="kw">PRIMARY KEY</span>,
+  owner_id    <span class="ty">UUID</span>        <span class="kw">NOT NULL REFERENCES</span> users(id),
+  feed_url    <span class="ty">TEXT</span>        <span class="kw">NOT NULL</span>,
+  site_url    <span class="ty">TEXT</span>,         <span class="cm">-- canonical page URL</span>
+  title       <span class="ty">TEXT</span>,
+  favicon_url <span class="ty">TEXT</span>,
+  link_id     <span class="ty">UUID REFERENCES</span> links(id)
+              <span class="kw">ON DELETE SET NULL</span>,
+  last_fetched_at <span class="ty">TIMESTAMPTZ</span>,
+  last_error      <span class="ty">TEXT</span>,         <span class="cm">-- null = healthy</span>
+  created_at  <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT NOW()</span>,
+
+  <span class="kw">UNIQUE</span>(owner_id, feed_url)
+);
+<span class="kw">CREATE INDEX</span> ON rss_subscriptions(owner_id);
+        </div>
+      </div>
+      <div>
+        <h3 style="margin-bottom: 12px;">New table: <code>rss_read_items</code></h3>
+        <div class="schema">
+<span class="kw">CREATE TABLE</span> rss_read_items (
+  owner_id    <span class="ty">UUID</span>  <span class="kw">NOT NULL REFERENCES</span> users(id),
+  item_hash   <span class="ty">TEXT</span>  <span class="kw">NOT NULL</span>,
+  <span class="cm">-- SHA-1( feed_url || item_guid || pub_date )</span>
+  read_at     <span class="ty">TIMESTAMPTZ</span> <span class="kw">DEFAULT NOW()</span>,
+
+  <span class="kw">PRIMARY KEY</span>(owner_id, item_hash)
+);
+<span class="kw">CREATE INDEX</span> ON rss_read_items(owner_id);
+
+<span class="cm">-- Automatic cleanup: items older than 90 days
+-- are irrelevant. Run via a weekly cron or
+-- a Postgres rule (no extra service needed).</span>
+        </div>
+
+        <h3 style="margin-top: 20px; margin-bottom: 12px;">Migration note on links table</h3>
+        <div class="schema">
+<span class="cm">-- links.subscribed + links.rss are kept for
+-- backwards compatibility but deprecated.
+-- New subscriptions go into rss_subscriptions.
+-- A back-fill migration creates rss_subscriptions
+-- rows for every link where subscribed=true.</span>
+
+<span class="kw">ALTER TABLE</span> links
+  <span class="kw">ADD COLUMN</span> rss_subscription_id <span class="ty">UUID</span>
+  <span class="kw">REFERENCES</span> rss_subscriptions(id)
+  <span class="kw">ON DELETE SET NULL</span>;
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-info" style="margin-top: 20px;">
+      <span class="callout-icon">ℹ️</span>
+      <div class="callout-body">
+        <strong>Why a separate table?</strong> The current model ties RSS subscriptions to saved links 1-to-1. A user might want to subscribe to a feed without saving a link (pure reader mode), or a single feed URL might appear in multiple link entries. Decoupling removes both limitations and avoids duplicating fetch work across link copies.
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BACKEND CHANGES ─────────────────────────────────────── -->
+  <section>
+    <h2>Backend — New &amp; Modified Endpoints</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Route</th>
+          <th>Description</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>GET</code></td>
+          <td><code>/feeds</code></td>
+          <td>Return all <code>rss_subscriptions</code> for the authenticated user, joined with latest <code>last_fetched_at</code> and unread count (COUNT of items not in <code>rss_read_items</code> — computed from last cached fetch).</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/feeds</code></td>
+          <td>Subscribe to a feed URL. Auto-discovers the RSS/Atom URL if a page URL is provided (reuses existing <code>RSS.findValidRSS()</code> logic). Returns the new <code>rss_subscriptions</code> row.</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>DELETE</code></td>
+          <td><code>/feeds/:id</code></td>
+          <td>Unsubscribe from a feed. Removes <code>rss_subscriptions</code> row; sets <code>links.subscribed=false</code> and <code>links.rss_subscription_id=null</code> for any linked link rows.</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/feeds/:id/read</code></td>
+          <td>Mark all current items in a feed as read. Body: <code>{ item_hashes: string[] }</code>. Bulk-inserts into <code>rss_read_items</code> with <code>ON CONFLICT DO NOTHING</code>.</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/feeds/read-all</code></td>
+          <td>Global "mark all read" — marks every currently-fetched item across all user feeds as read.</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>GET</code></td>
+          <td><code>/feeds/opml</code></td>
+          <td>Export all subscriptions as a valid OPML 2.0 XML document. Generated server-side from <code>rss_subscriptions</code>. No external dependency.</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/feeds/opml</code></td>
+          <td>Import an OPML file. Parse XML, extract <code>&lt;outline xmlUrl&gt;</code> entries, deduplicate against existing subscriptions, bulk-create <code>rss_subscriptions</code> rows. Returns count added.</td>
+          <td><span class="pill pill-blue">New</span></td>
+        </tr>
+        <tr>
+          <td><code>POST</code></td>
+          <td><code>/links/feed</code></td>
+          <td>Existing feed aggregation endpoint. Extend to also accept <code>feedId</code> for per-feed filtering, and return <code>item_hash</code> alongside each item so the frontend can track read state.</td>
+          <td><span class="pill pill-yellow">Modified</span></td>
+        </tr>
+        <tr>
+          <td><code>PATCH</code></td>
+          <td><code>/links/:id</code></td>
+          <td>Existing update endpoint. When <code>subscribed=true</code>, create an <code>rss_subscriptions</code> row (if not exists) and set <code>links.rss_subscription_id</code>.</td>
+          <td><span class="pill pill-yellow">Modified</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── ITEM HASH STRATEGY ──────────────────────────────────── -->
+  <section>
+    <h2>Unread Tracking — Item Hash Strategy</h2>
+    <div class="two-col">
+      <div>
+        <div class="callout callout-info">
+          <span class="callout-icon">🔑</span>
+          <div class="callout-body">
+            <strong>Hash inputs (in order of preference):</strong>
+            <ul style="margin-top: 8px; padding-left: 18px;">
+              <li>RSS <code>&lt;guid isPermaLink="false"&gt;</code></li>
+              <li>Atom <code>&lt;id&gt;</code> element</li>
+              <li>Fallback: <code>SHA-1(feed_url + item.link + item.pub_date)</code></li>
+            </ul>
+            <br>
+            Hashes are computed in the scraper (<code>packages/scraper/module/rss/index.ts</code>) and returned alongside the item. The backend stores them only in <code>rss_read_items</code> — never the full article content.
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="callout callout-success">
+          <span class="callout-icon">💾</span>
+          <div class="callout-body">
+            <strong>Storage estimate:</strong> A user with 20 feeds, each publishing 10 items/week, generates ~800 hash rows/month. At ~60 bytes per row, that is under 50 KB/month per user.  A 90-day TTL cleanup keeps the table bounded. No external storage, no object storage, no message queue.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── FRONTEND ────────────────────────────────────────────── -->
+  <section>
+    <h2>Frontend — New "Feeds" Section</h2>
+
+    <!-- Navigation -->
+    <h3 style="margin-bottom: 12px;">Navigation change</h3>
+    <div class="callout callout-info" style="margin-bottom: 20px;">
+      <span class="callout-icon">🧭</span>
+      <div class="callout-body">
+        Add <strong>Feeds</strong> to <code>apps/web/src/config/navigation-sidebar-items.ts</code> and create a new route at <code>/feeds</code> in <code>apps/web/src/app/routes/</code>. The existing <code>/notifications</code> route remains intact.
+      </div>
+    </div>
+
+    <!-- Wireframe -->
+    <h3 style="margin-bottom: 12px;">UI Wireframe — <code>/feeds</code> page</h3>
+    <div class="wireframe">┌─────────────────────────────────────────────────────────────────────────┐
+│  <span class="hl">Feeds</span>                                        <span class="acc">[Import OPML]</span>  <span class="acc">[Export OPML]</span>  │
+│  <span class="grn">4 active subscriptions</span> · <span class="ylw">1 feed with errors</span>                              │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  ┌──────────────────────────────┐  ┌──────────────────────────────┐    │
+│  │ 🟢  <span class="hl">The Pragmatic Engineer</span>      │  │ 🟢  <span class="hl">Hacker News (Best)</span>         │    │
+│  │     blog.pragmaticengineer…  │  │     news.ycombinator.com/rss │    │
+│  │     <span class="grn">●  12 unread</span>              │  │     <span class="grn">●  34 unread</span>              │    │
+│  │     Last updated 2h ago      │  │     Last updated 18m ago     │    │
+│  │     [Mark all read]  [✕]     │  │     [Mark all read]  [✕]     │    │
+│  └──────────────────────────────┘  └──────────────────────────────┘    │
+│                                                                         │
+│  ┌──────────────────────────────┐  ┌──────────────────────────────┐    │
+│  │ 🟢  <span class="hl">Go Blog</span>                   │  │ 🔴  <span class="hl">Old Blog (broken)</span>          │    │
+│  │     go.dev/blog/feed.atom    │  │     example.com/feed.xml     │    │
+│  │     <span class="grn">●  3 unread</span>               │  │     <span class="ylw">⚠  Last error: 404</span>        │    │
+│  │     Last updated 3d ago      │  │     Failed 8d ago            │    │
+│  │     [Mark all read]  [✕]     │  │     [Retry]  [Remove]        │    │
+│  └──────────────────────────────┘  └──────────────────────────────┘    │
+│                                                                         │
+│  <span class="acc">[+ Add feed URL]</span>                          <span class="acc">[Mark all feeds read]</span>       │
+└─────────────────────────────────────────────────────────────────────────┘</div>
+
+    <div style="margin-top: 20px;">
+      <h3 style="margin-bottom: 12px;">UI Wireframe — OPML import modal</h3>
+      <div class="wireframe">┌──────────────────────────────────────────────────┐
+│  <span class="hl">Import OPML</span>                                 [✕]  │
+├──────────────────────────────────────────────────┤
+│                                                  │
+│   Drag &amp; drop your .opml file here              │
+│   ─────────── or ───────────                     │
+│   [  Browse file  ]                              │
+│                                                  │
+│   After parsing:                                 │
+│   ┌──────────────────────────────────────────┐   │
+│   │ ✓ The Pragmatic Engineer   (already sub) │   │
+│   │ ✓ Hacker News              (will add)    │   │
+│   │ ✓ CSS-Tricks               (will add)    │   │
+│   │ ✓ Julia Evans              (will add)    │   │
+│   └──────────────────────────────────────────┘   │
+│   3 new feeds will be added                      │
+│                                                  │
+│             [Cancel]  <span class="acc">[Import 3 feeds]</span>         │
+└──────────────────────────────────────────────────┘</div>
+    </div>
+  </section>
+
+  <!-- ── DATA FLOW ───────────────────────────────────────────── -->
+  <section>
+    <h2>Data Flow — Key Sequences</h2>
+
+    <h3 style="margin-bottom: 14px;">1. Opening the Feeds page</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">Step 1</div>
+        <h4>GET /feeds</h4>
+        <p>Frontend calls new endpoint. Returns subscription rows + unread count (derived from cached item list vs. read hashes).</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 2</div>
+        <h4>Render feed cards</h4>
+        <p>Each subscription card shows title, favicon, unread badge, last_fetched_at, and health icon.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 3</div>
+        <h4>Click feed card</h4>
+        <p>GET /links/feed?feedId=&lt;id&gt; returns items for that feed with item_hash. Items not in read set are marked bold/unread.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 4</div>
+        <h4>Mark as read</h4>
+        <p>On item open or "Mark all read", POST /feeds/:id/read with item_hashes. Optimistic update in React Query.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 28px; margin-bottom: 14px;">2. OPML import flow</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">Step 1</div>
+        <h4>Client parse</h4>
+        <p>Browser parses XML with <code>DOMParser</code>. Extracts <code>xmlUrl</code> from each <code>&lt;outline&gt;</code>. Zero server round-trip for preview.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 2</div>
+        <h4>Preview modal</h4>
+        <p>Show list of feeds found. Check against current subscriptions. User confirms.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 3</div>
+        <h4>POST /feeds/opml</h4>
+        <p>Send raw OPML XML. Backend parses, deduplicates, bulk-inserts into <code>rss_subscriptions</code>.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 4</div>
+        <h4>Invalidate cache</h4>
+        <p>React Query invalidates <code>["feeds"]</code> key. Feeds page refreshes with new subscriptions visible immediately.</p>
+      </div>
+    </div>
+
+    <h3 style="margin-top: 28px; margin-bottom: 14px;">3. Feed health tracking (server-side, no extra service)</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">Step 1</div>
+        <h4>Existing scrape call</h4>
+        <p>When <code>POST /links/feed</code> runs, the scraper already calls each RSS URL. No new scheduling needed.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 2</div>
+        <h4>Update subscription row</h4>
+        <p>On success: set <code>last_fetched_at=now(), last_error=null</code>. On failure: set <code>last_error=message</code>.</p>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <div class="step-num">Step 3</div>
+        <h4>Surface in UI</h4>
+        <p>GET /feeds returns <code>last_fetched_at</code> and <code>last_error</code>. Frontend shows green/red health icon accordingly.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider" />
+
+  <!-- ── IMPLEMENTATION PLAN ─────────────────────────────────── -->
+  <section>
+    <h2>Implementation Plan</h2>
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-label">Phase 1 — Database</div>
+        <div class="tl-title">Schema migration &amp; back-fill</div>
+        <div class="tl-body">
+          <ul>
+            <li>Create migration: <code>rss_subscriptions</code> table with all columns above</li>
+            <li>Create migration: <code>rss_read_items</code> table</li>
+            <li>Back-fill: for every <code>links</code> row where <code>subscribed=true AND rss!=''</code>, insert a corresponding <code>rss_subscriptions</code> row</li>
+            <li>Add <code>links.rss_subscription_id</code> FK column pointing to back-filled rows</li>
+            <li>Files: <code>packages/db/src/migrations/</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-label">Phase 2 — Backend: entities &amp; repository</div>
+        <div class="tl-title">Models, repository layer, OPML generator</div>
+        <div class="tl-body">
+          <ul>
+            <li>Add <code>RssSubscription</code> type &amp; Zod schema to <code>packages/entities/src/models/</code></li>
+            <li>Add <code>RssReadItem</code> type to entities</li>
+            <li>Create <code>RssSubscriptionsRepository</code> in <code>apps/backend/src/infrastructure/repositories/</code></li>
+            <li>Add <code>item_hash</code> computation to <code>packages/scraper/module/rss/index.ts</code> (SHA-1 via Node's built-in <code>crypto</code>)</li>
+            <li>Add OPML XML builder (pure string template — no library needed for simple OPML 2.0)</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-label">Phase 3 — Backend: service &amp; adapter</div>
+        <div class="tl-title">Business logic &amp; HTTP handlers</div>
+        <div class="tl-body">
+          <ul>
+            <li>Create <code>FeedsService</code> with methods: <code>getSubscriptions</code>, <code>subscribe</code>, <code>unsubscribe</code>, <code>markRead</code>, <code>exportOpml</code>, <code>importOpml</code></li>
+            <li>Create <code>FeedsAdapter</code> — HTTP adapter wiring service to req/res</li>
+            <li>Register new routes under <code>apps/backend/src/api/routes/feeds.ts</code></li>
+            <li>Update <code>LinkService.updateLink</code> to create/link an <code>rss_subscriptions</code> row when subscribing via a link</li>
+            <li>Update <code>LinkService.getRSSFeed</code> to read from <code>rss_subscriptions</code> and append <code>item_hash</code> to each returned item</li>
+            <li>Update <code>last_fetched_at</code> / <code>last_error</code> on the subscription row after each scrape attempt</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-label">Phase 4 — Frontend: hooks &amp; state</div>
+        <div class="tl-title">React Query hooks for new endpoints</div>
+        <div class="tl-body">
+          <ul>
+            <li>Add <code>useFeeds()</code> — GET /feeds, returns subscription list with unread counts</li>
+            <li>Add <code>useSubscribeFeed()</code> — POST /feeds mutation</li>
+            <li>Add <code>useUnsubscribeFeed()</code> — DELETE /feeds/:id mutation</li>
+            <li>Add <code>useMarkFeedRead()</code> — POST /feeds/:id/read mutation (optimistic update)</li>
+            <li>Add <code>useMarkAllRead()</code> — POST /feeds/read-all mutation</li>
+            <li>Add <code>useImportOpml()</code> / <code>useExportOpml()</code> mutations</li>
+            <li>Files: <code>apps/web/src/features/feeds/</code></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-label">Phase 5 — Frontend: UI components</div>
+        <div class="tl-title">Feeds page, cards, modals</div>
+        <div class="tl-body">
+          <ul>
+            <li>Create <code>apps/web/src/app/routes/feeds.tsx</code> — the main Feeds page</li>
+            <li>Create <code>FeedCard</code> component — subscription card with health/unread/actions</li>
+            <li>Create <code>OpmlImportModal</code> — file picker + preview list + confirm</li>
+            <li>Update <code>navigation-sidebar-items.ts</code> to add Feeds entry</li>
+            <li>Update <code>apps/web/src/config/paths.ts</code> to add <code>/feeds</code></li>
+            <li>Register route in React Router config</li>
+            <li>OPML client-side parse: use browser's built-in <code>DOMParser</code> — no library</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-label">Phase 6 — Cleanup</div>
+        <div class="tl-title">Deprecation &amp; polish</div>
+        <div class="tl-body">
+          <ul>
+            <li>Update <code>SubscribeButton</code> to route through new <code>POST /feeds</code> instead of PATCH /links/:id directly</li>
+            <li>Update <code>/notifications</code> page to show unread badges and "mark read" button using the new item_hash system</li>
+            <li>Add a 90-day cleanup for <code>rss_read_items</code> via a Knex raw query in a lightweight scheduled job (or a Postgres trigger)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── AFFECTED FILES ──────────────────────────────────────── -->
+  <section>
+    <h2>Affected Files Summary</h2>
+    <table>
+      <thead>
+        <tr><th>File / Path</th><th>Change</th><th>Phase</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>packages/db/src/migrations/YYYYMMDD_rss_subscriptions.ts</code></td>
+          <td>New migration — create rss_subscriptions + back-fill</td>
+          <td><span class="pill pill-blue">1</span></td>
+        </tr>
+        <tr>
+          <td><code>packages/db/src/migrations/YYYYMMDD_rss_read_items.ts</code></td>
+          <td>New migration — create rss_read_items</td>
+          <td><span class="pill pill-blue">1</span></td>
+        </tr>
+        <tr>
+          <td><code>packages/entities/src/models/rss.ts</code></td>
+          <td>Add RssSubscription and RssReadItem types + Zod schemas</td>
+          <td><span class="pill pill-blue">2</span></td>
+        </tr>
+        <tr>
+          <td><code>packages/scraper/module/rss/index.ts</code></td>
+          <td>Add item_hash computation using Node crypto</td>
+          <td><span class="pill pill-blue">2</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/repositories/rss-subscriptions.repository.ts</code></td>
+          <td>New repository — CRUD for rss_subscriptions + bulk read marking</td>
+          <td><span class="pill pill-blue">2</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/services/feeds.service.ts</code></td>
+          <td>New service — all feed management business logic</td>
+          <td><span class="pill pill-blue">3</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/application/adapters/feeds.adapter.ts</code></td>
+          <td>New adapter — HTTP handlers for feeds endpoints</td>
+          <td><span class="pill pill-blue">3</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/api/routes/feeds.ts</code></td>
+          <td>New route file — register all /feeds endpoints</td>
+          <td><span class="pill pill-blue">3</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/services/links.service.ts</code></td>
+          <td>Update updateLink + getRSSFeed to use rss_subscriptions</td>
+          <td><span class="pill pill-yellow">3</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/features/feeds/</code> (new directory)</td>
+          <td>All React Query hooks for feeds feature</td>
+          <td><span class="pill pill-blue">4</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/app/routes/feeds.tsx</code></td>
+          <td>New page component — Feeds dashboard</td>
+          <td><span class="pill pill-blue">5</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/cards/feed-card.tsx</code></td>
+          <td>New component — individual feed subscription card</td>
+          <td><span class="pill pill-blue">5</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/modals/opml-import-modal.tsx</code></td>
+          <td>New component — OPML import dialog</td>
+          <td><span class="pill pill-blue">5</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/config/navigation-sidebar-items.ts</code></td>
+          <td>Add Feeds nav entry pointing to /feeds</td>
+          <td><span class="pill pill-yellow">5</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/config/paths.ts</code></td>
+          <td>Add /feeds path constant</td>
+          <td><span class="pill pill-yellow">5</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/buttons/subscribe-button.tsx</code></td>
+          <td>Route through POST /feeds instead of PATCH /links/:id</td>
+          <td><span class="pill pill-yellow">6</span></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/app/routes/notifications.tsx</code></td>
+          <td>Add unread indicators + mark-read integration</td>
+          <td><span class="pill pill-yellow">6</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ── ZERO COST NOTES ─────────────────────────────────────── -->
+  <section>
+    <h2>Zero-Cost &amp; Zero-AI Design Decisions</h2>
+    <div class="grid grid-2">
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <h3>No new services</h3>
+        <p>All RSS fetching uses the existing <code>packages/scraper</code> module already in the codebase. The Redis cache layer is already in place. No message queue, no background worker daemon.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🧮</span>
+        <h3>No new libraries (frontend)</h3>
+        <p>OPML parsing uses the browser's built-in <code>DOMParser</code>. SHA-1 hashing uses Node's built-in <code>crypto</code> module. No npm packages to add, no bundle size increase.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🗄️</span>
+        <h3>Minimal DB footprint</h3>
+        <p><code>rss_read_items</code> stores only short hashes (~40 chars) + timestamps. 90-day TTL keeps rows bounded. Even at scale this stays in kilobytes per user per month.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🤖</span>
+        <h3>No AI/LLM anywhere</h3>
+        <p>Feed discovery already works via the scraper's deterministic path-checking + site-specific patterns. Unread detection is a set-difference query. No model inference at any step.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FUTURE EXTENSIONS ───────────────────────────────────── -->
+  <section>
+    <h2>Deferred / Future Scope</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px;">
+      <span class="tag">Folder/category grouping for feeds</span>
+      <span class="tag">Full-text search across feed items</span>
+      <span class="tag">Webhook push (WebSub/PubSubHubbub) for real-time feeds</span>
+      <span class="tag">Per-feed keyword filters</span>
+      <span class="tag">Browser extension: subscribe from right-click</span>
+      <span class="tag">Digest email (weekly summary)</span>
+      <span class="tag">Feed discovery from homepage URL (auto-detect)</span>
+      <span class="tag">Shared feed lists (public OPML URL)</span>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ──────────────────────────────────────────────── -->
+  <hr class="divider" />
+  <footer style="color: var(--muted); font-size: .8rem; text-align: center;">
+    OneLink · RSS Feeds Dashboard · Feature Plan · Generated 2026-05-16
+  </footer>
+
+</div>
+</body>
+</html>

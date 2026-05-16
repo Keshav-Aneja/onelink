@@ -1,11 +1,13 @@
 import GlowCard from "./glow-card";
 import Button from "@components/buttons/button";
 
-const LinkCardSuspense = () => {
+type Props = { height?: string };
+
+const LinkCardSuspense = ({ height = "15rem" }: Props) => {
   return (
     <GlowCard
-      className="w-full h-[13rem] md:h-[15rem] xxl:h-[17rem] rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white animate-pulse duration-300 ease-linear cursor-progress"
-      style={{ "--color-gradient": "red" }}
+      className="w-full rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white animate-pulse duration-300 ease-linear cursor-progress"
+      style={{ height }}
       containerClassName="flex-col gap-2 rounded-md p-2 justify-between items-start"
     >
       <div className="w-full flex flex-col gap-2">

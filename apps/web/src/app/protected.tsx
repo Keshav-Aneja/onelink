@@ -7,6 +7,7 @@ import Loader from "./loader";
 import Cookies from "js-cookie";
 import { useAppDispatch } from "@store/store";
 import { addUser } from "@store/slices/user-slice";
+import { ThemeProvider } from "@components/theme-provider";
 interface AuthProps {
   children: ReactNode;
 }
@@ -37,7 +38,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
 
   // If user exists, render children
   if (user) {
-    return <Fragment>{children}</Fragment>;
+    return <Fragment><ThemeProvider />{children}</Fragment>;
   }
 
   // Handle user fetching states
@@ -54,7 +55,7 @@ const ProtectedRoute = ({ children }: AuthProps) => {
     }
 
     if (userQuery.data) {
-      return <Fragment>{children}</Fragment>;
+      return <Fragment><ThemeProvider />{children}</Fragment>;
     }
   }
 

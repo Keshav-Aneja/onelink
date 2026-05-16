@@ -9,8 +9,9 @@ import DeleteLinkButton from "@components/buttons/delete-link-button";
 import formatLink from "@lib/utils/format-link";
 interface LinkCardProps {
   data: Link;
+  height?: string;
 }
-const LinkCard = ({ data }: LinkCardProps) => {
+const LinkCard = ({ data, height = "15rem" }: LinkCardProps) => {
   const { open_graph } = data;
   const dispatch = useAppDispatch();
   const handleSelectLink = () => {
@@ -18,8 +19,8 @@ const LinkCard = ({ data }: LinkCardProps) => {
   };
   return (
     <GlowCard
-      className="w-full h-[13rem] md:h-[15rem] xxl:h-[17rem] rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white cursor-pointer"
-      style={{ "--color-gradient": "red" }}
+      className="w-full rounded-md before:rounded-md after:rounded-md before:w-full before:h-60 border-[2px] border-white/20 text-white cursor-pointer"
+      style={{ height }}
       containerClassName="flex-col gap-2 rounded-md p-2 justify-between items-start"
       onDoubleClick={() => {
         window.open(data.link, "_blank");

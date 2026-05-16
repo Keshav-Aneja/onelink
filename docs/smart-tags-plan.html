@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Tags — Feature Plan</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #1a1d27;
+      --surface2: #22263a;
+      --border: #2e3350;
+      --accent: #6c63ff;
+      --accent2: #a78bfa;
+      --green: #4ade80;
+      --yellow: #facc15;
+      --red: #f87171;
+      --blue: #60a5fa;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --code-bg: #0d1117;
+      --radius: 10px;
+      --mono: "JetBrains Mono", "Fira Code", "Cascadia Code", monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", system-ui, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 0 0 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #1a1d27 0%, #12142040 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 64px 40px;
+    }
+
+    header .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(108,99,255,0.15);
+      border: 1px solid rgba(108,99,255,0.4);
+      color: var(--accent2);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 20px;
+    }
+
+    header h1 {
+      font-size: 40px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #e2e8f0 30%, var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+    }
+
+    header p.subtitle {
+      color: var(--muted);
+      font-size: 17px;
+      max-width: 680px;
+    }
+
+    header .meta {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    header .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    header .meta-label {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    header .meta-value {
+      font-size: 14px;
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1060px; margin: 0 auto; padding: 0 64px; }
+
+    /* ── Section ── */
+    section {
+      margin-top: 56px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-number {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: rgba(108,99,255,0.2);
+      border: 1px solid rgba(108,99,255,0.4);
+      color: var(--accent2);
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .section-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -.01em;
+      color: var(--text);
+    }
+
+    /* ── Cards / Panels ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      margin-bottom: 16px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    /* ── Grid helpers ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    @media (max-width: 740px) {
+      header { padding: 32px 24px; }
+      .container { padding: 0 24px; }
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    }
+
+    /* ── Stat cards ── */
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      color: var(--text);
+    }
+
+    .stat-note {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Flow diagram ── */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .flow-step {
+      flex: 1;
+      min-width: 140px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+    }
+
+    .flow-step:not(:last-child)::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 30px;
+      font-size: 20px;
+      color: var(--accent2);
+      z-index: 2;
+    }
+
+    .flow-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 14px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      margin-bottom: 10px;
+    }
+
+    .flow-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .flow-sub {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    /* ── Tag pill ── */
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid;
+    }
+
+    .tag-purple { background: rgba(108,99,255,0.15); border-color: rgba(108,99,255,0.4); color: var(--accent2); }
+    .tag-green  { background: rgba(74,222,128,0.1);  border-color: rgba(74,222,128,0.35); color: var(--green); }
+    .tag-yellow { background: rgba(250,204,21,0.1);  border-color: rgba(250,204,21,0.35); color: var(--yellow); }
+    .tag-blue   { background: rgba(96,165,250,0.1);  border-color: rgba(96,165,250,0.35); color: var(--blue); }
+    .tag-red    { background: rgba(248,113,113,0.1); border-color: rgba(248,113,113,0.35); color: var(--red); }
+
+    /* ── Code block ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 22px;
+      overflow-x: auto;
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.65;
+      color: #cdd9e5;
+      margin: 12px 0;
+    }
+
+    .kw  { color: #f97583; }
+    .str { color: #9ecbff; }
+    .cm  { color: #6a737d; }
+    .fn  { color: #b392f0; }
+    .num { color: #79b8ff; }
+    .ty  { color: #85e89d; }
+
+    /* ── List styles ── */
+    ul.check { list-style: none; padding: 0; }
+    ul.check li {
+      padding: 6px 0 6px 28px;
+      position: relative;
+      color: var(--text);
+      font-size: 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    ul.check li:last-child { border-bottom: none; }
+    ul.check li::before { content: "✓"; position: absolute; left: 0; color: var(--green); font-weight: 700; }
+
+    ul.dot { list-style: none; padding: 0; }
+    ul.dot li {
+      padding: 5px 0 5px 20px;
+      position: relative;
+      color: var(--muted);
+      font-size: 14px;
+    }
+    ul.dot li::before { content: "·"; position: absolute; left: 4px; color: var(--accent2); font-size: 20px; line-height: 1; top: 4px; }
+
+    /* ── Timeline ── */
+    .timeline { position: relative; padding-left: 28px; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: var(--border);
+    }
+    .tl-item {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .tl-item::before {
+      content: "";
+      position: absolute;
+      left: -25px;
+      top: 6px;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 2px solid var(--bg);
+    }
+    .tl-phase {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: var(--accent2);
+      margin-bottom: 4px;
+    }
+    .tl-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+    .tl-body {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 48px 0 0;
+    }
+
+    /* ── Table ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th {
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+
+    code {
+      font-family: var(--mono);
+      font-size: 12px;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: #b392f0;
+    }
+
+    /* ── Mock UI ── */
+    .mock {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .mock-bar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .mock-dot { width: 10px; height: 10px; border-radius: 50%; }
+    .mock-body { padding: 20px; }
+
+    .tag-suggestion {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px dashed rgba(108,99,255,0.5);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: var(--accent2);
+      cursor: pointer;
+      margin: 4px 3px;
+    }
+    .tag-suggestion:hover { background: rgba(108,99,255,0.1); }
+    .tag-confirmed {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(108,99,255,0.2);
+      border: 1px solid rgba(108,99,255,0.5);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 13px;
+      color: #e0d9ff;
+      margin: 4px 3px;
+    }
+
+    p { margin-bottom: 12px; color: var(--muted); font-size: 14px; }
+    p:last-child { margin-bottom: 0; }
+    strong { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════ HEADER ═══════════════════════════ -->
+<header>
+  <div class="badge">⚡ Feature Plan</div>
+  <h1>Smart Tags with<br>AI-Assisted Auto-Tagging</h1>
+  <p class="subtitle">
+    A zero-extra-cost tagging layer that transforms already-extracted metadata into
+    a cross-collection discovery axis — no LLM calls, no new scraping, pure derivation.
+  </p>
+  <div class="meta">
+    <div class="meta-item">
+      <span class="meta-label">Effort</span>
+      <span class="meta-value">Medium (4–6 days)</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Extra Cost</span>
+      <span class="meta-value">$0 — zero LLM calls</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">New Tables</span>
+      <span class="meta-value">2 (tags, link_tags)</span>
+    </div>
+    <div class="meta-item">
+      <span class="meta-label">Breaks Existing APIs</span>
+      <span class="meta-value">No — additive only</span>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+<!-- ═══════════════════════════ 1. PROBLEM ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">1</div>
+    <div class="section-title">The Problem</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">What we have</div>
+      <ul class="check">
+        <li>Hierarchical collections (folders)</li>
+        <li>Full-text search via <code>pg_trgm</code></li>
+        <li>Rich metadata already scraped: <code>keywords</code>, <code>author</code>, <code>site_description</code>, OG fields</li>
+        <li>Star / RSS filters on LinksContent</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">What's missing</div>
+      <ul class="dot">
+        <li>Scraped <code>keywords</code> field is stored but never surfaced to the user</li>
+        <li>No way to filter across collections ("show me all my Python links")</li>
+        <li>Nested folders are great for deliberate org, terrible for serendipitous retrieval</li>
+        <li>No cross-collection discovery axis exists</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 2. APPROACH ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">2</div>
+    <div class="section-title">Approach: Deterministic Tag Derivation</div>
+  </div>
+
+  <p>
+    No LLM. No third-party API. The scraper already extracts everything we need.
+    The algorithm is a <strong>pure string-processing pipeline</strong> that runs synchronously
+    on the already-scraped metadata at link-save time.
+  </p>
+
+  <div class="card">
+    <div class="card-title">Tag Derivation Sources (priority order)</div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Source field</th>
+          <th>Already in DB?</th>
+          <th>How we use it</th>
+          <th>Example output</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td><code>keywords</code></td>
+          <td><span class="tag tag-green">Yes</span></td>
+          <td>Split on <code>,</code> or <code>;</code>, trim, lowercase, dedupe</td>
+          <td><code>react</code>, <code>typescript</code>, <code>hooks</code></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><code>articleTag</code> (OG / article meta)</td>
+          <td><span class="tag tag-yellow">Scraped, not stored</span></td>
+          <td>Promote to tag candidates; store in new <code>tags</code> table</td>
+          <td><code>tutorial</code>, <code>open-source</code></td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><code>articleSection</code></td>
+          <td><span class="tag tag-yellow">Scraped, not stored</span></td>
+          <td>Single-word section becomes a tag</td>
+          <td><code>engineering</code>, <code>design</code></td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><code>author</code> / <code>dcCreator</code></td>
+          <td><span class="tag tag-green">Yes</span></td>
+          <td>Optional: author name → tag (user-opt-in only)</td>
+          <td><code>@dan-abramov</code></td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Domain name from URL</td>
+          <td>Derived at runtime</td>
+          <td>Hostname stripped to label: <code>youtube.com → youtube</code></td>
+          <td><code>youtube</code>, <code>github</code></td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><code>ogType</code></td>
+          <td><span class="tag tag-yellow">Scraped, not stored</span></td>
+          <td>Map: <code>video.other → video</code>, <code>article → article</code></td>
+          <td><code>video</code>, <code>article</code></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Normalization rules</div>
+    <ul class="dot">
+      <li>Lowercase all candidates</li>
+      <li>Strip leading/trailing whitespace and punctuation</li>
+      <li>Replace spaces with hyphens (<code>machine learning → machine-learning</code>)</li>
+      <li>Deduplicate before inserting</li>
+      <li>Max tag length: 40 chars (truncate with ellipsis)</li>
+      <li>Ignore stop-words list: <em>the, a, an, in, of, and, or, to, for, with, is, are, be…</em></li>
+      <li>Ignore single-character candidates</li>
+      <li>Cap auto-suggestions at <strong>8 tags per link</strong></li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 3. DATA MODEL ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">3</div>
+    <div class="section-title">Data Model</div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <pre><span class="cm">// Migration: 20260516000002_tags.ts</span>
+
+<span class="cm">// TABLE: tags</span>
+<span class="kw">await</span> knex.schema.createTable(<span class="str">'tags'</span>, (t) => {
+  t.uuid(<span class="str">'id'</span>).primary().defaultTo(
+    knex.raw(<span class="str">'gen_random_uuid()'</span>)
+  );
+  t.string(<span class="str">'name'</span>, <span class="num">40</span>).notNullable();
+  t.uuid(<span class="str">'owner_id'</span>)
+    .notNullable()
+    .references(<span class="str">'id'</span>)
+    .inTable(<span class="str">'users'</span>)
+    .onDelete(<span class="str">'CASCADE'</span>);
+  t.boolean(<span class="str">'is_auto'</span>).defaultTo(<span class="kw">true</span>);
+  t.timestamps(<span class="kw">true</span>, <span class="kw">true</span>);
+  t.unique([<span class="str">'name'</span>, <span class="str">'owner_id'</span>]);
+  t.index([<span class="str">'owner_id'</span>]);
+});</pre>
+    </div>
+    <div>
+      <pre><span class="cm">// TABLE: link_tags (junction)</span>
+<span class="kw">await</span> knex.schema.createTable(<span class="str">'link_tags'</span>, (t) => {
+  t.uuid(<span class="str">'link_id'</span>)
+    .notNullable()
+    .references(<span class="str">'id'</span>)
+    .inTable(<span class="str">'links'</span>)
+    .onDelete(<span class="str">'CASCADE'</span>);
+  t.uuid(<span class="str">'tag_id'</span>)
+    .notNullable()
+    .references(<span class="str">'id'</span>)
+    .inTable(<span class="str">'tags'</span>)
+    .onDelete(<span class="str">'CASCADE'</span>);
+  t.boolean(<span class="str">'confirmed'</span>)
+    .defaultTo(<span class="kw">false</span>);
+  t.primary([<span class="str">'link_id'</span>, <span class="str">'tag_id'</span>]);
+  t.index([<span class="str">'tag_id'</span>]);
+  t.index([<span class="str">'link_id'</span>]);
+});</pre>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:0">
+    <div class="card-title">Key design decisions</div>
+    <ul class="dot">
+      <li>Tags are <strong>per-user</strong> (scoped by <code>owner_id</code>) — no global tag namespace, no cross-user leakage</li>
+      <li><code>confirmed</code> flag tracks whether the user explicitly accepted or added a tag vs. a pending auto-suggestion</li>
+      <li><code>is_auto</code> on the tag row distinguishes user-created tags from auto-derived ones for future analytics</li>
+      <li>Unique constraint on <code>(name, owner_id)</code> means the same tag string is reused across links — no duplication</li>
+      <li>All deletes cascade: deleting a link removes its <code>link_tags</code>; deleting a user removes all tags and link_tags</li>
+    </ul>
+  </div>
+
+  <!-- Entity relationship diagram (ASCII) -->
+  <div class="card">
+    <div class="card-title">Entity relationships</div>
+    <pre style="text-align:center; font-size: 12px;">
+┌──────────┐       ┌─────────────┐       ┌──────────────┐       ┌────────────┐
+│  users   │──1:N──│    links    │──1:N──│  link_tags   │──N:1──│    tags    │
+│──────────│       │─────────────│       │──────────────│       │────────────│
+│ id  (PK) │       │ id      (PK)│       │ link_id (FK) │       │ id     (PK)│
+│ email    │       │ name        │       │ tag_id  (FK) │       │ name       │
+│ ...      │       │ keywords    │       │ confirmed    │       │ owner_id   │
+└──────────┘       │ author      │       └──────────────┘       │ is_auto    │
+                   │ owner_id(FK)│                               └────────────┘
+                   │ parent_id   │
+                   └─────────────┘
+    </pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 4. SYSTEM FLOW ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">4</div>
+    <div class="section-title">System Flow</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Link Save Flow (updated)</div>
+    <div class="flow" style="padding: 24px 8px 8px;">
+      <div class="flow-step">
+        <div class="flow-icon">🔗</div>
+        <div class="flow-label">POST /links</div>
+        <div class="flow-sub">User submits URL</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🕷️</div>
+        <div class="flow-label">Scraper</div>
+        <div class="flow-sub">Fetch + Cheerio parse (unchanged)</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🏷️</div>
+        <div class="flow-label">Tag Deriver</div>
+        <div class="flow-sub">Pure fn — keywords, ogType, articleSection, domain</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">💾</div>
+        <div class="flow-label">DB Write</div>
+        <div class="flow-sub">Insert link + upsert tags + insert link_tags (unconfirmed)</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">📡</div>
+        <div class="flow-label">Response</div>
+        <div class="flow-sub">Link + <code>suggested_tags[]</code> in payload</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top: 16px;">
+    <div class="card-title">Tag Deriver — pseudocode</div>
+    <pre><span class="cm">// packages/scraper/src/tag-deriver.ts</span>
+
+<span class="kw">const</span> STOP_WORDS = <span class="kw">new</span> Set([<span class="str">'the'</span>, <span class="str">'a'</span>, <span class="str">'an'</span>, <span class="str">'in'</span>, <span class="str">'of'</span>, <span class="str">'and'</span>, <span class="str">'or'</span>, <span class="str">'to'</span>, <span class="str">'for'</span>, ...]);
+<span class="kw">const</span> OG_TYPE_MAP: Record&lt;string, string&gt; = {
+  <span class="str">'video.other'</span>: <span class="str">'video'</span>, <span class="str">'article'</span>: <span class="str">'article'</span>, <span class="str">'music.song'</span>: <span class="str">'music'</span>
+};
+
+<span class="kw">export function</span> <span class="fn">deriveTags</span>(meta: WebsiteMetadata, url: string): string[] {
+  <span class="kw">const</span> candidates: string[] = [];
+
+  <span class="cm">// 1. keywords field (already stored)</span>
+  <span class="kw">if</span> (meta.keywords) {
+    candidates.push(...meta.keywords.split(<span class="str">/[,;]/</span>));
+  }
+
+  <span class="cm">// 2. article tags (scraped but not stored)</span>
+  <span class="kw">if</span> (meta.articleTag) candidates.push(meta.articleTag);
+  <span class="kw">if</span> (meta.articleSection) candidates.push(meta.articleSection);
+
+  <span class="cm">// 3. domain label</span>
+  <span class="kw">try</span> {
+    <span class="kw">const</span> host = <span class="kw">new</span> <span class="fn">URL</span>(url).hostname.replace(<span class="str">/^www\./</span>, <span class="str">''</span>).split(<span class="str">'.'</span>)[<span class="num">0</span>];
+    candidates.push(host);
+  } <span class="kw">catch</span> {}
+
+  <span class="cm">// 4. OG type normalisation</span>
+  <span class="kw">if</span> (meta.ogType &amp;&amp; OG_TYPE_MAP[meta.ogType]) {
+    candidates.push(OG_TYPE_MAP[meta.ogType]);
+  }
+
+  <span class="cm">// normalise</span>
+  <span class="kw">return</span> [...<span class="kw">new</span> Set(
+    candidates
+      .map(s =&gt; s.trim().toLowerCase().replace(<span class="str">/\s+/g</span>, <span class="str">'-'</span>).replace(<span class="str">/[^\w-]/g</span>, <span class="str">''</span>))
+      .filter(s =&gt; s.length &gt; <span class="num">1</span> &amp;&amp; s.length &lt;= <span class="num">40</span> &amp;&amp; !STOP_WORDS.has(s))
+  )].slice(<span class="num">0</span>, <span class="num">8</span>);
+}</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Confirmation & manual tagging flow (frontend)</div>
+    <pre><span class="cm">// User saves link → GET /links returns tags[]</span>
+<span class="cm">// "suggested" tags have confirmed=false, shown with dashed border</span>
+
+<span class="cm">// Confirm a suggestion:</span>
+<span class="kw">PATCH</span> /links/<span class="str">{id}</span>/tags/<span class="str">{tagId}</span>  { <span class="str">"confirmed"</span>: <span class="kw">true</span> }
+
+<span class="cm">// Add a manual tag:</span>
+<span class="kw">POST</span>  /links/<span class="str">{id}</span>/tags           { <span class="str">"name"</span>: <span class="str">"my-custom-tag"</span> }
+
+<span class="cm">// Remove a tag:</span>
+<span class="kw">DELETE</span> /links/<span class="str">{id}</span>/tags/<span class="str">{tagId}</span>
+
+<span class="cm">// Filter links by tag(s):</span>
+<span class="kw">GET</span>   /links?tag=react&amp;tag=typescript   <span class="cm">// AND semantics</span>
+<span class="kw">GET</span>   /links?tag=react&amp;tag_mode=OR</pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 5. UI MOCKUP ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">5</div>
+    <div class="section-title">UI — Wireframe Mockup</div>
+  </div>
+
+  <!-- Link card with tags -->
+  <p style="margin-bottom:16px;">When a link is saved, the detail panel (or an inline banner) shows pending suggestions:</p>
+  <div class="mock">
+    <div class="mock-bar">
+      <div class="mock-dot" style="background:#f87171"></div>
+      <div class="mock-dot" style="background:#facc15"></div>
+      <div class="mock-dot" style="background:#4ade80"></div>
+      <span style="font-size:13px;color:var(--muted);margin-left:8px;">Link saved — tag suggestions</span>
+    </div>
+    <div class="mock-body">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <div style="width:48px;height:48px;background:var(--surface);border-radius:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:22px;">📄</div>
+        <div>
+          <div style="font-size:15px;font-weight:600;color:var(--text);">Understanding React Server Components</div>
+          <div style="font-size:12px;color:var(--muted);">react.dev · 4 min read</div>
+        </div>
+      </div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:10px;">✨ Suggested tags — tap to confirm</div>
+      <div>
+        <span class="tag-suggestion">+ react</span>
+        <span class="tag-suggestion">+ server-components</span>
+        <span class="tag-suggestion">+ typescript</span>
+        <span class="tag-suggestion">+ article</span>
+        <span class="tag-confirmed">✓ react.dev</span>
+      </div>
+      <div style="margin-top:14px;display:flex;gap:8px;align-items:center;">
+        <input style="background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:5px 14px;color:var(--text);font-size:13px;outline:none;width:180px;" placeholder="Add tag…" />
+        <span style="font-size:12px;color:var(--muted);">or dismiss all</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Filter bar -->
+  <p style="margin: 24px 0 16px;">Tag filter bar added to LinksContent toolbar:</p>
+  <div class="mock">
+    <div class="mock-bar">
+      <span style="font-size:13px;color:var(--muted);">Filter toolbar (LinksContent)</span>
+    </div>
+    <div class="mock-body">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <span style="font-size:12px;color:var(--muted);font-weight:600;">TAGS:</span>
+        <span class="tag tag-purple">✕ react</span>
+        <span class="tag tag-blue">typescript</span>
+        <span class="tag tag-blue">tutorial</span>
+        <span class="tag tag-blue">youtube</span>
+        <span class="tag tag-blue">article</span>
+        <span class="tag tag-blue">machine-learning</span>
+        <span style="font-size:12px;color:var(--muted);margin-left:4px;">+ more</span>
+      </div>
+      <div style="margin-top:12px;font-size:12px;color:var(--muted);">Showing 12 links tagged <strong style="color:var(--accent2);">react</strong> across 4 collections</div>
+    </div>
+  </div>
+
+  <!-- Global tag view -->
+  <p style="margin: 24px 0 16px;">New sidebar entry: "Tags" — shows all user tags with link counts:</p>
+  <div class="mock">
+    <div class="mock-bar">
+      <span style="font-size:13px;color:var(--muted);">🏷 All Tags</span>
+    </div>
+    <div class="mock-body">
+      <div style="display:flex;flex-direction:column;gap:2px;">
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;background:rgba(108,99,255,0.1);border-radius:6px;border:1px solid rgba(108,99,255,0.2);">
+          <span style="font-size:13px;color:var(--text);">react</span>
+          <span style="font-size:12px;color:var(--muted);">34 links</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:6px;">
+          <span style="font-size:13px;color:var(--text);">typescript</span>
+          <span style="font-size:12px;color:var(--muted);">21 links</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:6px;">
+          <span style="font-size:13px;color:var(--text);">youtube</span>
+          <span style="font-size:12px;color:var(--muted);">18 links</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:6px;">
+          <span style="font-size:13px;color:var(--text);">tutorial</span>
+          <span style="font-size:12px;color:var(--muted);">15 links</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:6px;">
+          <span style="font-size:13px;color:var(--text);">machine-learning</span>
+          <span style="font-size:12px;color:var(--muted);">9 links</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 6. ARTIFACTS ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">6</div>
+    <div class="section-title">Artifacts to Create / Modify</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">New files</div>
+    <table>
+      <thead>
+        <tr><th>File</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>packages/db/src/migrations/20260516000002_tags.ts</code></td>
+          <td>Creates <code>tags</code> and <code>link_tags</code> tables</td>
+        </tr>
+        <tr>
+          <td><code>packages/scraper/src/tag-deriver.ts</code></td>
+          <td>Pure function: WebsiteMetadata + URL → string[] of normalized tag candidates</td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/repositories/tags.repository.ts</code></td>
+          <td>upsertTags, getTagsByLink, getTagsByOwner, deleteTagFromLink</td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/dtos/tags.dto.ts</code></td>
+          <td>Tag shape validation (Zod), DB→API transform</td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/api/routes/tags.ts</code></td>
+          <td>CRUD routes for tags on a link + global tag listing</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/store/slices/tags-slice.ts</code></td>
+          <td>Redux slice: selectedTags[], allTags[], tagFilter actions</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/tags/TagPill.tsx</code></td>
+          <td>Reusable pill: confirmed vs. suggestion variant, dismiss/confirm handlers</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/tags/TagFilter.tsx</code></td>
+          <td>Horizontal scrollable filter row for LinksContent toolbar</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/pages/tags.tsx</code></td>
+          <td>Global "All Tags" view — tag cloud + links list</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Modified files</div>
+    <table>
+      <thead>
+        <tr><th>File</th><th>Change</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>packages/entities/src/models/links.ts</code></td>
+          <td>Add <code>tags: Tag[]</code> to Link type (populated by JOIN on GET)</td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/services/links.service.ts</code></td>
+          <td>After link insert: call <code>deriveTags()</code>, upsert tags, insert link_tags</td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/infrastructure/repositories/links.repository.ts</code></td>
+          <td>JOIN <code>link_tags</code> + <code>tags</code> on GET; add <code>?tag=</code> filter to list query</td>
+        </tr>
+        <tr>
+          <td><code>apps/backend/src/api/routes/links.ts</code></td>
+          <td>Accept <code>?tag[]</code> and <code>?tag_mode</code> query params on list route</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/sections/links.tsx</code></td>
+          <td>Add TagFilter bar above link grid; wire <code>selectedTags</code> from Redux to API call</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/cards/link-card.tsx</code></td>
+          <td>Render confirmed tags as pills; unconfirmed as dashed suggestions</td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/components/Layout.tsx</code> (or sidebar)</td>
+          <td>Add "🏷 Tags" nav item linking to <code>/tags</code></td>
+        </tr>
+        <tr>
+          <td><code>apps/web/src/store/slices/links-slice.ts</code></td>
+          <td>Normalise returned tags into cache alongside link data</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 7. BACKEND QUERY ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">7</div>
+    <div class="section-title">Key Backend Query Patterns</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Get links with their tags (JOIN)</div>
+    <pre><span class="cm">// links.repository.ts — updated getLinksForCollection()</span>
+knex(<span class="str">'links'</span>)
+  .select([
+    <span class="str">'links.*'</span>,
+    knex.raw(<span class="str">'COALESCE(json_agg(json_build_object('</span>
+      + <span class="str">"'id', t.id, 'name', t.name, 'confirmed', lt.confirmed"</span>
+      + <span class="str">") FILTER (WHERE t.id IS NOT NULL), '[]') AS tags"</span>)
+  ])
+  .leftJoin(<span class="str">'link_tags as lt'</span>, <span class="str">'lt.link_id'</span>, <span class="str">'links.id'</span>)
+  .leftJoin(<span class="str">'tags as t'</span>, <span class="str">'t.id'</span>, <span class="str">'lt.tag_id'</span>)
+  .where({ <span class="str">'links.owner_id'</span>: ownerId, <span class="str">'links.parent_id'</span>: collectionId })
+  .groupBy(<span class="str">'links.id'</span>);</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Filter links by tag (AND semantics)</div>
+    <pre><span class="cm">// GET /links?tag=react&tag=typescript</span>
+knex(<span class="str">'links'</span>)
+  .join(<span class="str">'link_tags as lt'</span>, <span class="str">'lt.link_id'</span>, <span class="str">'links.id'</span>)
+  .join(<span class="str">'tags as t'</span>, <span class="str">'t.id'</span>, <span class="str">'lt.tag_id'</span>)
+  .where(<span class="str">'links.owner_id'</span>, ownerId)
+  .whereIn(<span class="str">'t.name'</span>, tagFilters)          <span class="cm">// ['react', 'typescript']</span>
+  .groupBy(<span class="str">'links.id'</span>)
+  .havingRaw(<span class="str">'COUNT(DISTINCT t.name) = ?'</span>, [tagFilters.length]);</pre>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Upsert tag + link_tag (at save time)</div>
+    <pre><span class="kw">async function</span> <span class="fn">upsertTagsForLink</span>(
+  linkId: string, ownerId: string, tagNames: string[]
+): Promise&lt;void&gt; {
+  <span class="kw">for</span> (<span class="kw">const</span> name <span class="kw">of</span> tagNames) {
+    <span class="cm">// insert tag if not exists, return id</span>
+    <span class="kw">const</span> [tag] = <span class="kw">await</span> knex(<span class="str">'tags'</span>)
+      .insert({ name, owner_id: ownerId, is_auto: <span class="kw">true</span> })
+      .onConflict([<span class="str">'name'</span>, <span class="str">'owner_id'</span>])
+      .merge()           <span class="cm">// idempotent</span>
+      .returning(<span class="str">'id'</span>);
+
+    <span class="cm">// attach to link as unconfirmed suggestion</span>
+    <span class="kw">await</span> knex(<span class="str">'link_tags'</span>)
+      .insert({ link_id: linkId, tag_id: tag.id, confirmed: <span class="kw">false</span> })
+      .onConflict([<span class="str">'link_id'</span>, <span class="str">'tag_id'</span>])
+      .ignore();
+  }
+}</pre>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 8. IMPLEMENTATION PHASES ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">8</div>
+    <div class="section-title">Implementation Phases</div>
+  </div>
+
+  <div class="timeline">
+    <div class="tl-item">
+      <div class="tl-phase">Phase 1 — Day 1</div>
+      <div class="tl-title">DB migration + Tag Deriver</div>
+      <div class="tl-body">
+        Write <code>20260516000002_tags.ts</code> migration. Implement and unit-test
+        <code>packages/scraper/src/tag-deriver.ts</code> with the normalization pipeline.
+        No UI changes required yet — backend only.
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Phase 2 — Day 2</div>
+      <div class="tl-title">Backend wiring</div>
+      <div class="tl-body">
+        Create <code>tags.repository.ts</code> and wire <code>upsertTagsForLink()</code>
+        into <code>links.service.ts</code> after link insert. Update <code>links.repository.ts</code>
+        to JOIN tags on all GET queries. Add <code>GET /tags</code> (all user tags) and
+        <code>PATCH /links/:id/tags/:tagId</code>, <code>POST /links/:id/tags</code>,
+        <code>DELETE /links/:id/tags/:tagId</code> routes.
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Phase 3 — Day 3</div>
+      <div class="tl-title">Tag filter on link list API</div>
+      <div class="tl-body">
+        Add <code>?tag[]</code> and <code>?tag_mode=AND|OR</code> query param support to
+        <code>GET /links</code>. Ship the backend. Manually test with curl / Postman before
+        touching the frontend.
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Phase 4 — Day 4</div>
+      <div class="tl-title">Frontend — Link Card + Redux</div>
+      <div class="tl-body">
+        Add <code>tags-slice.ts</code> to Redux store. Update <code>links-slice.ts</code>
+        to normalise tags. Render confirmed tag pills in <code>link-card.tsx</code>.
+        Add suggestion banner in the link detail panel (triggered on first-save).
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Phase 5 — Day 5</div>
+      <div class="tl-title">Frontend — TagFilter bar + Tags page</div>
+      <div class="tl-body">
+        Build <code>TagFilter.tsx</code> and insert it into <code>links.tsx</code>
+        (LinksContent toolbar, between sort and view-mode controls).
+        Build <code>/tags</code> page listing all user tags with link counts.
+        Add "🏷 Tags" to sidebar navigation.
+      </div>
+    </div>
+    <div class="tl-item">
+      <div class="tl-phase">Phase 6 — Day 6</div>
+      <div class="tl-title">Polish + retroactive tagging</div>
+      <div class="tl-body">
+        Write a one-time backfill script that runs <code>deriveTags()</code> against
+        all existing links (using their stored <code>keywords</code>, <code>author</code>,
+        and URL) and populates <code>tags</code> / <code>link_tags</code>.
+        Existing users get tags on their old links automatically — as unconfirmed suggestions.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 9. NON-GOALS / CONSTRAINTS ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">9</div>
+    <div class="section-title">Non-Goals &amp; Constraints</div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-title">Explicitly out of scope</div>
+      <ul class="dot">
+        <li>No LLM or AI API calls — zero extra cost</li>
+        <li>No NLP library (spaCy, compromise.js) — pure string ops</li>
+        <li>No global/shared tag namespace — tags are user-scoped only</li>
+        <li>No tag hierarchy / parent-child tags</li>
+        <li>No tag-based access control or sharing</li>
+        <li>No bulk re-tagging UI (backfill is a one-time script)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="card-title">Edge cases handled</div>
+      <ul class="dot">
+        <li>Links with no keywords/OG — get only the domain tag</li>
+        <li>Duplicate tags across links — idempotent upsert handles it</li>
+        <li>Very long keyword strings — truncated at 40 chars</li>
+        <li>Non-ASCII tag candidates — <code>replace(/[^\w-]/g, '')</code> strips them</li>
+        <li>User deletes a tag — <code>CASCADE</code> removes all link_tags references</li>
+        <li>Retroactive backfill — uses existing <code>keywords</code> column, no re-scrape needed</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════ 10. SUCCESS METRICS ═══════════════════════════ -->
+<section>
+  <div class="section-header">
+    <div class="section-number">10</div>
+    <div class="section-title">Success Metrics</div>
+  </div>
+
+  <div class="grid-3">
+    <div class="stat-card">
+      <span class="stat-label">Tag coverage</span>
+      <span class="stat-value">&gt;70%</span>
+      <span class="stat-note">of saved links should receive at least 1 auto-tag</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Latency overhead</span>
+      <span class="stat-value">&lt;5ms</span>
+      <span class="stat-note">added to link-save request (pure in-process computation)</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">Confirmation rate</span>
+      <span class="stat-value">target 60%</span>
+      <span class="stat-note">of auto-suggestions confirmed by users within a week</span>
+    </div>
+  </div>
+</section>
+
+<hr class="divider" />
+<div style="padding: 32px 0 0; font-size: 12px; color: var(--muted); text-align: center;">
+  OneLink · Smart Tags Feature Plan · Generated 2026-05-16 · Zero extra cost · No LLM calls
+</div>
+
+</div><!-- /container -->
+</body>
+</html>

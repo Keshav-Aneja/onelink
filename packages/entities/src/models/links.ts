@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { TagSchema } from "./tags";
 
 export const LinkSchema = z.object({
   id: z.string().uuid().nonempty(),
@@ -16,8 +17,9 @@ export const LinkSchema = z.object({
   parent_id: z.string().nullable(),
   subscribed: z.boolean().default(false).optional(),
   created_at: z.string().optional(),
+  tags: z.array(TagSchema).optional(),
 });
 
 export type Link = z.infer<typeof LinkSchema>;
-export type LinkInsert = Omit<Link, "id">;
-export type LinkUpdate = Partial<Omit<Link, "id" | "owner_id">>;
+export type LinkInsert = Omit<Link, "id" | "tags"> & { tags?: string[] };
+export type LinkUpdate = Partial<Omit<Link, "id" | "owner_id" | "tags">>;

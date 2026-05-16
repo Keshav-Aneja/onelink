@@ -9,8 +9,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getLinksQueryOptions } from "./get-links";
 import { addLink } from "@store/slices/links-slice";
 
+export type CreateLinkPayload = CreateLink & {
+  parent_id: string | null;
+  fingerprint: string;
+  subscribed: boolean;
+  tags?: string[];
+};
+
 export const createLink = (
-  data: CreateLink,
+  data: CreateLinkPayload,
 ): Promise<IActionResponse<Link>> => {
   return action.post("/links", data);
 };
@@ -19,6 +26,7 @@ type UseCreateLinkOptions = {
   parentId: string | null;
   mutationConfig?: MutationConfig<typeof createLink>;
 };
+
 
 export const useCreateLink = ({
   mutationConfig,

@@ -13,11 +13,13 @@ import {
   PiFunnel,
   PiGlobe,
 } from "react-icons/pi";
+import { HiOutlineTag } from "react-icons/hi";
 
 interface ViewToolbarProps {
   prefs: ViewPreferences;
   onUpdate: (updates: Partial<ViewPreferences>) => void;
   linkCount: number;
+  availableTags?: string[];
 }
 
 const VIEW_MODES: { mode: ViewMode; icon: React.ReactNode; label: string }[] = [
@@ -50,11 +52,20 @@ export default function ViewToolbar({
   prefs,
   onUpdate,
   linkCount,
+  availableTags = [],
 }: ViewToolbarProps) {
   const activeSortLabel =
     SORT_OPTIONS.find((o) => o.value === prefs.sortBy)?.label ?? "Sort";
   const activeFilterLabel =
     FILTER_OPTIONS.find((o) => o.value === prefs.filterBy)?.label ?? "Filter";
+  const tagFilter = prefs.tagFilter ?? [];
+
+  const toggleTag = (tag: string) => {
+    const next = tagFilter.includes(tag)
+      ? tagFilter.filter((t) => t !== tag)
+      : [...tagFilter, tag];
+    onUpdate({ tagFilter: next });
+  };
 
   return (
     <div className="w-full flex flex-col gap-2 py-2">
@@ -157,6 +168,58 @@ export default function ViewToolbar({
             )}
           </button>
 
+          {/* Tag filter dropdown — only shown when the page has tagged links */}
+          {availableTags.length > 0 && (
+            <div className="relative group">
+              <button
+                className={cn(
+                  "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-all duration-150 cursor-pointer",
+                  tagFilter.length > 0
+                    ? "border-primary/60 bg-primary/10 text-white"
+                    : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:border-white/30",
+                )}
+              >
+                <HiOutlineTag className="text-sm" />
+                <span className="hidden sm:inline">
+                  {tagFilter.length > 0 ? `${tagFilter.length} tag${tagFilter.length > 1 ? "s" : ""}` : "Tags"}
+                </span>
+                {tagFilter.length > 0 && (
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary" />
+                )}
+              </button>
+              <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-[#111] border border-white/10 rounded-md shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150">
+                {tagFilter.length > 0 && (
+                  <>
+                    <button
+                      onClick={() => onUpdate({ tagFilter: [] })}
+                      className="w-full text-left px-3 py-2 text-xs text-white/40 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                    >
+                      Clear all
+                    </button>
+                    <div className="h-px bg-white/8 mx-2" />
+                  </>
+                )}
+                {availableTags.map((tag) => (
+                  <button
+                    key={tag}
+                    onClick={() => toggleTag(tag)}
+                    className={cn(
+                      "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer flex items-center justify-between gap-2",
+                      tagFilter.includes(tag)
+                        ? "text-white bg-primary/20"
+                        : "text-white/60 hover:text-white hover:bg-white/5",
+                    )}
+                  >
+                    <span className="truncate">{tag}</span>
+                    {tagFilter.includes(tag) && (
+                      <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* Density slider — only visible in grid mode */}
           {prefs.viewMode === "grid" && (
             <div className="flex items-center gap-2 border border-white/10 bg-white/5 rounded-md px-2.5 py-1">
@@ -183,7 +246,7 @@ export default function ViewToolbar({
       </div>
 
       {/* Active state hint row */}
-      {(prefs.filterBy !== "all" || prefs.groupByDomain || prefs.sortBy !== "newest") && (
+      {(prefs.filterBy !== "all" || prefs.groupByDomain || prefs.sortBy !== "newest" || tagFilter.length > 0) && (
         <div className="flex items-center gap-2 flex-wrap">
           {prefs.filterBy !== "all" && (
             <span className="text-[0.6rem] bg-primary/10 border border-primary/30 text-primary px-2 py-0.5 rounded-full">
@@ -200,6 +263,15 @@ export default function ViewToolbar({
               Grouped by domain
             </span>
           )}
+          {tagFilter.map((t) => (
+            <button
+              key={t}
+              onClick={() => toggleTag(t)}
+              className="text-[0.6rem] bg-primary/10 border border-primary/30 text-primary px-2 py-0.5 rounded-full flex items-center gap-1 cursor-pointer hover:bg-primary/20 transition-colors"
+            >
+              {t} ×
+            </button>
+          ))}
           <span className="text-[0.6rem] text-white/30 ml-auto">
             {linkCount} {linkCount === 1 ? "link" : "links"}
           </span>

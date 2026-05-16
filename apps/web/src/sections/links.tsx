@@ -12,7 +12,7 @@ import LinkCardSuspense from "@components/cards/link-card-suspense";
 import Mascot from "@components/mascot";
 import { useStoredCollections } from "@hooks/collections";
 import { getSecuredCollection } from "@store/slices/application-slice";
-import { filterLinks, sortLinks, groupLinksByDomain } from "@lib/utils/link-view";
+import { filterLinks, sortLinks, groupLinksByDomain, filterLinksByTags } from "@lib/utils/link-view";
 import extractDomain from "@lib/utils/extract-domain";
 
 interface LinksContent {
@@ -26,18 +26,26 @@ const DENSITY_GRID_CLASSES: Record<number, string> = {
   6: "grid-cols-2 md:grid-cols-6",
 };
 
+const DENSITY_CARD_HEIGHTS: Record<number, string> = {
+  3: "25rem",
+  4: "20rem",
+  5: "17rem",
+  6: "15rem",
+};
+
 interface LinkGroupProps {
   links: Link[];
   viewMode: "grid" | "list" | "compact";
   gridClass: string;
+  cardHeight: string;
 }
 
-function LinkGroup({ links, viewMode, gridClass }: LinkGroupProps) {
+function LinkGroup({ links, viewMode, gridClass, cardHeight }: LinkGroupProps) {
   if (viewMode === "grid") {
     return (
       <div className={`w-full grid ${gridClass} gap-1 md:gap-3`}>
         {links.map((link) => (
-          <LinkCard data={link} key={link.id} />
+          <LinkCard data={link} key={link.id} height={cardHeight} />
         ))}
       </div>
     );
@@ -86,11 +94,19 @@ const LinksContent = ({ pathId }: LinksContent) => {
     }
   }, [linkQuery.isSuccess, linkQuery.data]);
 
+  const availableTags = useMemo(() => {
+    if (!links) return [];
+    const tagSet = new Set<string>();
+    links.forEach((l) => l.tags?.forEach((t) => { if (t.confirmed) tagSet.add(t.name); }));
+    return Array.from(tagSet).sort();
+  }, [links]);
+
   const processedLinks = useMemo(() => {
     if (!links) return [];
     const filtered = filterLinks(links, prefs.filterBy);
-    return sortLinks(filtered, prefs.sortBy);
-  }, [links, prefs.filterBy, prefs.sortBy]);
+    const tagFiltered = filterLinksByTags(filtered, prefs.tagFilter ?? []);
+    return sortLinks(tagFiltered, prefs.sortBy);
+  }, [links, prefs.filterBy, prefs.sortBy, prefs.tagFilter]);
 
   const groupedLinks = useMemo(() => {
     if (!prefs.groupByDomain) return null;
@@ -99,12 +115,14 @@ const LinksContent = ({ pathId }: LinksContent) => {
 
   const gridClass =
     DENSITY_GRID_CLASSES[prefs.gridDensity] ?? DENSITY_GRID_CLASSES[6];
+  const cardHeight =
+    DENSITY_CARD_HEIGHTS[prefs.gridDensity] ?? DENSITY_CARD_HEIGHTS[6];
 
   if (linkQuery.isLoading) {
     return (
       <div className={`w-full grid ${gridClass} gap-3`}>
         {Array.from({ length: 6 }).map((_, i) => (
-          <LinkCardSuspense key={i} />
+          <LinkCardSuspense key={i} height={cardHeight} />
         ))}
       </div>
     );
@@ -127,6 +145,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
         prefs={prefs}
         onUpdate={updatePrefs}
         linkCount={processedLinks.length}
+        availableTags={availableTags}
       />
 
       {processedLinks.length === 0 && (
@@ -167,6 +186,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
                   links={domainLinks}
                   viewMode={prefs.viewMode}
                   gridClass={gridClass}
+                  cardHeight={cardHeight}
                 />
               </div>
             ))}
@@ -177,6 +197,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
           links={processedLinks}
           viewMode={prefs.viewMode}
           gridClass={gridClass}
+          cardHeight={cardHeight}
         />
       )}
     </Fragment>

@@ -4,3 +4,5 @@ export * from "./links";
 export * from "./shares";
 export * from "./public-shares";
 export * from "./rss";
+export * from "./tags";
+export * from "./user-settings";

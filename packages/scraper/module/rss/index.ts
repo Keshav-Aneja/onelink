@@ -1,10 +1,18 @@
 import * as cheerio from "cheerio";
+import { createHash } from "crypto";
 
 export type RSSFeed = {
   title?: string;
   published_date?: string;
   link?: string;
+  item_hash?: string;
+  feed_id?: string;
 };
+
+function computeItemHash(feedUrl: string, guid: string | undefined, link: string | undefined, pubDate: string | undefined): string {
+  const input = guid || `${feedUrl}:${link || ""}:${pubDate || ""}`;
+  return createHash("sha1").update(input).digest("hex");
+}
 
 export class RSS {
   private readonly _url: string;
@@ -203,7 +211,7 @@ export class RSS {
     }
   }
 
-  async scrapeRSS(days?: number, startDate?: Date, endDate?: Date) {
+  async scrapeRSS(days?: number, startDate?: Date, endDate?: Date, feedId?: string) {
     try {
       let filterStartDate: Date;
       let filterEndDate: Date;
@@ -241,10 +249,14 @@ export class RSS {
         const pubDate = $(el).find("pubDate").text();
         const date = pubDate ? new Date(pubDate) : undefined;
         if (date && date >= filterStartDate && date <= filterEndDate) {
+          const link = $(el).find("link").text();
+          const guid = $(el).find("guid").text() || undefined;
           rssFeed.push({
             title: $(el).find("title").text(),
             published_date: date.toISOString(),
-            link: $(el).find("link").text(),
+            link,
+            item_hash: computeItemHash(rssURL, guid, link, date.toISOString()),
+            feed_id: feedId,
           });
         }
       });
@@ -253,10 +265,14 @@ export class RSS {
           $(el).find("published").text() || $(el).find("updated").text();
         const date = pubDate ? new Date(pubDate) : undefined;
         if (date && date >= filterStartDate && date <= filterEndDate) {
+          const link = $(el).find("link").attr("href");
+          const guid = $(el).find("id").text() || undefined;
           rssFeed.push({
             title: this.formatCommitTitle($(el).find("title").text(), rssURL),
             published_date: date.toISOString(),
-            link: $(el).find("link").attr("href"),
+            link,
+            item_hash: computeItemHash(rssURL, guid, link, date.toISOString()),
+            feed_id: feedId,
           });
         }
       });

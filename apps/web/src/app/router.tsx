@@ -63,14 +63,24 @@ export const createAppRouter = (queryClient: QueryClient) => {
       ],
     },
     {
-      path: paths.notifications.path,
-      lazy: () =>
-        import("./routes/notifications").then(protectedLoader(queryClient)),
-    },
-    {
       path: paths.favourite.path,
       lazy: () =>
         import("./routes/favourite").then(protectedLoader(queryClient)),
+    },
+    {
+      path: paths.feeds.path,
+      lazy: () =>
+        import("./routes/feeds").then(protectedLoader(queryClient)),
+    },
+    {
+      path: paths.tags.path,
+      lazy: () =>
+        import("./routes/tags").then(protectedLoader(queryClient)),
+    },
+    {
+      path: paths.settings.path,
+      lazy: () =>
+        import("./routes/settings").then(protectedLoader(queryClient)),
     },
     {
       path: paths.publicShare.path,

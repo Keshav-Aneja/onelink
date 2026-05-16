@@ -1,11 +1,13 @@
 import cron from "node-cron";
 import logger from "../helpers/logger";
 import FeedsService from "../infrastructure/services/feeds.service";
+import RssDiscoveryService from "../infrastructure/services/rss-discovery.service";
 
 export default function cronLoader() {
   const feedsService = new FeedsService();
+  const rssDiscoveryService = new RssDiscoveryService();
 
-  const run = async () => {
+  const runFeedRefresh = async () => {
     logger.info("[cron] Starting RSS feed refresh...");
     try {
       await feedsService.refreshAllFeeds();
@@ -15,11 +17,25 @@ export default function cronLoader() {
     }
   };
 
+  const runRssDiscovery = async () => {
+    logger.info("[cron] Starting RSS discovery...");
+    try {
+      await rssDiscoveryService.processDiscoveryQueue();
+      logger.info("[cron] RSS discovery complete.");
+    } catch (err) {
+      logger.error("[cron] RSS discovery failed:", err);
+    }
+  };
+
   // Fire once on startup
-  run();
+  runFeedRefresh();
+  runRssDiscovery();
 
-  // Schedule every 30 minutes: "*/30 * * * *"
-  cron.schedule("*/30 * * * *", run);
+  // Schedule feed refresh every 30 minutes: "*/30 * * * *"
+  cron.schedule("*/30 * * * *", runFeedRefresh);
 
-  logger.info("[cron] RSS cron job registered (every 30 minutes).");
+  // Schedule RSS discovery every 15 minutes: "*/15 * * * *"
+  cron.schedule("*/15 * * * *", runRssDiscovery);
+
+  logger.info("[cron] Cron jobs registered - Feed refresh (every 30 minutes), RSS discovery (every 15 minutes).");
 }

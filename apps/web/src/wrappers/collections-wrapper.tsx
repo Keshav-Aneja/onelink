@@ -8,8 +8,10 @@ import ActionHeader from "@components/headers/actions-header";
 
 type CollectionWrapperProps = {
   children: ReactNode;
+  hideActionHeader?: boolean;
+  hideBreadcrumbs?: boolean;
 };
-const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
+const CollectionWrapper = ({ children, hideActionHeader = false, hideBreadcrumbs = false }: CollectionWrapperProps) => {
   return (
     <main className="w-full h-svh flex font-kustom overflow-hidden">
       <SidebarWrapper>
@@ -17,9 +19,9 @@ const CollectionWrapper = ({ children }: CollectionWrapperProps) => {
       </SidebarWrapper>
       <CollectionContentWrapper>
         <CollectionsHeader />
-        <Breadcrumbs />
-        <ActionHeader />
-        <div className="px-3 pb-3 w-full h-full flex flex-col gap-3 overflow-y-auto">
+        {!hideBreadcrumbs && <Breadcrumbs />}
+        {!hideActionHeader && <ActionHeader />}
+        <div className="px-3 pb-3 w-full h-full overflow-y-auto space-y-3">
           {children}
         </div>
       </CollectionContentWrapper>

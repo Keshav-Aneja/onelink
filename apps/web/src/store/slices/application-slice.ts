@@ -1,6 +1,5 @@
 import { Collection, Link } from "@onelink/entities/models";
 import { createSlice } from "@reduxjs/toolkit";
-import type { RSSFeed } from "@onelink/entities/models";
 import sidebarItems from "@config/navigation-sidebar-items";
 interface IApplicationConfig {
   redirectTo: string;
@@ -11,7 +10,6 @@ interface IApplicationConfig {
   };
   selectedLink: Link | null;
   selectedCollection: Collection | null;
-  feed: RSSFeed[] | null;
   activeTab: string;
   securedCollections: string[];
   clipboardLink: {
@@ -29,7 +27,6 @@ const initialState: IApplicationConfig = {
   },
   selectedCollection: null,
   selectedLink: null,
-  feed: null,
   activeTab: sidebarItems[0].label,
   securedCollections: [],
   clipboardLink: {
@@ -63,9 +60,6 @@ export const applicationSlice = createSlice({
     setSelectedCollection: (state, action: { payload: Collection | null }) => {
       state.selectedCollection = action.payload;
     },
-    setFeed: (state, action: { payload: RSSFeed[] | null }) => {
-      state.feed = action.payload;
-    },
     setActiveTab: (state, action: { payload: string }) => {
       state.activeTab = action.payload;
     },
@@ -84,7 +78,6 @@ export const applicationSlice = createSlice({
     getNotFoundState: (state) => state.not_found,
     getSelectedLink: (state) => state.selectedLink,
     getSelectedCollection: (state) => state.selectedCollection,
-    getFeed: (state) => state.feed,
     getActiveTab: (state) => state.activeTab,
     getSecuredCollection: (state) => state.securedCollections,
     getClipboardLinkState: (state) => state.clipboardLink,
@@ -96,7 +89,6 @@ export const {
   setFoundCollection,
   setFoundLink,
   setSelectedLink,
-  setFeed,
   setActiveTab,
   setSelectedCollection,
   addToSecuredCollection,
@@ -106,7 +98,6 @@ export const {
   getParentId,
   getNotFoundState,
   getSelectedLink,
-  getFeed,
   getActiveTab,
   getSelectedCollection,
   getSecuredCollection,

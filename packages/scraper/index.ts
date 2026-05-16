@@ -1,5 +1,6 @@
 export * from "./module/index";
 export * from "./extractors/metadata";
+export * from "./tag-deriver";
 /**
  * 
  * How to use?

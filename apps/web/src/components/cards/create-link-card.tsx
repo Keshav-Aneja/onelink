@@ -1,5 +1,5 @@
 import { cn } from "@lib/tailwind-utils";
-import { Fragment } from "react/jsx-runtime";
+import { Fragment, useState } from "react";
 import { z } from "zod";
 import { useForm, SubmitHandler } from "react-hook-form";
 import Input from "@components/form/Input";
@@ -14,6 +14,8 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useCreateLink } from "@features/links/create-link";
 import Checkbox from "@components/form/checkbox";
 import { ImSpinner2 } from "react-icons/im";
+import TagInput from "@components/tags/TagInput";
+
 interface CreateLinkCardProps {
   className?: string;
   closeModal?: () => void;
@@ -27,6 +29,8 @@ const linkSchema = LinkSchema.pick({ description: true, link: true }).and(
 export type CreateLink = z.infer<typeof linkSchema>;
 const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   const pathId = useParentIdFromPath();
+  const [tags, setTags] = useState<string[]>([]);
+
   if (pathId === undefined) {
     return null;
   }
@@ -60,14 +64,15 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
       parent_id: pathId,
       fingerprint: nanoid(10),
       subscribed: data.notification,
+      tags: tags.length > 0 ? tags : undefined,
     };
     createLinkMutation.mutate(linkData);
-    // await createLink(linkData);
   };
   if (createLinkMutation.isSuccess) {
     setValue("link", "");
     setValue("description", "");
     setValue("notification", false);
+    setTags([]);
   }
   return (
     <Fragment>
@@ -95,6 +100,7 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
             register={register}
             placeholder="Ex: Collection for research papers"
           />
+          <TagInput value={tags} onChange={setTags} />
           <Checkbox<CreateLink>
             label="notification"
             falseLabel="Get notified of updates from this website (new articles, posts, etc.)."
