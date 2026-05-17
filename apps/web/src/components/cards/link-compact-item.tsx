@@ -5,6 +5,9 @@ import SubscribeButton from "@components/buttons/subscribe-button";
 import formatLink from "@lib/utils/format-link";
 import extractDomain from "@lib/utils/extract-domain";
 import formatDate from "@lib/utils/format-date";
+import { MoveToCollectionModal } from "@components/dialogs/move-to-collection-modal";
+import { useState } from "react";
+import { TbFolderShare } from "react-icons/tb";
 
 interface LinkCompactItemProps {
   data: Link;
@@ -13,8 +16,10 @@ interface LinkCompactItemProps {
 export default function LinkCompactItem({ data }: LinkCompactItemProps) {
   const domain = extractDomain(data.link);
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=16`;
+  const [moveOpen, setMoveOpen] = useState(false);
 
   return (
+    <>
     <div
       className="w-full flex items-center gap-3 px-3 py-2 border-b border-white/8 hover:bg-white/4 transition-colors duration-150 group cursor-pointer"
       onDoubleClick={() => window.open(data.link, "_blank")}
@@ -59,8 +64,22 @@ export default function LinkCompactItem({ data }: LinkCompactItemProps) {
       <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
         <StarButton starred={data.is_starred ?? false} id={data.id} subtle />
         <SubscribeButton subscribed={data.subscribed ?? false} id={data.id} subtle />
+        <button
+          className="text-sm cursor-pointer text-theme_secondary_white/40 hover:text-theme_secondary_white transition-colors"
+          title="Move to collection"
+          onClick={(e) => {
+            e.stopPropagation();
+            setMoveOpen(true);
+          }}
+        >
+          <TbFolderShare />
+        </button>
         <DeleteLinkButton id={data.id} subtle />
       </div>
     </div>
+    {moveOpen && (
+      <MoveToCollectionModal link={data} onClose={() => setMoveOpen(false)} />
+    )}
+    </>
   );
 }

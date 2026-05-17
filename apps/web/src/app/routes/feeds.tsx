@@ -32,7 +32,7 @@ const TIME_RANGES = [
 
 const Feeds = () => {
   const [selectedFeedId, setSelectedFeedId] = useState<string | null>(null);
-  const [sinceDays, setSinceDays] = useState(7);
+  const [sinceDays, setSinceDays] = useState(1);
   const [showImportModal, setShowImportModal] = useState(false);
   const [addUrl, setAddUrl] = useState("");
   const [showAddInput, setShowAddInput] = useState(false);

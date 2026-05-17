@@ -4,13 +4,19 @@ import StarButton from "@components/buttons/star-button";
 import DeleteLinkButton from "@components/buttons/delete-link-button";
 import SubscribeButton from "@components/buttons/subscribe-button";
 import formatLink from "@lib/utils/format-link";
+import { MoveToCollectionModal } from "@components/dialogs/move-to-collection-modal";
+import { useState } from "react";
+import { TbFolderShare } from "react-icons/tb";
 
 interface LinkListItemProps {
   data: Link;
 }
 
 export default function LinkListItem({ data }: LinkListItemProps) {
+  const [moveOpen, setMoveOpen] = useState(false);
+
   return (
+    <>
     <div
       className="w-full flex items-center gap-3 px-3 py-2.5 border-b border-white/8 hover:bg-white/4 transition-colors duration-150 group"
       onDoubleClick={() => window.open(data.link, "_blank")}
@@ -62,8 +68,22 @@ export default function LinkListItem({ data }: LinkListItemProps) {
       <div className="flex items-center gap-1.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
         <StarButton starred={data.is_starred ?? false} id={data.id} subtle />
         <SubscribeButton subscribed={data.subscribed ?? false} id={data.id} subtle />
+        <button
+          className="text-sm cursor-pointer text-theme_secondary_white/40 hover:text-theme_secondary_white transition-colors"
+          title="Move to collection"
+          onClick={(e) => {
+            e.stopPropagation();
+            setMoveOpen(true);
+          }}
+        >
+          <TbFolderShare />
+        </button>
         <DeleteLinkButton id={data.id} subtle />
       </div>
     </div>
+    {moveOpen && (
+      <MoveToCollectionModal link={data} onClose={() => setMoveOpen(false)} />
+    )}
+    </>
   );
 }
