@@ -16,9 +16,55 @@
   --breakpoint-xxl: 1540px;
 }
 /*
+* Global scrollbar
+*/
+* {
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--color-primary) 25%, transparent) transparent;
+}
+*::-webkit-scrollbar {
+  width: 3px;
+  height: 3px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-primary) 25%, transparent);
+  border-radius: 9999px;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--color-primary) 50%, transparent);
+}
+
+/*
 * Extended utility classes
 */
 @layer utilities {
+  .scrollbar-none {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-thin-primary {
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--color-primary) 25%, transparent) transparent;
+  }
+  .scrollbar-thin-primary::-webkit-scrollbar {
+    width: 3px;
+  }
+  .scrollbar-thin-primary::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-thin-primary::-webkit-scrollbar-thumb {
+    background: color-mix(in srgb, var(--color-primary) 25%, transparent);
+    border-radius: 9999px;
+  }
+  .scrollbar-thin-primary::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--color-primary) 50%, transparent);
+  }
   .max-w-wrapper {
     width: 2000px;
   }

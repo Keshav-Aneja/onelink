@@ -85,4 +85,29 @@ export class CollectionRepository implements ICollectionRepository {
     }
     return parseInt(result["count"]);
   }
+
+  async getAllDescendantIds(
+    collection_id: string,
+    owner_id: string,
+  ): Promise<string[]> {
+    const rows: Array<{ id: string }> = await db.raw(
+      `
+      WITH RECURSIVE descendants AS (
+        SELECT id FROM collections WHERE id = ? AND owner_id = ?
+        UNION ALL
+        SELECT c.id FROM collections c
+        INNER JOIN descendants d ON c.parent_id = d.id
+        WHERE c.owner_id = ?
+      )
+      SELECT id FROM descendants
+      `,
+      [collection_id, owner_id, owner_id],
+    ).then((r: any) => r.rows ?? r);
+    return rows.map((r) => r.id);
+  }
+
+  async deleteCollectionsByIds(ids: string[], owner_id: string): Promise<void> {
+    if (ids.length === 0) return;
+    await db("collections").whereIn("id", ids).where({ owner_id }).delete();
+  }
 }

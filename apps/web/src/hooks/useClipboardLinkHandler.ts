@@ -44,8 +44,7 @@ export function useClipboardLinkHandler({
 
   const handleUrlsDetected = useCallback(
     (urls: string[]) => {
-      if (!parentId) {
-        console.warn("Cannot create link: parentId is undefined");
+      if (parentId === undefined) {
         return;
       }
 

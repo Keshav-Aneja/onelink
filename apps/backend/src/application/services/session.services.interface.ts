@@ -13,11 +13,11 @@ export interface ISessionService {
     ip: string | undefined,
     userAgent: string | undefined,
   ): Boolean;
-  destroySession(session: Session & Partial<SessionData>): Boolean;
+  destroySession(session: Session & Partial<SessionData>): Promise<void>;
   getSessionData(
     sessionID: string,
     sessionStore: session.Store & { generate: (req: Request) => void },
-  ): SessionData;
+  ): Promise<SessionData>;
 }
 
 // Now based on this I will be implementing different authentication services

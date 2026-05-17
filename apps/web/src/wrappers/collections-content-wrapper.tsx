@@ -7,7 +7,7 @@ const CollectionContentWrapper = ({
   children,
 }: CollectionContentWrapperProps) => {
   return (
-    <section className={`w-[91%] md:w-full h-full flex flex-col gap-1`}>
+    <section className={`flex-1 min-w-0 h-full flex flex-col gap-1`}>
       {children}
     </section>
   );

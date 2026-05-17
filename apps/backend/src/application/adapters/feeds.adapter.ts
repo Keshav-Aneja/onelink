@@ -66,6 +66,11 @@ export default class FeedsAdapter {
     ActionResponse.success(res, null, 200, "All marked as read");
   });
 
+  pruneInactive = asyncHandler(async (req: Request, res: Response) => {
+    const result = await this.feedsService.pruneInactiveSubscriptions(req.session.user_id!);
+    ActionResponse.success(res, result, 200, `Removed ${result.removed} inactive feed(s)`);
+  });
+
   exportOpml = asyncHandler(async (req: Request, res: Response) => {
     const opml = await this.feedsService.exportOpml(req.session.user_id!);
     res.setHeader("Content-Type", "text/x-opml");

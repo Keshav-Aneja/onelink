@@ -45,6 +45,9 @@ export class GithubOAuthService implements IAuthenticationService {
     if (typeof code !== "string") {
       throw new AuthenticationError("Authorization code not found");
     }
+    if (!state || typeof state !== "string" || state !== session.csrf_token) {
+      throw new AuthenticationError("Invalid CSRF state parameter");
+    }
     return code;
   }
 

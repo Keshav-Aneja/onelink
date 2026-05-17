@@ -1,11 +1,10 @@
-import LinkDetailCard from "@components/cards/link-details-card";
 import TagsContent from "@sections/tags";
 import CollectionWrapper from "@wrappers/collections-wrapper";
 import { HiOutlineTag } from "react-icons/hi";
 
 const Tags = () => {
   return (
-    <CollectionWrapper hideActionHeader hideBreadcrumbs>
+    <CollectionWrapper hideBreadcrumbs>
       {/* Page header */}
       <section className="flex items-start justify-between gap-4 mb-6">
         <div>
@@ -19,7 +18,6 @@ const Tags = () => {
         </div>
       </section>
       <TagsContent />
-      <LinkDetailCard />
     </CollectionWrapper>
   );
 };

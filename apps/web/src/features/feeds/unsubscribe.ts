@@ -25,3 +25,25 @@ export const useUnsubscribeFeed = ({ mutationConfig }: UseUnsubscribeFeedOptions
     mutationKey: ["feed:unsubscribe"],
   });
 };
+
+export const pruneInactiveFeeds = (): Promise<IActionResponse<{ removed: number }>> =>
+  action.delete("/feeds/inactive");
+
+type UsePruneInactiveFeedsOptions = {
+  mutationConfig?: MutationConfig<typeof pruneInactiveFeeds>;
+};
+
+export const usePruneInactiveFeeds = ({ mutationConfig }: UsePruneInactiveFeedsOptions = {}) => {
+  const queryClient = useQueryClient();
+  const { onSuccess, ...restConfig } = mutationConfig || {};
+
+  return useMutation({
+    onSuccess: (...args) => {
+      queryClient.invalidateQueries({ queryKey: getSubscriptionsQueryOptions().queryKey });
+      onSuccess?.(...args);
+    },
+    ...restConfig,
+    mutationFn: pruneInactiveFeeds,
+    mutationKey: ["feed:prune-inactive"],
+  });
+};

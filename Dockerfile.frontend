@@ -1,0 +1,18 @@
+FROM oven/bun:latest
+
+WORKDIR /app
+
+COPY package.json bun.lock turbo.json ./
+COPY apps/web ./apps/web
+COPY packages ./packages
+
+RUN bun install
+
+EXPOSE 3000
+
+# Write Vite env vars at container start so the dev server picks them up
+CMD sh -c '\
+  echo "VITE_BACKEND_URL=${VITE_BACKEND_URL:-http://localhost:8080}" > /app/apps/web/.env && \
+  echo "VITE_LOCAL_MODE=${VITE_LOCAL_MODE:-false}" >> /app/apps/web/.env && \
+  bun run --cwd apps/web dev --host\
+'

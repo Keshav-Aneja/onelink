@@ -22,5 +22,5 @@ export default interface ILinksService {
   findRSSFeedLink(link: string): Promise<string | undefined>;
   getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
   getLinksCount(owner_id: string, parent_id: string): Promise<number>;
-  searchLinks(search_query: string): Promise<Link[] | undefined>;
+  searchLinks(owner_id: string, search_query: string): Promise<Link[] | undefined>;
 }

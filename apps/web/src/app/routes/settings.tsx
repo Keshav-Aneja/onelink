@@ -15,7 +15,7 @@ const Settings = () => {
   const activeMeta = SETTINGS_NAV.find((s) => s.id === activeSection)!;
 
   return (
-    <CollectionWrapper hideActionHeader hideBreadcrumbs>
+    <CollectionWrapper hideBreadcrumbs>
       <section className="flex items-center gap-2 mb-6">
         <HiOutlineCog6Tooth className="text-primary text-lg" />
         <h1 className="text-xl font-semibold tracking-tight">Settings</h1>

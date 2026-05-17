@@ -3,12 +3,10 @@ import { useParentIdFromPath } from "@lib/utils/get-paths";
 import CollectionsContent from "@sections/collections";
 import LinksContent from "@sections/links";
 import SharedWithMe from "@sections/shared-with-me";
-import LinkDetailCard from "@components/cards/link-details-card";
 import CollectionsDetailCard from "@components/cards/collection-details-card";
 import { useCollectionByPath } from "@hooks/collections";
 import VerifyPassordCard from "@components/cards/verify-password-card";
 import { useDataSync } from "@hooks/sync";
-import { useClipboardLinkHandler } from "@hooks/useClipboardLinkHandler";
 
 const CollectionsPage = () => {
   const pathId = useParentIdFromPath();
@@ -16,11 +14,6 @@ const CollectionsPage = () => {
   const [verificationNeeded, setVerificationNeeded] = useState<boolean>(false);
 
   useDataSync(pathId);
-
-  useClipboardLinkHandler({
-    parentId: pathId,
-    enabled: pathId !== undefined && !verificationNeeded,
-  });
 
   useEffect(() => {
     if (parentCollection?.is_protected) {
@@ -44,7 +37,6 @@ const CollectionsPage = () => {
       <CollectionsContent pathId={pathId} />
       <LinksContent pathId={pathId} />
       {pathId === null && <SharedWithMe />}
-      <LinkDetailCard />
       <CollectionsDetailCard />
     </Fragment>
   );

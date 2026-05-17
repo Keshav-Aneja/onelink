@@ -86,6 +86,41 @@ export class RssSubscriptionsRepository {
     return db("rss_feed_cache").where("published_date", "<", cutoff).delete();
   }
 
+  async getInactiveSubscriptions(owner_id: string, inactiveDays: number): Promise<RssSubscription[]> {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - inactiveDays);
+    return db("rss_subscriptions as s")
+      .where("s.owner_id", owner_id)
+      .whereNotExists(
+        db("rss_feed_cache as c")
+          .whereRaw("c.subscription_id = s.id")
+          .where("c.fetched_at", ">=", cutoff)
+          .select(1),
+      )
+      .select("s.*");
+  }
+
+  async getUnreadCountsPerSubscription(
+    owner_id: string,
+  ): Promise<Map<string, number>> {
+    const rows: Array<{ subscription_id: string; unread_count: string }> =
+      await db("rss_feed_cache as c")
+        .where("c.owner_id", owner_id)
+        .whereNotExists(
+          db("rss_read_items as r")
+            .whereRaw("r.item_hash = c.item_hash")
+            .where("r.owner_id", owner_id)
+            .select(1),
+        )
+        .groupBy("c.subscription_id")
+        .select(db.raw("c.subscription_id, COUNT(*) AS unread_count"));
+    const map = new Map<string, number>();
+    for (const row of rows) {
+      map.set(row.subscription_id, parseInt(row.unread_count, 10));
+    }
+    return map;
+  }
+
   async getCachedItems(
     owner_id: string,
     sinceDays: number,

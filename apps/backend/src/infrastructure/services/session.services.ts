@@ -51,34 +51,32 @@ export class SessionService implements ISessionService {
    * Clears the session cookie from the client
    * and destroys the session stored in the sessionStore
    */
-  destroySession(session: Session & Partial<SessionData>): Boolean {
-    session.destroy((err) => {
-      if (err) {
-        return false;
-      }
+  destroySession(session: Session & Partial<SessionData>): Promise<void> {
+    return new Promise((resolve, reject) => {
+      session.destroy((err) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
-    return true;
   }
-  /**
-   *
-   * @param request : Request
-   * @returns SessionData
-   * This helps in retrieving all the data stored in the current user session
-   */
+
   getSessionData(
     sessionID: string,
     sessionStore: session.Store & { generate: (req: Request) => void },
-  ): SessionData {
-    let sessionData: SessionData | undefined | null;
-    sessionStore.get(sessionID, (err, data) => {
-      if (err) {
-        throw new SessionOperationError("Failed to get Session data");
-      }
-      sessionData = data;
+  ): Promise<SessionData> {
+    return new Promise((resolve, reject) => {
+      sessionStore.get(sessionID, (err, data) => {
+        if (err) {
+          reject(new SessionOperationError("Failed to get Session data"));
+        } else if (!data) {
+          reject(new SessionOperationError("Session data does not exist"));
+        } else {
+          resolve(data);
+        }
+      });
     });
-    if (!sessionData) {
-      throw new SessionOperationError("Session data does not exists");
-    }
-    return sessionData;
   }
 }

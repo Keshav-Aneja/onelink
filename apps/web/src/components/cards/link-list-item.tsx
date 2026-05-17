@@ -2,9 +2,7 @@ import { Link } from "@onelink/entities/models";
 import { RiFileMarkedFill } from "react-icons/ri";
 import StarButton from "@components/buttons/star-button";
 import DeleteLinkButton from "@components/buttons/delete-link-button";
-import Button from "@components/buttons/button";
-import { useAppDispatch } from "@store/store";
-import { setSelectedLink } from "@store/slices/application-slice";
+import SubscribeButton from "@components/buttons/subscribe-button";
 import formatLink from "@lib/utils/format-link";
 
 interface LinkListItemProps {
@@ -12,8 +10,6 @@ interface LinkListItemProps {
 }
 
 export default function LinkListItem({ data }: LinkListItemProps) {
-  const dispatch = useAppDispatch();
-
   return (
     <div
       className="w-full flex items-center gap-3 px-3 py-2.5 border-b border-white/8 hover:bg-white/4 transition-colors duration-150 group"
@@ -64,14 +60,9 @@ export default function LinkListItem({ data }: LinkListItemProps) {
 
       {/* Actions */}
       <div className="flex items-center gap-1.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-        <StarButton starred={data.is_starred ?? false} id={data.id} />
-        <Button
-          className="text-[0.6rem] py-0.5 px-2 hover:bg-primary focus:bg-primary"
-          onClick={() => dispatch(setSelectedLink(data))}
-        >
-          Detail
-        </Button>
-        <DeleteLinkButton id={data.id} />
+        <StarButton starred={data.is_starred ?? false} id={data.id} subtle />
+        <SubscribeButton subscribed={data.subscribed ?? false} id={data.id} subtle />
+        <DeleteLinkButton id={data.id} subtle />
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ const DEFAULT_SETTINGS: Omit<UserSettings, "id" | "user_id"> = {
   accent_color: "#f63f94",
   view_mode: "grid",
   grid_density: 6,
+  show_og_image: true,
+  show_collection_tree: false,
 };
 
 export default class UserSettingsService {

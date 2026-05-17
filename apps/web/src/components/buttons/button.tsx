@@ -10,6 +10,7 @@ type ButtonProps = {
   loading?: boolean;
   onClick?: () => void;
   Loader?: ReactNode;
+  variant?: "default" | "primary";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 const Button = ({
   children,
@@ -19,12 +20,17 @@ const Button = ({
   Icon,
   loading = false,
   iconSize = "xl",
+  variant = "default",
   ...props
 }: ButtonProps) => {
   return (
     <button
       className={cn(
-        "w-fit px-6 py-2 rounded-full border-2 border-white/20 bg-black hover:bg-theme_secondary_black/50 transition-all duration-200 ease-linear flex items-center gap-2 md:gap-4 justify-center cursor-pointer text-sm md:text-base xxl:text-lg font-medium text-nowrap disabled:opacity-50",
+        "w-fit flex items-center justify-center gap-1.5 font-medium text-nowrap transition-colors disabled:opacity-50 cursor-pointer",
+        variant === "default" &&
+          "px-6 py-2 rounded-full border-2 border-white/20 bg-black hover:bg-theme_secondary_black/50 gap-2 md:gap-4 text-sm md:text-base xxl:text-lg",
+        variant === "primary" &&
+          "px-3 py-1.5 bg-primary hover:bg-primary/90 text-white text-xs",
         className,
       )}
       onClick={onClick}
@@ -33,9 +39,13 @@ const Button = ({
       {Icon && !loading ? (
         <Icon
           className={cn(
-            iconSize === "sm" && "text-sm xxl:text-lg",
-            iconSize === "lg" && "text-lg xxl:text-xl",
-            iconSize === "xl" && "text-xl xxl:text-2xl",
+            variant === "primary"
+              ? "text-sm"
+              : cn(
+                  iconSize === "sm" && "text-sm xxl:text-lg",
+                  iconSize === "lg" && "text-lg xxl:text-xl",
+                  iconSize === "xl" && "text-xl xxl:text-2xl",
+                ),
           )}
         />
       ) : (

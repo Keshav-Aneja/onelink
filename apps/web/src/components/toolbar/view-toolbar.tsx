@@ -41,12 +41,10 @@ const FILTER_OPTIONS: { value: FilterBy; label: string }[] = [
   { value: "has_rss", label: "Has RSS" },
 ];
 
-const DENSITY_COLS: Record<number, string> = {
-  3: "3",
-  4: "4",
-  5: "5",
-  6: "6",
-};
+
+const dropdownPanelCls =
+  "absolute right-0 top-full pt-1 z-50 opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150";
+const dropdownInnerCls = "bg-[#111] border border-white/10 rounded-md shadow-xl";
 
 export default function ViewToolbar({
   prefs,
@@ -98,21 +96,23 @@ export default function ViewToolbar({
               <PiArrowsDownUp className="text-sm" />
               <span className="hidden sm:inline">{activeSortLabel}</span>
             </button>
-            <div className="absolute right-0 top-full mt-1 z-50 w-36 bg-[#111] border border-white/10 rounded-md shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150">
-              {SORT_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => onUpdate({ sortBy: opt.value })}
-                  className={cn(
-                    "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer",
-                    prefs.sortBy === opt.value
-                      ? "text-white bg-primary/20"
-                      : "text-white/60 hover:text-white hover:bg-white/5",
-                  )}
-                >
-                  {opt.label}
-                </button>
-              ))}
+            <div className={cn(dropdownPanelCls, "w-36")}>
+              <div className={dropdownInnerCls}>
+                {SORT_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => onUpdate({ sortBy: opt.value })}
+                    className={cn(
+                      "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer",
+                      prefs.sortBy === opt.value
+                        ? "text-white bg-primary/20"
+                        : "text-white/60 hover:text-white hover:bg-white/5",
+                    )}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -132,21 +132,23 @@ export default function ViewToolbar({
                 <span className="w-1.5 h-1.5 rounded-full bg-primary" />
               )}
             </button>
-            <div className="absolute right-0 top-full mt-1 z-50 w-32 bg-[#111] border border-white/10 rounded-md shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150">
-              {FILTER_OPTIONS.map((opt) => (
-                <button
-                  key={opt.value}
-                  onClick={() => onUpdate({ filterBy: opt.value })}
-                  className={cn(
-                    "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer",
-                    prefs.filterBy === opt.value
-                      ? "text-white bg-primary/20"
-                      : "text-white/60 hover:text-white hover:bg-white/5",
-                  )}
-                >
-                  {opt.label}
-                </button>
-              ))}
+            <div className={cn(dropdownPanelCls, "w-32")}>
+              <div className={dropdownInnerCls}>
+                {FILTER_OPTIONS.map((opt) => (
+                  <button
+                    key={opt.value}
+                    onClick={() => onUpdate({ filterBy: opt.value })}
+                    className={cn(
+                      "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer",
+                      prefs.filterBy === opt.value
+                        ? "text-white bg-primary/20"
+                        : "text-white/60 hover:text-white hover:bg-white/5",
+                    )}
+                  >
+                    {opt.label}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 
@@ -187,61 +189,38 @@ export default function ViewToolbar({
                   <span className="w-1.5 h-1.5 rounded-full bg-primary" />
                 )}
               </button>
-              <div className="absolute right-0 top-full mt-1 z-50 w-44 bg-[#111] border border-white/10 rounded-md shadow-xl opacity-0 pointer-events-none group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-all duration-150">
-                {tagFilter.length > 0 && (
-                  <>
+              <div className={cn(dropdownPanelCls, "w-44")}>
+                <div className={dropdownInnerCls}>
+                  {tagFilter.length > 0 && (
+                    <>
+                      <button
+                        onClick={() => onUpdate({ tagFilter: [] })}
+                        className="w-full text-left px-3 py-2 text-xs text-white/40 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                      >
+                        Clear all
+                      </button>
+                      <div className="h-px bg-white/8 mx-2" />
+                    </>
+                  )}
+                  {availableTags.map((tag) => (
                     <button
-                      onClick={() => onUpdate({ tagFilter: [] })}
-                      className="w-full text-left px-3 py-2 text-xs text-white/40 hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      className={cn(
+                        "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer",
+                        tagFilter.includes(tag)
+                          ? "text-white bg-primary/20"
+                          : "text-white/60 hover:text-white hover:bg-white/5",
+                      )}
                     >
-                      Clear all
+                      {tag}
                     </button>
-                    <div className="h-px bg-white/8 mx-2" />
-                  </>
-                )}
-                {availableTags.map((tag) => (
-                  <button
-                    key={tag}
-                    onClick={() => toggleTag(tag)}
-                    className={cn(
-                      "w-full text-left px-3 py-2 text-xs transition-colors cursor-pointer flex items-center justify-between gap-2",
-                      tagFilter.includes(tag)
-                        ? "text-white bg-primary/20"
-                        : "text-white/60 hover:text-white hover:bg-white/5",
-                    )}
-                  >
-                    <span className="truncate">{tag}</span>
-                    {tagFilter.includes(tag) && (
-                      <span className="w-1.5 h-1.5 rounded-full bg-primary flex-shrink-0" />
-                    )}
-                  </button>
-                ))}
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* Density slider — only visible in grid mode */}
-          {prefs.viewMode === "grid" && (
-            <div className="flex items-center gap-2 border border-white/10 bg-white/5 rounded-md px-2.5 py-1">
-              <span className="text-[0.6rem] text-white/40 hidden sm:inline">
-                Cols
-              </span>
-              <input
-                type="range"
-                min={3}
-                max={6}
-                step={1}
-                value={prefs.gridDensity}
-                onChange={(e) =>
-                  onUpdate({ gridDensity: Number(e.target.value) })
-                }
-                className="w-16 h-1 accent-primary cursor-pointer"
-              />
-              <span className="text-[0.6rem] text-white/50 w-3 text-center">
-                {DENSITY_COLS[prefs.gridDensity]}
-              </span>
-            </div>
-          )}
         </div>
       </div>
 

@@ -1,9 +1,7 @@
 import { Link } from "@onelink/entities/models";
 import StarButton from "@components/buttons/star-button";
 import DeleteLinkButton from "@components/buttons/delete-link-button";
-import Button from "@components/buttons/button";
-import { useAppDispatch } from "@store/store";
-import { setSelectedLink } from "@store/slices/application-slice";
+import SubscribeButton from "@components/buttons/subscribe-button";
 import formatLink from "@lib/utils/format-link";
 import extractDomain from "@lib/utils/extract-domain";
 import formatDate from "@lib/utils/format-date";
@@ -13,7 +11,6 @@ interface LinkCompactItemProps {
 }
 
 export default function LinkCompactItem({ data }: LinkCompactItemProps) {
-  const dispatch = useAppDispatch();
   const domain = extractDomain(data.link);
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=16`;
 
@@ -60,14 +57,9 @@ export default function LinkCompactItem({ data }: LinkCompactItemProps) {
 
       {/* Actions */}
       <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-        <StarButton starred={data.is_starred ?? false} id={data.id} />
-        <Button
-          className="text-[0.55rem] py-0.5 px-1.5 hover:bg-primary focus:bg-primary"
-          onClick={() => dispatch(setSelectedLink(data))}
-        >
-          Detail
-        </Button>
-        <DeleteLinkButton id={data.id} />
+        <StarButton starred={data.is_starred ?? false} id={data.id} subtle />
+        <SubscribeButton subscribed={data.subscribed ?? false} id={data.id} subtle />
+        <DeleteLinkButton id={data.id} subtle />
       </div>
     </div>
   );

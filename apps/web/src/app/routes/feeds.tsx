@@ -6,7 +6,7 @@ import OpmlImportModal from "@components/dialogs/opml-import-modal";
 import NotificationListItem from "@components/cards/notification-list-item-card";
 import NotificationListItemSkeleton from "@components/loaders/notification-list-item-skeleton";
 import { useSubscriptions } from "@features/feeds/get-subscriptions";
-import { useUnsubscribeFeed } from "@features/feeds/unsubscribe";
+import { useUnsubscribeFeed, usePruneInactiveFeeds } from "@features/feeds/unsubscribe";
 import { useSubscribeFeed } from "@features/feeds/subscribe";
 import { useMarkFeedRead, useMarkAllFeedsRead } from "@features/feeds/mark-read";
 import { useFeedItems } from "@features/feeds/get-feed-items";
@@ -20,6 +20,7 @@ import {
   HiPlus,
   HiXMark,
   HiCheck,
+  HiOutlineArchiveBoxXMark,
 } from "react-icons/hi2";
 
 const TIME_RANGES = [
@@ -63,6 +64,7 @@ const Feeds = () => {
   }
 
   const unsubscribeMutation = useUnsubscribeFeed({});
+  const pruneInactiveMutation = usePruneInactiveFeeds({});
   const subscribeMutation = useSubscribeFeed({});
   const markReadMutation = useMarkFeedRead({
     mutationConfig: {
@@ -131,9 +133,9 @@ const Feeds = () => {
     : "All feeds";
 
   return (
-    <CollectionWrapper hideActionHeader hideBreadcrumbs>
+    <CollectionWrapper hideBreadcrumbs selfScroll>
       {/* Page header */}
-      <section className="flex items-start justify-between gap-4 mb-6">
+      <section className="flex items-start justify-between gap-4 mb-4 flex-shrink-0">
         <div>
           <div className="flex items-center gap-2 mb-1">
             <MdOutlineRssFeed className="text-primary text-lg" />
@@ -156,6 +158,17 @@ const Feeds = () => {
 
         {/* Toolbar */}
         <div className="flex items-center gap-1.5 flex-shrink-0">
+          {subs.length > 0 && (
+            <button
+              className="flex items-center gap-1.5 text-xs text-secondary_text hover:text-red-400 px-3 py-1.5 rounded-md hover:bg-red-500/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
+              disabled={pruneInactiveMutation.isPending}
+              onClick={() => pruneInactiveMutation.mutate()}
+              title="Remove feeds with no items in the last 3 months"
+            >
+              <HiOutlineArchiveBoxXMark />
+              {pruneInactiveMutation.isPending ? "Removing…" : "Remove inactive"}
+            </button>
+          )}
           <button
             className="flex items-center gap-1.5 text-xs text-secondary_text hover:text-white px-3 py-1.5 rounded-md hover:bg-theme_secondary_black transition-colors"
             onClick={() => setShowImportModal(true)}
@@ -235,13 +248,13 @@ const Feeds = () => {
 
       {/* Main layout: sidebar + items */}
       {subs.length > 0 && (
-        <div className="flex flex-col lg:flex-row gap-5 min-h-0">
+        <div className="flex flex-col lg:flex-row gap-5 flex-1 min-h-0 overflow-hidden">
           {/* Sidebar */}
-          <aside className="w-full lg:w-60 xl:w-64 flex-shrink-0">
-            <div className="bg-theme_secondary_black/30 rounded-xl p-2 flex flex-col gap-0.5">
-              {/* All feeds row */}
+          <aside className="w-full lg:w-60 xl:w-64 flex-shrink-0 flex flex-col min-h-0">
+            <div className="bg-theme_secondary_black/30 rounded-xl p-2 flex flex-col flex-1 min-h-0">
+              {/* All feeds row — sticky inside the panel */}
               <div
-                className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-150 ${
+                className={`relative flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer transition-all duration-150 flex-shrink-0 ${
                   selectedFeedId === null
                     ? "bg-theme_secondary_black"
                     : "hover:bg-theme_secondary_black/60"
@@ -258,30 +271,32 @@ const Feeds = () => {
               </div>
 
               {/* Divider */}
-              <div className="h-px bg-white/5 mx-2 my-1" />
+              <div className="h-px bg-white/5 mx-2 my-1 flex-shrink-0" />
 
-              {/* Individual feeds */}
-              {subs.map((sub) => (
-                <FeedCard
-                  key={sub.id}
-                  subscription={sub}
-                  unreadCount={unreadByFeed.get(sub.id) ?? 0}
-                  isSelected={selectedFeedId === sub.id}
-                  isRemoving={unsubscribeMutation.isPending}
-                  onClick={setSelectedFeedId}
-                  onRemove={(id) => {
-                    unsubscribeMutation.mutate({ id });
-                    if (selectedFeedId === id) setSelectedFeedId(null);
-                  }}
-                />
-              ))}
+              {/* Scrollable feed list */}
+              <div className="flex flex-col gap-0.5 overflow-y-auto scrollbar-none">
+                {subs.map((sub) => (
+                  <FeedCard
+                    key={sub.id}
+                    subscription={sub}
+                    unreadCount={unreadByFeed.get(sub.id) ?? 0}
+                    isSelected={selectedFeedId === sub.id}
+                    isRemoving={unsubscribeMutation.isPending}
+                    onClick={setSelectedFeedId}
+                    onRemove={(id) => {
+                      unsubscribeMutation.mutate({ id });
+                      if (selectedFeedId === id) setSelectedFeedId(null);
+                    }}
+                  />
+                ))}
+              </div>
             </div>
           </aside>
 
           {/* Items panel */}
-          <main className="flex-1 min-w-0 flex flex-col">
+          <main className="flex-1 min-w-0 flex flex-col min-h-0">
             {/* Panel header: title + time range tabs */}
-            <div className="flex items-center justify-between mb-3 gap-4">
+            <div className="flex items-center justify-between mb-3 gap-4 flex-shrink-0">
               <h2 className="text-sm font-medium text-secondary_text truncate">
                 {selectedFeedTitle}
                 {!itemsQuery.isLoading && (
@@ -309,7 +324,7 @@ const Feeds = () => {
             </div>
 
             {/* Feed items */}
-            <div className="flex flex-col">
+            <div className="flex flex-col flex-1 overflow-y-auto scrollbar-thin-primary pb-3">
               {itemsQuery.isLoading &&
                 [1, 2, 3, 4].map((i) => <NotificationListItemSkeleton key={i} />)}
 

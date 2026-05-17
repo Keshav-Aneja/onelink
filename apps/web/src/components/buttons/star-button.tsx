@@ -5,9 +5,10 @@ import { ImStarFull, ImStarEmpty } from "react-icons/im";
 interface StarButtonProps {
   starred: boolean;
   id: string;
+  subtle?: boolean;
 }
 
-const StarButton = ({ starred, id }: StarButtonProps) => {
+const StarButton = ({ starred, id, subtle = false }: StarButtonProps) => {
   const [isStarred, setIsStarred] = useState(starred);
   const [update, setUpdate] = useState(false);
   const handleChangeStarredState = () => {
@@ -33,6 +34,20 @@ const StarButton = ({ starred, id }: StarButtonProps) => {
       clearTimeout(timeout);
     };
   }, [isStarred, update]);
+
+  if (subtle) {
+    return (
+      <button
+        className={cn(
+          "text-sm cursor-pointer transition-colors",
+          isStarred ? "text-primary" : "text-theme_secondary_white/40 hover:text-primary",
+        )}
+        onClick={handleChangeStarredState}
+      >
+        {isStarred ? <ImStarFull /> : <ImStarEmpty />}
+      </button>
+    );
+  }
 
   return (
     <button

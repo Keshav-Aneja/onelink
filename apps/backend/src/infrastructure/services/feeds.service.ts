@@ -10,13 +10,11 @@ export default class FeedsService {
   ) {}
 
   async getSubscriptions(owner_id: string): Promise<RssSubscriptionWithUnread[]> {
-    const subs = await this.repo.getAll(owner_id);
-    const readHashes = await this.repo.getReadHashes(owner_id);
-
-    // We can't compute exact unread count without fetching feeds; use 0 and let
-    // the client derive it from item_hash list. For the dashboard we just surface
-    // health state and metadata without re-fetching all feeds on every page load.
-    return subs.map((s) => ({ ...s, unread_count: 0 }));
+    const [subs, unreadCounts] = await Promise.all([
+      this.repo.getAll(owner_id),
+      this.repo.getUnreadCountsPerSubscription(owner_id),
+    ]);
+    return subs.map((s) => ({ ...s, unread_count: unreadCounts.get(s.id) ?? 0 }));
   }
 
   async subscribe(
@@ -160,6 +158,14 @@ export default class FeedsService {
     const items = await this.getFeedItems(owner_id, sinceDays);
     const hashes = items.map((i) => i.item_hash).filter(Boolean) as string[];
     await this.repo.markItemsRead(owner_id, hashes);
+  }
+
+  async pruneInactiveSubscriptions(owner_id: string): Promise<{ removed: number }> {
+    const inactive = await this.repo.getInactiveSubscriptions(owner_id, 90);
+    for (const sub of inactive) {
+      await this.repo.delete(sub.id, owner_id);
+    }
+    return { removed: inactive.length };
   }
 
   async exportOpml(owner_id: string): Promise<string> {

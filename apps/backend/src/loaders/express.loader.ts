@@ -15,7 +15,6 @@ export default async (app: Express) => {
   app.use(cookieParser(env.SESS_SECRET));
   app.use(express.static("public"));
   app.use(compression());
-  app.enable("trust proxy");
 
   app.get("/status", (req, res) => {
     res.status(200).end();

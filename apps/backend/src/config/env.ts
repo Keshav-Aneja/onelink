@@ -1,4 +1,7 @@
 import { z } from "zod";
+
+const isLocalMode = process.env.LOCAL_MODE === "true";
+
 const envSchema = z.object({
   PORT: z.coerce.number().min(1000),
   FRONTEND_URL: z.string().url(),
@@ -11,19 +14,32 @@ const envSchema = z.object({
     ])
     .default("development"),
 
-  //Authentication variables
-  GOOGLE_CLIENT_ID: z.string(),
-  GOOGLE_CLIENT_SECRET: z.string(),
-  GOOGLE_REDIRECT_URL: z.string().url(),
-  GOOGLE_AUTH_URL: z.string().url(),
+  LOCAL_MODE: z
+    .string()
+    .optional()
+    .transform((v) => v === "true"),
 
-  GITHUB_CLIENT_ID: z.string(),
-  GITHUB_CLIENT_SECRET: z.string(),
-  GITHUB_REDIRECT_URL: z.string().url(),
-  GITHUB_AUTH_URL: z.string().url(),
+  //Authentication variables — optional in local mode
+  GOOGLE_CLIENT_ID: isLocalMode ? z.string().optional() : z.string(),
+  GOOGLE_CLIENT_SECRET: isLocalMode ? z.string().optional() : z.string(),
+  GOOGLE_REDIRECT_URL: isLocalMode
+    ? z.string().url().optional()
+    : z.string().url(),
+  GOOGLE_AUTH_URL: isLocalMode
+    ? z.string().url().optional()
+    : z.string().url(),
+
+  GITHUB_CLIENT_ID: isLocalMode ? z.string().optional() : z.string(),
+  GITHUB_CLIENT_SECRET: isLocalMode ? z.string().optional() : z.string(),
+  GITHUB_REDIRECT_URL: isLocalMode
+    ? z.string().url().optional()
+    : z.string().url(),
+  GITHUB_AUTH_URL: isLocalMode
+    ? z.string().url().optional()
+    : z.string().url(),
 
   //Redis Config
-  REDIS_PASSWORD: z.string(),
+  REDIS_PASSWORD: z.string().optional().default(""),
   REDIS_URL: z.string(),
   REDIS_PORT: z.coerce.number(),
   REDIS_PREFIX: z.string(),

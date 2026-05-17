@@ -7,14 +7,16 @@ let redisClient: RedisClientType | null = null;
 
 export const initRedisClient = async () => {
   if (!redisClient) {
-    redisClient = createClient({
-      username: "default",
-      password: env.REDIS_PASSWORD,
-      socket: {
-        host: env.REDIS_URL,
-        port: env.REDIS_PORT,
-      },
-    });
+    const clientOptions: Parameters<typeof createClient>[0] =
+      env.REDIS_PASSWORD
+        ? {
+            username: "default",
+            password: env.REDIS_PASSWORD,
+            socket: { host: env.REDIS_URL, port: env.REDIS_PORT },
+          }
+        : { url: `redis://${env.REDIS_URL}:${env.REDIS_PORT}` };
+
+    redisClient = createClient(clientOptions);
 
     redisClient.on("error", (err) => console.log("Redis Client Error", err));
     await redisClient.connect();

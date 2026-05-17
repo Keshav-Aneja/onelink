@@ -23,9 +23,8 @@ export function CollectionTrigger() {
   return (
     <Button
       Icon={FaFolderPlus}
-      iconSize="lg"
+      variant="primary"
       disabled={pathId === undefined}
-      className="text-xs md:text-sm px-2.5 md:px-6 py-1.5 md:py-2"
     >
       Collection
     </Button>

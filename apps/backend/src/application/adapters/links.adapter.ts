@@ -108,7 +108,7 @@ export default class LinkAdapter {
     }
 
     const linkService = new LinkService();
-    const queriedLinks = await linkService.searchLinks(search_query);
+    const queriedLinks = await linkService.searchLinks(req.session.user_id!, search_query);
     ActionResponse.success(
       res,
       queriedLinks,

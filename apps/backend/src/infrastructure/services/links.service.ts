@@ -114,6 +114,7 @@ export default class LinkService implements ILinksService {
   async findRSSFeedLink(link: string): Promise<string | undefined> {
     const scraper = new Scraper(link);
     const content = await scraper.scrape();
+    if (!content) return undefined;
     const metadata = await scraper.extractMetadata(content);
     if (metadata.rssLink) {
       return metadata.rssLink;
@@ -235,8 +236,8 @@ export default class LinkService implements ILinksService {
     return linksCount;
   }
 
-  async searchLinks(search_query: string): Promise<Link[] | undefined> {
-    const queriedLinks = await this.linkRepository.getSearchLinks(search_query);
+  async searchLinks(owner_id: string, search_query: string): Promise<Link[] | undefined> {
+    const queriedLinks = await this.linkRepository.getSearchLinks(owner_id, search_query);
     return queriedLinks;
   }
 }

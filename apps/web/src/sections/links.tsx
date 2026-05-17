@@ -12,7 +12,12 @@ import LinkCardSuspense from "@components/cards/link-card-suspense";
 import Mascot from "@components/mascot";
 import { useStoredCollections } from "@hooks/collections";
 import { getSecuredCollection } from "@store/slices/application-slice";
-import { filterLinks, sortLinks, groupLinksByDomain, filterLinksByTags } from "@lib/utils/link-view";
+import {
+  filterLinks,
+  sortLinks,
+  groupLinksByDomain,
+  filterLinksByTags,
+} from "@lib/utils/link-view";
 import extractDomain from "@lib/utils/extract-domain";
 
 interface LinksContent {
@@ -43,9 +48,9 @@ interface LinkGroupProps {
 function LinkGroup({ links, viewMode, gridClass, cardHeight }: LinkGroupProps) {
   if (viewMode === "grid") {
     return (
-      <div className={`w-full grid ${gridClass} gap-1 md:gap-3`}>
-        {links.map((link) => (
-          <LinkCard data={link} key={link.id} height={cardHeight} />
+      <div className={`w-full grid ${gridClass}`}>
+        {links.map((link, i) => (
+          <LinkCard data={link} key={link.id} height={cardHeight} index={i} />
         ))}
       </div>
     );
@@ -97,7 +102,11 @@ const LinksContent = ({ pathId }: LinksContent) => {
   const availableTags = useMemo(() => {
     if (!links) return [];
     const tagSet = new Set<string>();
-    links.forEach((l) => l.tags?.forEach((t) => { if (t.confirmed) tagSet.add(t.name); }));
+    links.forEach((l) =>
+      l.tags?.forEach((t) => {
+        if (t.confirmed) tagSet.add(t.name);
+      }),
+    );
     return Array.from(tagSet).sort();
   }, [links]);
 
@@ -141,12 +150,14 @@ const LinksContent = ({ pathId }: LinksContent) => {
 
   return (
     <Fragment>
-      <ViewToolbar
-        prefs={prefs}
-        onUpdate={updatePrefs}
-        linkCount={processedLinks.length}
-        availableTags={availableTags}
-      />
+      <div className="sticky top-0 z-10 bg-theme_primary_black pb-1">
+        <ViewToolbar
+          prefs={prefs}
+          onUpdate={updatePrefs}
+          linkCount={processedLinks.length}
+          availableTags={availableTags}
+        />
+      </div>
 
       {processedLinks.length === 0 && (
         <p className="text-sm text-white/30 py-6 text-center">

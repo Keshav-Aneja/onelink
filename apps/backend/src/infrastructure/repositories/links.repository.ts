@@ -23,7 +23,13 @@ export class LinksRepository implements ILinkRepository {
     owner_id: string,
     requestQuery: Record<string, any>,
   ): Promise<Link[] | undefined> {
-    const dbParams = { ...requestQuery };
+    const ALLOWED_FILTER_KEYS = new Set(["is_starred", "subscribed"]);
+    const dbParams: Record<string, any> = {};
+    for (const key of ALLOWED_FILTER_KEYS) {
+      if (key in requestQuery) {
+        dbParams[key] = requestQuery[key];
+      }
+    }
     if (!requestQuery["is_starred"]) {
       dbParams["parent_id"] = parent_id;
     }
@@ -34,7 +40,6 @@ export class LinksRepository implements ILinkRepository {
     return links;
   }
   async createLink(data: LinkInsert): Promise<Link> {
-    console.log(data);
     const [link] = await db("links").insert(data).returning("*");
     if (!link) {
       throw new DatabaseOperationError("Cannot create link");
@@ -96,11 +101,11 @@ export class LinksRepository implements ILinkRepository {
     return parseInt(links["count"]);
   }
 
-  async getSearchLinks(search_query: string): Promise<Link[] | undefined> {
-    await db.raw("CREATE EXTENSION IF NOT EXISTS pg_trgm");
+  async getSearchLinks(owner_id: string, search_query: string): Promise<Link[] | undefined> {
     const links = await db("links")
       .select("*")
-      .where(function () {
+      .where("owner_id", owner_id)
+      .andWhere(function () {
         this.whereILike("name", `%${search_query}%`)
           .orWhereILike("description", `%${search_query}%`)
           .orWhereILike("site_description", `%${search_query}%`)

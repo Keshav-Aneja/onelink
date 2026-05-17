@@ -49,8 +49,8 @@ const FavouriteLinksContent = () => {
   return (
     <Fragment>
       <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
-        {links.map((link) => (
-          <LinkCard data={link} key={link.id} />
+        {links.map((link, i) => (
+          <LinkCard data={link} key={link.id} index={i} />
         ))}
       </div>
     </Fragment>

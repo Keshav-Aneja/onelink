@@ -120,8 +120,8 @@ const TagsContent = () => {
 
             {!linksLoading && links.length > 0 && (
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {links.map((link) => (
-                  <LinkCard data={link} key={link.id} />
+                {links.map((link, i) => (
+                  <LinkCard data={link} key={link.id} index={i} />
                 ))}
               </div>
             )}

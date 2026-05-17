@@ -27,8 +27,10 @@ export class AuthenticationAdapter {
     try {
       const { provider } = req.params;
       const { redirectTo } = req.query;
-      req.session.redirect_to =
-        typeof redirectTo === "string" ? redirectTo : "";
+      const redirectToStr = typeof redirectTo === "string" ? redirectTo : "";
+      const isRelativePath =
+        redirectToStr.startsWith("/") && !redirectToStr.startsWith("//");
+      req.session.redirect_to = isRelativePath ? redirectToStr : "";
       const authService = AuthenticationFactory(provider);
       const authUrl = await authService.initiateAuthorizationRequest(
         req.session,
@@ -97,6 +99,7 @@ export class AuthenticationAdapter {
     req.session.destroy((err) => {
       if (err) {
         ActionResponse.error(res, {}, 400, { success: false, redirect: false });
+        return;
       }
       res
         .clearCookie("connect.sid", {

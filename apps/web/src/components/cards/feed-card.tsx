@@ -87,8 +87,13 @@ const FeedCard = ({
         </p>
       </div>
 
-      {/* Right side: actions */}
+      {/* Right side: unread badge + actions */}
       <div className="flex items-center gap-1.5 flex-shrink-0">
+        {unreadCount > 0 && (
+          <span className="group-hover:hidden min-w-[1.25rem] h-5 px-1 rounded-full bg-primary/20 text-primary text-[10px] font-semibold flex items-center justify-center">
+            {unreadCount > 99 ? "99+" : unreadCount}
+          </span>
+        )}
         {/* Action buttons – shown on hover */}
         <div
           className="hidden group-hover:flex items-center gap-1"

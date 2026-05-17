@@ -38,6 +38,8 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
     parentId: pathId,
     mutationConfig: {
       onSuccess: () => {
+        reset();
+        setTags([]);
         closeModal && closeModal();
       },
     },
@@ -47,7 +49,7 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
   const {
     register,
     handleSubmit,
-    setValue,
+    reset,
     formState: { errors },
   } = useForm<CreateLink>({
     resolver: zodResolver(linkSchema),
@@ -68,12 +70,6 @@ const CreateLinkCard = ({ className, closeModal }: CreateLinkCardProps) => {
     };
     createLinkMutation.mutate(linkData);
   };
-  if (createLinkMutation.isSuccess) {
-    setValue("link", "");
-    setValue("description", "");
-    setValue("notification", false);
-    setTags([]);
-  }
   return (
     <Fragment>
       <div

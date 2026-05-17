@@ -20,6 +20,7 @@ export default (app: Router) => {
   route.get("/read-hashes", feedsAdapter.getReadHashes);
   route.post("/read", feedsAdapter.markRead);
   route.post("/read-all", feedsAdapter.markAllRead);
+  route.delete("/inactive", feedsAdapter.pruneInactive);
   route.get("/opml", feedsAdapter.exportOpml);
   route.post("/opml", feedsAdapter.importOpml);
 };

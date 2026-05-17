@@ -9,7 +9,7 @@ import { DatabaseOperationError } from "@onelink/entities/errros";
 import { CollectionDTO } from "../dtos/collections.dto";
 import bcrypt from "bcryptjs";
 import logger from "../../helpers/logger";
-import LinkService from "./links.service";
+import db from "@onelink/db";
 export default class CollectionsService implements ICollectionsService {
   constructor(private collectionRepository = new CollectionRepository()) {}
 
@@ -58,47 +58,19 @@ export default class CollectionsService implements ICollectionsService {
       id: collectionId,
     });
 
-    // Recursively delete all nested collections and their links
-    await this.deleteCollectionRecursive(data.id, data.owner_id);
+    // Fetch all descendant IDs in one recursive CTE query, then batch delete
+    const allIds = await this.collectionRepository.getAllDescendantIds(
+      data.id,
+      data.owner_id,
+    );
+
+    // Batch delete all links in all descendant collections
+    await db("links").whereIn("parent_id", allIds).where({ owner_id: data.owner_id }).delete();
+
+    // Batch delete all collections (children first via FK, so delete all at once)
+    await this.collectionRepository.deleteCollectionsByIds(allIds, data.owner_id);
 
     return { id: data.id };
-  }
-
-  private async deleteCollectionRecursive(
-    collectionId: string,
-    ownerId: string,
-  ): Promise<void> {
-    // Get all child collections
-    const childCollections =
-      await this.collectionRepository.getAllCollectionsOfCollection(
-        collectionId,
-        ownerId,
-      );
-
-    // Recursively delete child collections
-    if (childCollections && childCollections.length > 0) {
-      for (const child of childCollections) {
-        await this.deleteCollectionRecursive(child.id, ownerId);
-      }
-    }
-
-    // Delete all links in this collection
-    const linkService = new LinkService();
-    const links = await linkService.getAllChildLinks(collectionId, ownerId, {});
-    if (links && links.length > 0) {
-      for (const link of links) {
-        await linkService.deleteLink(ownerId, link.id);
-      }
-    }
-
-    // Finally, delete the collection itself
-    const deletedCollection = await this.collectionRepository.deleteCollection(
-      collectionId,
-      ownerId,
-    );
-    if (!deletedCollection) {
-      throw new DatabaseOperationError("Cannot delete collection");
-    }
   }
 
   async getAllChildCollections(
@@ -164,7 +136,7 @@ export default class CollectionsService implements ICollectionsService {
       data.id,
       data.owner_id,
     );
-    if (collection && password) {
+    if (collection && password && collection.password) {
       return bcrypt.compare(password, collection.password);
     }
     return false;
