@@ -60,13 +60,11 @@ export class PublicSharesService {
     const share = await this.publicRepo.findByToken(token);
     if (!share) throw new RequestError("This link is no longer active", 404);
 
-    const collection = await this.collectionsRepo.getCollectionById(share.collection_id, share.owner_id);
+    const [collection, owner] = await Promise.all([
+      this.collectionsRepo.getCollectionById(share.collection_id, share.owner_id),
+      this.usersRepo.getUser(share.owner_id),
+    ]);
     if (!collection) throw new RequestError("Collection not found", 404);
-
-    const owner = await this.usersRepo.getUser(share.owner_id);
-    const shared_by_email: string = owner?.email ?? "";
-
-    const links: Link[] = await this.linksRepo.getLinksByParentId(share.collection_id);
 
     const safeCollection: SafeCollection = {
       id: collection.id,
@@ -74,23 +72,41 @@ export class PublicSharesService {
       color: collection.color,
       description: collection.description,
     };
+    const shared_by_email = owner?.email ?? "";
+    const rootLinks = await this.linksRepo.getLinksByParentId(share.collection_id);
 
     if (share.share_type === ShareType.Shallow) {
-      return { share_type: "SHALLOW", collection: safeCollection, links, children: [], shared_by_email };
+      return { share_type: "SHALLOW", collection: safeCollection, links: rootLinks, children: [], shared_by_email };
     }
 
-    const children = await this.loadChildrenRecursive(collection.id, share.owner_id);
-    return { share_type: "DEEP", collection: safeCollection, links, children, shared_by_email };
-  }
+    // Fetch ALL descendant collections in a single recursive CTE, then bulk-fetch links
+    const allDescendants = await this.collectionsRepo.getAllDescendants(collection.id, share.owner_id);
+    const descendantIds = allDescendants.map((c) => c.id);
+    const allLinks = descendantIds.length > 0
+      ? await this.linksRepo.getLinksByParentIds(descendantIds)
+      : [];
 
-  private async loadChildrenRecursive(parent_id: string, owner_id: string): Promise<CollectionNode[]> {
-    const subs = await this.collectionsRepo.getAllCollectionsOfCollection(parent_id, owner_id) ?? [];
-    return Promise.all(
-      subs.map(async (col) => ({
-        collection: { id: col.id, name: col.name, color: col.color, description: col.description },
-        links: await this.linksRepo.getLinksByParentId(col.id),
-        children: await this.loadChildrenRecursive(col.id, owner_id),
-      })),
-    );
+    const linksByParent = new Map<string, Link[]>();
+    for (const link of allLinks) {
+      const arr = linksByParent.get(link.parent_id!) ?? [];
+      arr.push(link);
+      linksByParent.set(link.parent_id!, arr);
+    }
+
+    const childrenByParent = new Map<string, Collection[]>();
+    for (const col of allDescendants) {
+      const arr = childrenByParent.get(col.parent_id!) ?? [];
+      arr.push(col);
+      childrenByParent.set(col.parent_id!, arr);
+    }
+
+    const buildNode = (col: Collection): CollectionNode => ({
+      collection: { id: col.id, name: col.name, color: col.color, description: col.description },
+      links: linksByParent.get(col.id) ?? [],
+      children: (childrenByParent.get(col.id) ?? []).map(buildNode),
+    });
+
+    const children = (childrenByParent.get(collection.id) ?? []).map(buildNode);
+    return { share_type: "DEEP", collection: safeCollection, links: rootLinks, children, shared_by_email };
   }
 }

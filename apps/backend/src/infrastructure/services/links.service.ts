@@ -19,6 +19,9 @@ import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
 import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
 import RssDiscoveryService from "./rss-discovery.service";
+import { getRedisClient } from "../../loaders/redis.loader";
+
+const RSS_FEED_CACHE_TTL_SECONDS = 3600 * 3;
 
 const getLinkSchema = LinkSchema.pick({ owner_id: true, parent_id: true });
 const createLinkSchema = LinkSchema.omit({ id: true, tags: true });
@@ -119,39 +122,35 @@ export default class LinkService implements ILinksService {
     startDate?: Date,
     endDate?: Date,
   ): Promise<RSSFeed[] | undefined> {
-    const parsed = RSSInputSchema.parse({
-      owner_id,
-      sinceDays,
-      startDate,
-      endDate,
-    });
+    const parsed = RSSInputSchema.parse({ owner_id, sinceDays, startDate, endDate });
+
+    const redisClient = getRedisClient();
+    const cacheKey = `feed:${parsed.owner_id}:${parsed.sinceDays ?? ""}:${parsed.startDate?.toISOString() ?? ""}:${parsed.endDate?.toISOString() ?? ""}`;
+    const cached = await redisClient.get(cacheKey);
+    if (cached) return JSON.parse(cached);
+
     const rssLinks = await this.linkRepository.getRSSLinks(parsed.owner_id);
+    if (!rssLinks) return undefined;
 
-    if (!rssLinks) {
-      return undefined;
-    }
-
-    const rssPromises = rssLinks.map(async (link) => {
-      const rss = new RSS(link.link, link.rss);
-      return rss.scrapeRSS(parsed.sinceDays, parsed.startDate, parsed.endDate);
-    });
-
-    const results = await Promise.allSettled(rssPromises);
+    const results = await Promise.allSettled(
+      rssLinks.map(async (link) => {
+        const rss = new RSS(link.link, link.rss);
+        return rss.scrapeRSS(parsed.sinceDays, parsed.startDate, parsed.endDate);
+      }),
+    );
 
     const rssData: RSSFeed[] = results
-      .filter((result) => result.status === "fulfilled" && result.value)
-      .flatMap((result) => (result as PromiseFulfilledResult<RSSFeed[]>).value)
+      .filter((r) => r.status === "fulfilled" && r.value)
+      .flatMap((r) => (r as PromiseFulfilledResult<RSSFeed[]>).value)
       .sort((a, b) => {
         if (!a.published_date) return -1;
         if (!b.published_date) return 1;
-
-        const dateA = new Date(a.published_date).getTime();
-        const dateB = new Date(b.published_date).getTime();
-
-        return dateB - dateA;
+        return new Date(b.published_date).getTime() - new Date(a.published_date).getTime();
       });
 
-    return rssData.map((rss) => RSSDTO.fromObject(rss).toObject());
+    const feed = rssData.map((r) => RSSDTO.fromObject(r).toObject());
+    await redisClient.set(cacheKey, JSON.stringify(feed), { EX: RSS_FEED_CACHE_TTL_SECONDS });
+    return feed;
   }
   async updateLink(
     ownerId: string,

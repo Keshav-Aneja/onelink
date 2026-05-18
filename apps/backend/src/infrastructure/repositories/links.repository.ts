@@ -115,4 +115,9 @@ export class LinksRepository implements ILinkRepository {
   async getLinksByParentId(parent_id: string): Promise<Link[]> {
     return db("links").where({ parent_id }).select("*");
   }
+
+  async getLinksByParentIds(parent_ids: string[]): Promise<Link[]> {
+    if (parent_ids.length === 0) return [];
+    return db("links").whereIn("parent_id", parent_ids).select("*");
+  }
 }

@@ -2,7 +2,6 @@ import type { Request, Response } from "express";
 import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
 import { ActionResponse } from "@onelink/action";
-import { getRedisClient } from "../../loaders/redis.loader";
 import logger from "../../helpers/logger";
 import { formatGetQueries } from "../../helpers/format-query";
 import { RssDiscoveryQueueRepository } from "../../infrastructure/repositories/rss-discovery-queue.repository";
@@ -42,25 +41,13 @@ export default class LinkAdapter {
 
   static getUpdatedFeed = asyncHandler(async (req: Request, res: Response) => {
     const { sinceDays, startDate, endDate } = req.body;
-    const parsedStartDate = startDate ? new Date(startDate) : undefined;
-    const parsedEndDate = endDate ? new Date(endDate) : undefined;
-
-    const redisClient = getRedisClient();
-    const cacheKey = `feed:${req.session.user_id ?? ""}:${sinceDays ?? ""}:${startDate ?? ""}:${endDate ?? ""}`;
-    const cachedFeed = await redisClient.get(cacheKey);
-
-    if (!cachedFeed) {
-      const feed = await linkService.getRSSFeed(
-        req.session.user_id ?? "",
-        sinceDays,
-        parsedStartDate,
-        parsedEndDate,
-      );
-      ActionResponse.success(res, feed, 200, "New feed fetched successfully");
-      await redisClient.set(cacheKey, JSON.stringify(feed), { EX: 3600 * 3 });
-      return;
-    }
-    ActionResponse.success(res, JSON.parse(cachedFeed), 200, "New feed fetched successfully");
+    const feed = await linkService.getRSSFeed(
+      req.session.user_id ?? "",
+      sinceDays,
+      startDate ? new Date(startDate) : undefined,
+      endDate ? new Date(endDate) : undefined,
+    );
+    ActionResponse.success(res, feed, 200, "Feed fetched successfully");
   });
 
   static updateLink = asyncHandler(async (req: Request, res: Response) => {

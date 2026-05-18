@@ -52,7 +52,6 @@ export class AuthenticationAdapter {
     res.clearCookie("connect.sid", { path: "/", httpOnly: true }).json({ success: true, redirect: true });
   });
 
-  // TODO: Delete this afterwards
   static getUserDetails = asyncHandler(async (req: Request, res: Response) => {
     const usersRepository = new UsersRepository();
     if (req.session.provider_id) {
