@@ -3,6 +3,7 @@ import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import session from "express-session";
 import env from "../config/env";
+import logger from "../helpers/logger";
 
 type RedisClient = ReturnType<typeof createClient>;
 let redisClient: RedisClient | null = null;
@@ -20,7 +21,7 @@ export const initRedisClient = async () => {
 
     redisClient = createClient(clientOptions);
 
-    redisClient.on("error", (err) => console.log("Redis Client Error", err));
+    redisClient.on("error", (err) => logger.error("Redis client error", { error: err }));
     await redisClient.connect();
   }
   return redisClient;

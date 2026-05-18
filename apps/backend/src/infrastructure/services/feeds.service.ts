@@ -3,6 +3,7 @@ import { Scraper } from "@onelink/scraper";
 import type { RssSubscription, RssSubscriptionWithUnread, RSSFeed } from "@onelink/entities/models";
 import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
 import { AuthenticationError } from "@onelink/entities/errros";
+import RssDiscoveryService from "./rss-discovery.service";
 
 export default class FeedsService {
   constructor(
@@ -22,12 +23,12 @@ export default class FeedsService {
     input_url: string,
     link_id?: string,
   ): Promise<RssSubscription> {
-    // Auto-discover feed URL if input_url is a webpage
     let feed_url = input_url;
-    let site_url = input_url;
+    const site_url = input_url;
     let title: string | undefined;
     let favicon_url: string | undefined;
 
+    // Scrape metadata (title, favicon) and delegate feed URL discovery to RssDiscoveryService
     try {
       const scraper = new Scraper(input_url);
       const content = await scraper.scrape();
@@ -36,17 +37,12 @@ export default class FeedsService {
       favicon_url = metadata.favicon
         ? new URL(metadata.favicon, new URL(input_url).origin).toString()
         : undefined;
-
-      if (metadata.rssLink || metadata.atomLink) {
-        feed_url = (metadata.rssLink || metadata.atomLink)!;
-      } else {
-        const rss = new RSS(input_url);
-        const found = await rss.findValidRSS();
-        if (found) feed_url = found;
-      }
     } catch {
-      // If scraping fails, try using the URL directly as a feed URL
+      // Non-fatal — proceed without enrichment
     }
+
+    const discovered = await RssDiscoveryService.findRSSFeedLink(input_url);
+    if (discovered) feed_url = discovered;
 
     const existing = await this.repo.getByFeedUrl(owner_id, feed_url);
     if (existing) return existing;

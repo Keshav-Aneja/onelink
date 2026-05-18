@@ -4,6 +4,8 @@ import { asyncHandler } from "../../helpers/async-handler";
 import { UserSharesService } from "../../infrastructure/services/user-shares.service";
 import { ShareType } from "@onelink/entities";
 
+const userSharesService = new UserSharesService();
+
 export class UserShareAdapter {
   static invite = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const { collection_id, email, share_type } = req.body;
@@ -11,8 +13,7 @@ export class UserShareAdapter {
       ActionResponse.error(res, "collection_id and email are required", 400);
       return;
     }
-    const service = new UserSharesService();
-    const share = await service.inviteByEmail(
+    const share = await userSharesService.inviteByEmail(
       req.session.user_id!,
       collection_id,
       email,
@@ -24,16 +25,14 @@ export class UserShareAdapter {
   static remove = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const share_id = req.params["share_id"] as string;
     if (!share_id) { ActionResponse.error(res, "share_id is required", 400); return; }
-    const service = new UserSharesService();
-    const id = await service.removeInvite(share_id, req.session.user_id!);
+    const id = await userSharesService.removeInvite(share_id, req.session.user_id!);
     ActionResponse.success(res, { id }, 200, "Invite removed");
   });
 
   static listInvitees = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const collection_id = req.params["collection_id"] as string;
     if (!collection_id) { ActionResponse.error(res, "collection_id is required", 400); return; }
-    const service = new UserSharesService();
-    const invitees = await service.listInvitees(collection_id, req.session.user_id!);
+    const invitees = await userSharesService.listInvitees(collection_id, req.session.user_id!);
     ActionResponse.success(res, invitees, 200, "Invitees fetched");
   });
 
@@ -44,22 +43,19 @@ export class UserShareAdapter {
       ActionResponse.error(res, "collection_id and share_type are required", 400);
       return;
     }
-    const service = new UserSharesService();
-    await service.updateDepth(collection_id, req.session.user_id!, share_type as ShareType);
+    await userSharesService.updateDepth(collection_id, req.session.user_id!, share_type as ShareType);
     ActionResponse.success(res, null, 200, "Share depth updated");
   });
 
   static sharedWithMe = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const service = new UserSharesService();
-    const data = await service.sharedWithMe(req.session.user_id!);
+    const data = await userSharesService.sharedWithMe(req.session.user_id!);
     ActionResponse.success(res, data, 200, "Shared collections fetched");
   });
 
   static viewSharedCollection = asyncHandler(async (req: Request, res: Response): Promise<void> => {
     const collection_id = req.params["collection_id"] as string;
     if (!collection_id) { ActionResponse.error(res, "collection_id is required", 400); return; }
-    const service = new UserSharesService();
-    const data = await service.viewSharedCollection(req.session.user_id!, collection_id);
+    const data = await userSharesService.viewSharedCollection(req.session.user_id!, collection_id);
     ActionResponse.success(res, data, 200, "Shared collection fetched");
   });
 }

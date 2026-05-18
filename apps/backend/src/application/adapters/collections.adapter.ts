@@ -3,11 +3,14 @@ import type { Request, Response } from "express";
 import CollectionsService from "../../infrastructure/services/collections.service";
 import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
+import logger from "../../helpers/logger";
+
+const collectionsService = new CollectionsService();
+const linkService = new LinkService();
 
 export class CollectionAdapter {
   static createCollection = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const collectionsService = new CollectionsService();
       const data = req.body;
       const collection = await collectionsService.createCollection({
         ...data,
@@ -21,7 +24,6 @@ export class CollectionAdapter {
     async (req: Request, res: Response): Promise<void> => {
       const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       const collectionId = id ? id : null;
-      const collectionsService = new CollectionsService();
       const collections = await collectionsService.getAllChildCollections(
         collectionId,
         req.session.user_id ?? "",
@@ -39,22 +41,12 @@ export class CollectionAdapter {
     async (req: Request, res: Response): Promise<void> => {
       const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       const collectionId = id ? id : null;
-      const collectionsService = new CollectionsService();
-      const linksService = new LinkService();
       const user_id = req.session.user_id!;
-      const collectionsCount = await collectionsService.getCollectionsCount(
-        user_id,
-        collectionId,
-      );
-      const linksCount = await linksService.getLinksCount(
-        user_id,
-        collectionId,
-      );
-      const data = {
-        collections: collectionsCount,
-        links: linksCount,
-      };
-      console.log("DATA", JSON.stringify(data));
+      const [collectionsCount, linksCount] = await Promise.all([
+        collectionsService.getCollectionsCount(user_id, collectionId),
+        linkService.getLinksCount(user_id, collectionId),
+      ]);
+      const data = { collections: collectionsCount, links: linksCount };
       ActionResponse.success(res, data, 200, "Collection stats fetched");
     },
   );
@@ -64,7 +56,6 @@ export class CollectionAdapter {
       const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       const { password } = req.body;
       const collectionId = id ? id : null;
-      const collectionsService = new CollectionsService();
       const verified = await collectionsService.verifyPassword(
         collectionId,
         req.session.user_id!,
@@ -81,7 +72,6 @@ export class CollectionAdapter {
         ActionResponse.error(res, "Collection ID is required", 400);
         return;
       }
-      const collectionsService = new CollectionsService();
       const result = await collectionsService.deleteCollection(
         id,
         req.session.user_id!,

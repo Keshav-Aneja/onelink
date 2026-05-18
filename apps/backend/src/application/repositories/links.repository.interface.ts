@@ -25,4 +25,6 @@ export interface ILinkRepository {
     parent_id: string | null,
   ): Promise<number>;
   getSearchLinks(owner_id: string, search_query: string, filters?: SearchFilters): Promise<Link[] | undefined>;
+  deleteLinksByParentIds(parent_ids: string[], owner_id: string): Promise<void>;
+  getLinksByParentId(parent_id: string): Promise<Link[]>;
 }

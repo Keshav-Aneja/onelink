@@ -43,8 +43,7 @@ export default class RssDiscoveryService {
         return;
       }
 
-      // Find RSS feed for the link
-      const rssLink = await this.findRSSFeedLink(link.link);
+      const rssLink = await RssDiscoveryService.findRSSFeedLink(link.link);
 
       if (rssLink) {
         // Update link with RSS feed URL
@@ -75,7 +74,7 @@ export default class RssDiscoveryService {
     }
   }
 
-  private async findRSSFeedLink(link: string): Promise<string | undefined> {
+  static async findRSSFeedLink(link: string): Promise<string | undefined> {
     try {
       const scraper = new Scraper(link);
       const content = await scraper.scrape();
@@ -94,4 +93,5 @@ export default class RssDiscoveryService {
       return undefined;
     }
   }
+
 }

@@ -9,9 +9,12 @@ import { DatabaseOperationError } from "@onelink/entities/errros";
 import { CollectionDTO } from "../dtos/collections.dto";
 import bcrypt from "bcryptjs";
 import logger from "../../helpers/logger";
-import db from "@onelink/db";
+import { LinksRepository } from "../repositories/links.repository";
 export default class CollectionsService implements ICollectionsService {
-  constructor(private collectionRepository = new CollectionRepository()) {}
+  constructor(
+    private readonly collectionRepository = new CollectionRepository(),
+    private readonly linksRepository = new LinksRepository(),
+  ) {}
 
   async getAllCollections(ownerId: string): Promise<Collection[] | undefined> {
     const ownerIdSchema = CollectionSchema.shape.owner_id;
@@ -64,8 +67,7 @@ export default class CollectionsService implements ICollectionsService {
       data.owner_id,
     );
 
-    // Batch delete all links in all descendant collections
-    await db("links").whereIn("parent_id", allIds).where({ owner_id: data.owner_id }).delete();
+    await this.linksRepository.deleteLinksByParentIds(allIds, data.owner_id);
 
     // Batch delete all collections (children first via FK, so delete all at once)
     await this.collectionRepository.deleteCollectionsByIds(allIds, data.owner_id);

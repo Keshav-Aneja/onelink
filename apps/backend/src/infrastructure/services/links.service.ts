@@ -18,6 +18,7 @@ import { Scraper, type WebsiteMetadata, deriveTags } from "@onelink/scraper";
 import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
 import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
+import RssDiscoveryService from "./rss-discovery.service";
 export default class LinkService implements ILinksService {
   constructor(
     private readonly linkRepository = new LinksRepository(),
@@ -113,19 +114,7 @@ export default class LinkService implements ILinksService {
     return { id };
   }
   async findRSSFeedLink(link: string): Promise<string | undefined> {
-    const scraper = new Scraper(link);
-    const content = await scraper.scrape();
-    if (!content) return undefined;
-    const metadata = await scraper.extractMetadata(content);
-    if (metadata.rssLink) {
-      return metadata.rssLink;
-    } else if (metadata.atomLink) {
-      return metadata.atomLink;
-    } else {
-      const rss = new RSS(link);
-      metadata.rssLink = await rss.findValidRSS();
-    }
-    return metadata.rssLink;
+    return RssDiscoveryService.findRSSFeedLink(link);
   }
   async getRSSFeed(
     owner_id: string,
@@ -184,17 +173,9 @@ export default class LinkService implements ILinksService {
     if (parsedData.subscribed === true) {
       const existingLink = await this.linkRepository.getLinkById(id, ownerId);
       if (existingLink && !existingLink.rss) {
-        const scraper = new Scraper(existingLink.link);
-        const content = await scraper.scrape();
-        const metadata = await scraper.extractMetadata(content);
-        if (metadata.rssLink || metadata.atomLink) {
-          parsedData["rss"] = metadata.rssLink || metadata.atomLink;
-        } else {
-          const rss = new RSS(existingLink.link, "");
-          const foundRSSLink = await rss.findValidRSS();
-          if (foundRSSLink) {
-            parsedData["rss"] = foundRSSLink;
-          }
+        const feedUrl = await RssDiscoveryService.findRSSFeedLink(existingLink.link);
+        if (feedUrl) {
+          parsedData["rss"] = feedUrl;
         }
       }
       // Ensure an rss_subscriptions row exists for this link

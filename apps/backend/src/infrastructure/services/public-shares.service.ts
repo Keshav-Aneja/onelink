@@ -1,9 +1,10 @@
 import { ShareType } from "@onelink/entities";
 import type { PublicShare, PublicShareInsert, PublicShareUpdate, Collection, Link } from "@onelink/entities/models";
-import { RequestError, DatabaseOperationError } from "@onelink/entities/errros";
+import { RequestError } from "@onelink/entities/errros";
 import { PublicSharesRepository } from "../repositories/public-shares.repository";
 import { CollectionRepository } from "../repositories/collections.repository";
-import db from "@onelink/db";
+import { LinksRepository } from "../repositories/links.repository";
+import { UsersRepository } from "../repositories/users.repository";
 
 type SafeCollection = Pick<Collection, "id" | "name" | "color" | "description">;
 
@@ -23,8 +24,10 @@ type PublicCollectionView = {
 
 export class PublicSharesService {
   constructor(
-    private publicRepo = new PublicSharesRepository(),
-    private collectionsRepo = new CollectionRepository(),
+    private readonly publicRepo = new PublicSharesRepository(),
+    private readonly collectionsRepo = new CollectionRepository(),
+    private readonly linksRepo = new LinksRepository(),
+    private readonly usersRepo = new UsersRepository(),
   ) {}
 
   async createShare(owner_id: string, collection_id: string, share_type: ShareType): Promise<PublicShare> {
@@ -57,13 +60,13 @@ export class PublicSharesService {
     const share = await this.publicRepo.findByToken(token);
     if (!share) throw new RequestError("This link is no longer active", 404);
 
-    const [collection] = await db("collections").where({ id: share.collection_id }).select("*");
+    const collection = await this.collectionsRepo.getCollectionById(share.collection_id, share.owner_id);
     if (!collection) throw new RequestError("Collection not found", 404);
 
-    const [owner] = await db("users").where({ id: share.owner_id }).select("email");
+    const owner = await this.usersRepo.getUser(share.owner_id);
     const shared_by_email: string = owner?.email ?? "";
 
-    const links: Link[] = await db("links").where({ parent_id: share.collection_id }).select("*");
+    const links: Link[] = await this.linksRepo.getLinksByParentId(share.collection_id);
 
     const safeCollection: SafeCollection = {
       id: collection.id,
@@ -76,17 +79,17 @@ export class PublicSharesService {
       return { share_type: "SHALLOW", collection: safeCollection, links, children: [], shared_by_email };
     }
 
-    const children = await this.loadChildrenRecursive(collection.id);
+    const children = await this.loadChildrenRecursive(collection.id, share.owner_id);
     return { share_type: "DEEP", collection: safeCollection, links, children, shared_by_email };
   }
 
-  private async loadChildrenRecursive(parent_id: string): Promise<CollectionNode[]> {
-    const subs: Collection[] = await db("collections").where({ parent_id }).select("*");
+  private async loadChildrenRecursive(parent_id: string, owner_id: string): Promise<CollectionNode[]> {
+    const subs = await this.collectionsRepo.getAllCollectionsOfCollection(parent_id, owner_id) ?? [];
     return Promise.all(
       subs.map(async (col) => ({
         collection: { id: col.id, name: col.name, color: col.color, description: col.description },
-        links: await db("links").where({ parent_id: col.id }).select("*"),
-        children: await this.loadChildrenRecursive(col.id),
+        links: await this.linksRepo.getLinksByParentId(col.id),
+        children: await this.loadChildrenRecursive(col.id, owner_id),
       })),
     );
   }

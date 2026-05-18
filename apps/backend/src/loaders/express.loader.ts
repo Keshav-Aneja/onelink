@@ -9,6 +9,7 @@ import type { Request, Response, NextFunction, Errback } from "express";
 import { ActionResponse } from "@onelink/action";
 import { RequestError } from "@onelink/entities/errros";
 import compression from "compression";
+import logger from "../helpers/logger";
 export default async (app: Express) => {
   app.use(cors({ origin: FRONTEND_URL, credentials: true }));
   app.use(express.json());
@@ -22,7 +23,7 @@ export default async (app: Express) => {
 
   app.use(apiPrefix, Routes());
   app.use((err: Errback, req: Request, res: Response, next: NextFunction) => {
-    console.error("ERROR: ", err);
+    logger.error("Unhandled error", { error: err });
     const status = err instanceof RequestError ? err.statusCode : 400;
     ActionResponse.error(res, err, status);
   });

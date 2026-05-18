@@ -106,4 +106,13 @@ export class LinksRepository implements ILinkRepository {
     const base = db("links").select("links.*").where("links.owner_id", owner_id);
     return LinkSearchQueryBuilder.apply(base, search_query, filters);
   }
+
+  async deleteLinksByParentIds(parent_ids: string[], owner_id: string): Promise<void> {
+    if (parent_ids.length === 0) return;
+    await db("links").whereIn("parent_id", parent_ids).where({ owner_id }).delete();
+  }
+
+  async getLinksByParentId(parent_id: string): Promise<Link[]> {
+    return db("links").where({ parent_id }).select("*");
+  }
 }

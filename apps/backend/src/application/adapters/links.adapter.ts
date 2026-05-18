@@ -7,12 +7,13 @@ import logger from "../../helpers/logger";
 import { formatGetQueries } from "../../helpers/format-query";
 import { RssDiscoveryQueueRepository } from "../../infrastructure/repositories/rss-discovery-queue.repository";
 
+const linkService = new LinkService();
+const rssQueueRepo = new RssDiscoveryQueueRepository();
+
 export default class LinkAdapter {
   static createLink = asyncHandler(async (req: Request, res: Response) => {
-    const linkService = new LinkService();
-    const rssQueueRepo = new RssDiscoveryQueueRepository();
     const { notification, ...data } = req.body;
-    let link = await linkService.createLink({
+    const link = await linkService.createLink({
       ...data,
       owner_id: req.session.user_id,
     });
@@ -31,7 +32,6 @@ export default class LinkAdapter {
     const requestQuery: Record<string, any> = formatGetQueries(
       req.query as Record<string, string>,
     );
-    const linkService = new LinkService();
     const links = await linkService.getAllChildLinks(
       collectionId,
       req.session.user_id ?? "",
@@ -42,13 +42,9 @@ export default class LinkAdapter {
 
   static getUpdatedFeed = asyncHandler(async (req: Request, res: Response) => {
     const { sinceDays, startDate, endDate } = req.body;
-    const linkService = new LinkService();
-
-    // Convert date strings to Date objects if provided
     const parsedStartDate = startDate ? new Date(startDate) : undefined;
     const parsedEndDate = endDate ? new Date(endDate) : undefined;
 
-    // Create a unique cache key based on the filter parameters
     const redisClient = getRedisClient();
     const cacheKey = `feed:${req.session.user_id ?? ""}:${sinceDays ?? ""}:${startDate ?? ""}:${endDate ?? ""}`;
     const cachedFeed = await redisClient.get(cacheKey);
@@ -62,40 +58,25 @@ export default class LinkAdapter {
       );
       ActionResponse.success(res, feed, 200, "New feed fetched successfully");
       await redisClient.set(cacheKey, JSON.stringify(feed), { EX: 3600 * 3 });
-      //For now I am setting the expiry as 3 hours, might change later for live notifications
       return;
     }
-    ActionResponse.success(
-      res,
-      JSON.parse(cachedFeed),
-      200,
-      "New feed fetched successfully",
-    );
+    ActionResponse.success(res, JSON.parse(cachedFeed), 200, "New feed fetched successfully");
   });
 
   static updateLink = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
     const id = typeof req.params["id"] === "string" ? req.params["id"] : "";
-    const linkService = new LinkService();
     const link = await linkService.updateLink(req.session.user_id!, id, data);
     ActionResponse.success(res, link, 200, "Link updated");
   });
 
   static getStarredLinks = asyncHandler(async (req: Request, res: Response) => {
-    const owner_id = req.session.user_id!;
-    const linkService = new LinkService();
-    const links = await linkService.getStarredLinks(owner_id);
-    ActionResponse.success(
-      res,
-      links,
-      200,
-      "Starred links fetched successfully",
-    );
+    const links = await linkService.getStarredLinks(req.session.user_id!);
+    ActionResponse.success(res, links, 200, "Starred links fetched successfully");
   });
 
   static deleteLink = asyncHandler(async (req: Request, res: Response) => {
     const id = typeof req.params["id"] === "string" ? req.params["id"] : "";
-    const linkService = new LinkService();
     const deletedId = await linkService.deleteLink(req.session.user_id!, id);
     ActionResponse.success(res, deletedId, 200, "Link Deleted");
   });
@@ -103,7 +84,7 @@ export default class LinkAdapter {
   static searchLinks = asyncHandler(async (req: Request, res: Response) => {
     const { q: search_query, collection_id, tag, starred } = req.query;
     if (typeof search_query !== "string" || search_query.length === 0) {
-      ActionResponse.error(res, "Invalid search query", 200, undefined);
+      ActionResponse.error(res, "Invalid search query", 400, undefined);
       return;
     }
 
@@ -115,17 +96,11 @@ export default class LinkAdapter {
       ...(starred === "true" && { starred: true }),
     };
 
-    const linkService = new LinkService();
     const queriedLinks = await linkService.searchLinks(
       req.session.user_id!,
       search_query,
       Object.keys(filters).length > 0 ? filters : undefined,
     );
-    ActionResponse.success(
-      res,
-      queriedLinks,
-      200,
-      "Links fetched successfully",
-    );
+    ActionResponse.success(res, queriedLinks, 200, "Links fetched successfully");
   });
 }
