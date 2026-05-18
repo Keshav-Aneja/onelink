@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@store/store";
 import type { Link } from "@onelink/entities/models";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo } from "react";
 import { useStoredLinks } from "@hooks/links";
 import { useViewPreferences } from "@hooks/view-preferences";
 import LinkCard from "@components/cards/link-card";
@@ -19,6 +19,8 @@ import {
   groupLinksByDomain,
   filterLinksByTags,
 } from "@lib/utils/link-view";
+import { useSettings } from "@features/settings/get-settings";
+import getFaviconUrl from "@lib/utils/get-favicon-url";
 
 interface LinksContent {
   pathId: string | null;
@@ -36,14 +38,15 @@ interface LinkGroupProps {
   viewMode: "grid" | "list" | "compact";
   gridClass: string;
   cardHeight: string;
+  showOgImage: boolean;
 }
 
-function LinkGroup({ links, viewMode, gridClass, cardHeight }: LinkGroupProps) {
+function LinkGroup({ links, viewMode, gridClass, cardHeight, showOgImage }: LinkGroupProps) {
   if (viewMode === "grid") {
     return (
       <div className={`w-full grid ${gridClass}`}>
         {links.map((link, i) => (
-          <LinkCard data={link} key={link.id} height={cardHeight} index={i} />
+          <LinkCard data={link} key={link.id} height={cardHeight} index={i} showOgImage={showOgImage} />
         ))}
       </div>
     );
@@ -73,24 +76,18 @@ const LinksContent = ({ pathId }: LinksContent) => {
   const dispatch = useAppDispatch();
   const securedCollections = useAppSelector(getSecuredCollection);
   const { prefs, updatePrefs } = useViewPreferences(pathId);
+  const { data: settingsData } = useSettings();
+  const showOgImage = settingsData?.data?.show_og_image ?? true;
 
-  const [shouldFetchLinks, setShouldFetchLinks] = useState<boolean>(
-    !links || links.length === 0,
-  );
-  const linkQuery = useLinks(shouldFetchLinks, pathId);
-
-  useEffect(() => {
-    setShouldFetchLinks(!links || links.length === 0);
-  }, [pathId]);
+  // Fetch only when Redux cache is empty for this path — no useState/useEffect cascade.
+  const shouldFetch = !links || links.length === 0;
+  const linkQuery = useLinks(shouldFetch, pathId);
 
   useEffect(() => {
-    if (linkQuery.isSuccess && linkQuery.data?.data) {
-      setShouldFetchLinks(false);
-      if (!links || links.length === 0) {
-        dispatch(addMultipleLinks(linkQuery.data.data));
-      }
+    if (linkQuery.isSuccess && linkQuery.data?.data && shouldFetch) {
+      dispatch(addMultipleLinks(linkQuery.data.data));
     }
-  }, [linkQuery.isSuccess, linkQuery.data]);
+  }, [linkQuery.isSuccess, linkQuery.data, shouldFetch, dispatch]);
 
   const availableTags = useMemo(() => {
     if (!links) return [];
@@ -161,36 +158,33 @@ const LinksContent = ({ pathId }: LinksContent) => {
         // Domain-grouped rendering
         <div className="w-full flex flex-col gap-6">
           {groupedLinks.map(([domain, domainLinks]) => (
-              <div key={domain} className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <img
-                    src={`https://www.google.com/s2/favicons?domain=${domain}&sz=16`}
-                    alt=""
-                    width={14}
-                    height={14}
-                    className="opacity-60"
-                    onError={(e) => {
-                      (e.currentTarget as HTMLImageElement).style.display =
-                        "none";
-                    }}
-                  />
-                  <span className="text-xs font-medium text-white/50">
-                    {domain}
-                  </span>
-                  <span className="text-[0.6rem] text-white/25">
-                    {domainLinks.length}{" "}
-                    {domainLinks.length === 1 ? "link" : "links"}
-                  </span>
-                  <div className="flex-1 h-px bg-white/8" />
-                </div>
-                <LinkGroup
-                  links={domainLinks}
-                  viewMode={prefs.viewMode}
-                  gridClass={gridClass}
-                  cardHeight={cardHeight}
+            <div key={domain} className="flex flex-col gap-2">
+              <div className="flex items-center gap-2">
+                <img
+                  src={getFaviconUrl(domain)}
+                  alt=""
+                  width={14}
+                  height={14}
+                  className="opacity-60"
+                  onError={(e) => {
+                    (e.currentTarget as HTMLImageElement).style.display = "none";
+                  }}
                 />
+                <span className="text-xs font-medium text-white/50">{domain}</span>
+                <span className="text-[0.6rem] text-white/25">
+                  {domainLinks.length} {domainLinks.length === 1 ? "link" : "links"}
+                </span>
+                <div className="flex-1 h-px bg-white/8" />
               </div>
-            ))}
+              <LinkGroup
+                links={domainLinks}
+                viewMode={prefs.viewMode}
+                gridClass={gridClass}
+                cardHeight={cardHeight}
+                showOgImage={showOgImage}
+              />
+            </div>
+          ))}
         </div>
       ) : (
         // Flat rendering
@@ -199,6 +193,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
           viewMode={prefs.viewMode}
           gridClass={gridClass}
           cardHeight={cardHeight}
+          showOgImage={showOgImage}
         />
       )}
     </Fragment>

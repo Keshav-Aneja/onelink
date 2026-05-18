@@ -1,32 +1,28 @@
 import { useAppDispatch } from "@store/store";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect } from "react";
 import { useStoredFavouriteLinks } from "@hooks/links";
 import LinkCard from "@components/cards/link-card";
 import { useLinks } from "@features/links/get-links";
 import LinkCardSuspense from "@components/cards/link-card-suspense";
 import Mascot from "@components/mascot";
 import { addMultipleFavLinks } from "@store/slices/favourite-links-slice";
+import { useSettings } from "@features/settings/get-settings";
 
 const FavouriteLinksContent = () => {
   const links = useStoredFavouriteLinks();
   const dispatch = useAppDispatch();
-  const [shouldFetchLinks, setShouldFetchLinks] = useState<boolean>(
-    !links || links.length === 0,
-  );
-  const linkQuery = useLinks(shouldFetchLinks, null, true);
+  const { data: settingsData } = useSettings();
+  const showOgImage = settingsData?.data?.show_og_image ?? true;
+
+  // Fetch only when Redux cache is empty — no useState/useEffect cascade.
+  const shouldFetch = !links || links.length === 0;
+  const linkQuery = useLinks(shouldFetch, null, true);
 
   useEffect(() => {
-    setShouldFetchLinks(!links || links.length === 0);
-  }, []);
-
-  useEffect(() => {
-    if (linkQuery.isSuccess && linkQuery.data?.data) {
-      setShouldFetchLinks(false);
-      if (!links || links.length === 0) {
-        dispatch(addMultipleFavLinks(linkQuery.data.data));
-      }
+    if (linkQuery.isSuccess && linkQuery.data?.data && shouldFetch) {
+      dispatch(addMultipleFavLinks(linkQuery.data.data));
     }
-  }, [linkQuery.isSuccess, linkQuery.data, dispatch]);
+  }, [linkQuery.isSuccess, linkQuery.data, shouldFetch, dispatch]);
 
   if (linkQuery.isLoading) {
     return (
@@ -42,15 +38,11 @@ const FavouriteLinksContent = () => {
     return <Mascot>No links found</Mascot>;
   }
 
-  if (!links) {
-    return null;
-  }
-
   return (
     <Fragment>
       <div className="w-full grid grid-cols-6 xxl:grid-cols-7 gap-3">
         {links.map((link, i) => (
-          <LinkCard data={link} key={link.id} index={i} />
+          <LinkCard data={link} key={link.id} index={i} showOgImage={showOgImage} />
         ))}
       </div>
     </Fragment>
