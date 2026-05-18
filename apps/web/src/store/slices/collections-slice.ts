@@ -1,8 +1,22 @@
 import { Collection } from "@onelink/entities/models";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { syncDataThunk } from "@store/thunks/sync-data.thunk";
 
 const initialState: Collection[] = [];
+
+/**
+ * Merges an incoming server page (scoped to one parent_id) into the local cache.
+ * Items belonging to a different parent_id are preserved untouched.
+ */
+function mergeByParentId(
+  local: Collection[],
+  incoming: Collection[],
+  parentId: string | null,
+): Collection[] {
+  const incomingMap = new Map(incoming.map((c) => [c.id, c]));
+  const kept = local.filter((c) => !incomingMap.has(c.id) && c.parent_id !== parentId);
+  return [...incoming, ...kept];
+}
 
 const collectionSlice = createSlice({
   name: "collection",
@@ -10,48 +24,29 @@ const collectionSlice = createSlice({
   reducers: {
     setCollectionName: (
       state,
-      action: { payload: { index: number; name: string } },
+      action: PayloadAction<{ index: number; name: string }>,
     ) => {
       state[action.payload.index].name = action.payload.name;
     },
-    addCollection: (state, action: { payload: Collection }) => {
+    addCollection: (state, action: PayloadAction<Collection>) => {
       state.push(action.payload);
     },
     deleteAllCollections: () => {
       return [];
     },
-    addMultipleCollections: (state, action: { payload: Collection[] }) => {
+    addMultipleCollections: (state, action: PayloadAction<Collection[]>) => {
       action.payload.forEach((collection) => {
         state.push(collection);
       });
     },
-    deleteCollection: (state, action: { payload: string }) => {
+    deleteCollection: (state, action: PayloadAction<string>) => {
       return state.filter((collection) => collection.id !== action.payload);
     },
-    syncCollections: (state, action: { payload: Collection[] | undefined }) => {
-      if (!action.payload) return state;
-
-      const incomingMap = new Map(
-        action.payload.map((collection) => [collection.id, collection]),
-      );
-
-      const updatedCollections: Collection[] = [];
-
-      action.payload.forEach((serverCollection) => {
-        updatedCollections.push(serverCollection);
-      });
-
-      // Keep collections that are in state but not in the incoming payload
-      state.forEach((localCollection) => {
-        if (!incomingMap.has(localCollection.id)) {
-          const sampleParentId = action.payload?.[0]?.parent_id;
-          if (localCollection.parent_id !== sampleParentId) {
-            updatedCollections.push(localCollection);
-          }
-        }
-      });
-
-      return updatedCollections;
+    syncCollections: (
+      state,
+      action: PayloadAction<{ items: Collection[]; parentId: string | null }>,
+    ) => {
+      return mergeByParentId(state as Collection[], action.payload.items, action.payload.parentId);
     },
   },
   selectors: {
@@ -61,32 +56,11 @@ const collectionSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(syncDataThunk.fulfilled, (state, action) => {
       if (!action.payload.collections) return state;
-
-      const incomingMap = new Map(
-        action.payload.collections.map((collection) => [
-          collection.id,
-          collection,
-        ]),
+      return mergeByParentId(
+        state as Collection[],
+        action.payload.collections,
+        action.payload.parentId,
       );
-
-      const updatedCollections: Collection[] = [];
-
-      // Add or update collections from the server
-      action.payload.collections.forEach((serverCollection) => {
-        updatedCollections.push(serverCollection);
-      });
-
-      // Keep collections that belong to different parent_ids
-      state.forEach((localCollection) => {
-        if (!incomingMap.has(localCollection.id)) {
-          const sampleParentId = action.payload.collections?.[0]?.parent_id;
-          if (localCollection.parent_id !== sampleParentId) {
-            updatedCollections.push(localCollection);
-          }
-        }
-      });
-
-      return updatedCollections;
     });
   },
 });

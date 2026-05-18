@@ -19,24 +19,16 @@ import {
   groupLinksByDomain,
   filterLinksByTags,
 } from "@lib/utils/link-view";
-import extractDomain from "@lib/utils/extract-domain";
 
 interface LinksContent {
   pathId: string | null;
 }
 
-const DENSITY_GRID_CLASSES: Record<number, string> = {
-  3: "grid-cols-2 md:grid-cols-3",
-  4: "grid-cols-2 md:grid-cols-4",
-  5: "grid-cols-2 md:grid-cols-5",
-  6: "grid-cols-2 md:grid-cols-6",
-};
-
-const DENSITY_CARD_HEIGHTS: Record<number, string> = {
-  3: "25rem",
-  4: "20rem",
-  5: "17rem",
-  6: "15rem",
+const DENSITY_CONFIG: Record<number, { gridClass: string; cardHeight: string }> = {
+  3: { gridClass: "grid-cols-2 md:grid-cols-3", cardHeight: "25rem" },
+  4: { gridClass: "grid-cols-2 md:grid-cols-4", cardHeight: "20rem" },
+  5: { gridClass: "grid-cols-2 md:grid-cols-5", cardHeight: "17rem" },
+  6: { gridClass: "grid-cols-2 md:grid-cols-6", cardHeight: "15rem" },
 };
 
 interface LinkGroupProps {
@@ -120,13 +112,12 @@ const LinksContent = ({ pathId }: LinksContent) => {
 
   const groupedLinks = useMemo(() => {
     if (!prefs.groupByDomain) return null;
-    return groupLinksByDomain(processedLinks);
+    const byDomain = groupLinksByDomain(processedLinks);
+    return Object.entries(byDomain).sort(([, a], [, b]) => b.length - a.length);
   }, [processedLinks, prefs.groupByDomain]);
 
-  const gridClass =
-    DENSITY_GRID_CLASSES[prefs.gridDensity] ?? DENSITY_GRID_CLASSES[6];
-  const cardHeight =
-    DENSITY_CARD_HEIGHTS[prefs.gridDensity] ?? DENSITY_CARD_HEIGHTS[6];
+  const { gridClass, cardHeight } =
+    DENSITY_CONFIG[prefs.gridDensity] ?? DENSITY_CONFIG[6];
 
   if (linkQuery.isLoading) {
     return (
@@ -169,9 +160,7 @@ const LinksContent = ({ pathId }: LinksContent) => {
       {groupedLinks ? (
         // Domain-grouped rendering
         <div className="w-full flex flex-col gap-6">
-          {Object.entries(groupedLinks)
-            .sort(([, a], [, b]) => b.length - a.length)
-            .map(([domain, domainLinks]) => (
+          {groupedLinks.map(([domain, domainLinks]) => (
               <div key={domain} className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <img

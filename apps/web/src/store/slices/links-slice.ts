@@ -1,54 +1,42 @@
 import { Link } from "@onelink/entities/models";
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { syncDataThunk } from "@store/thunks/sync-data.thunk";
 
 const initialState: Link[] = [];
+
+/**
+ * Merges an incoming server page (scoped to one parent_id) into the local cache.
+ * Items belonging to a different parent_id are preserved untouched.
+ */
+function mergeByParentId(local: Link[], incoming: Link[], parentId: string | null): Link[] {
+  const incomingMap = new Map(incoming.map((l) => [l.id, l]));
+  const kept = local.filter((l) => !incomingMap.has(l.id) && l.parent_id !== parentId);
+  return [...incoming, ...kept];
+}
 
 const linkSlice = createSlice({
   name: "link",
   initialState,
   reducers: {
-    addLink: (state, action: { payload: Link }) => {
+    addLink: (state, action: PayloadAction<Link>) => {
       state.push(action.payload);
     },
-    addMultipleLinks: (state, action: { payload: Link[] }) => {
+    addMultipleLinks: (state, action: PayloadAction<Link[]>) => {
       action.payload.forEach((link) => {
         state.push(link);
       });
     },
-    replaceLink: (state, action: { payload: Link }) => {
+    replaceLink: (state, action: PayloadAction<Link>) => {
       const index = state.findIndex((link) => link.id === action.payload.id);
       if (index !== -1) {
         state[index] = action.payload;
       }
     },
-    deleteLink: (state, action: { payload: string }) => {
-      return state.filter((state) => state.id !== action.payload);
+    deleteLink: (state, action: PayloadAction<string>) => {
+      return state.filter((link) => link.id !== action.payload);
     },
-    syncLinks: (state, action: { payload: Link[] | undefined }) => {
-      if (!action.payload) return state;
-
-      const incomingMap = new Map(
-        action.payload.map((link) => [link.id, link]),
-      );
-
-      const updatedLinks: Link[] = [];
-
-      action.payload.forEach((serverLink) => {
-        updatedLinks.push(serverLink);
-      });
-
-      // Keep links that are in state but not in the incoming payload
-      state.forEach((localLink) => {
-        if (!incomingMap.has(localLink.id)) {
-          const sampleParentId = action.payload?.[0]?.parent_id;
-          if (localLink.parent_id !== sampleParentId) {
-            updatedLinks.push(localLink);
-          }
-        }
-      });
-
-      return updatedLinks;
+    syncLinks: (state, action: PayloadAction<{ items: Link[]; parentId: string | null }>) => {
+      return mergeByParentId(state as Link[], action.payload.items, action.payload.parentId);
     },
   },
   selectors: {
@@ -57,29 +45,7 @@ const linkSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(syncDataThunk.fulfilled, (state, action) => {
       if (!action.payload.links) return state;
-
-      const incomingMap = new Map(
-        action.payload.links.map((link) => [link.id, link]),
-      );
-
-      const updatedLinks: Link[] = [];
-
-      // Add or update links from the server
-      action.payload.links.forEach((serverLink) => {
-        updatedLinks.push(serverLink);
-      });
-
-      // Keep links that belong to different parent_ids
-      state.forEach((localLink) => {
-        if (!incomingMap.has(localLink.id)) {
-          const sampleParentId = action.payload.links?.[0]?.parent_id;
-          if (localLink.parent_id !== sampleParentId) {
-            updatedLinks.push(localLink);
-          }
-        }
-      });
-
-      return updatedLinks;
+      return mergeByParentId(state as Link[], action.payload.links, action.payload.parentId);
     });
   },
 });

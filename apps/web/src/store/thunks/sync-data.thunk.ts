@@ -10,6 +10,7 @@ interface SyncDataParams {
 interface SyncDataResult {
   collections: Collection[] | undefined;
   links: Link[] | undefined;
+  parentId: string | null;
 }
 
 export const syncDataThunk = createAsyncThunk<SyncDataResult, SyncDataParams>(
@@ -23,9 +24,9 @@ export const syncDataThunk = createAsyncThunk<SyncDataResult, SyncDataParams>(
       ]);
 
       return {
-        collections:
-          collectionsResponse.success ? collectionsResponse.data : undefined,
+        collections: collectionsResponse.success ? collectionsResponse.data : undefined,
         links: linksResponse.success ? linksResponse.data : undefined,
+        parentId: pathId,
       };
     } catch (error) {
       console.error("Error syncing data:", error);

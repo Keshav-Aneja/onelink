@@ -5,22 +5,28 @@ import { paths } from "../config/paths";
 import { useMemo } from "react";
 import ProtectedRoute from "./protected";
 
-const convert = (queryClient: QueryClient) => (m: any) => {
+interface LazyRouteModule {
+  default: React.ComponentType;
+  clientLoader?: (qc: QueryClient) => unknown;
+  clientAction?: (qc: QueryClient) => unknown;
+}
+
+const convert = (queryClient: QueryClient) => (m: LazyRouteModule) => {
   const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {
     ...rest,
     loader: clientLoader?.(queryClient),
-    action: clientAction?.(clientAction),
+    action: clientAction?.(queryClient),
     Component,
   };
 };
 
-const protectedLoader = (queryClient: QueryClient) => async (m: any) => {
-  const { clientLoader, clientAction, default: Component, ...rest } = await m;
+const protectedLoader = (queryClient: QueryClient) => async (m: LazyRouteModule) => {
+  const { clientLoader, clientAction, default: Component, ...rest } = m;
   return {
     ...rest,
     loader: clientLoader?.(queryClient),
-    action: clientAction?.(clientAction),
+    action: clientAction?.(queryClient),
     Component: () => (
       <ProtectedRoute>
         <Component />

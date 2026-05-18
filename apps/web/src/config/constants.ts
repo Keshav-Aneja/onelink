@@ -35,13 +35,13 @@ export const VIEW_MODES: { mode: ViewMode; icon: React.ElementType; label: strin
   { mode: "compact", icon: PiRows,        label: "Compact", description: "Dense rows, minimal spacing" },
 ];
 
-export type SettingsSectionId = "appearance";
-
-export const SETTINGS_NAV: { id: SettingsSectionId; label: string; icon: IconType; description: string }[] = [
+export const SETTINGS_NAV = [
   {
-    id: "appearance",
+    id: "appearance" as const,
     label: "Appearance",
     icon: PiPaintBrush,
     description: "Customize how the app looks and feels.",
   },
-];
+] satisfies { id: string; label: string; icon: IconType; description: string }[];
+
+export type SettingsSectionId = typeof SETTINGS_NAV[number]["id"];
