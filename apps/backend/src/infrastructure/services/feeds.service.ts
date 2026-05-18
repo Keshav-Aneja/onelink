@@ -4,6 +4,7 @@ import type { RssSubscription, RssSubscriptionWithUnread, RSSFeed } from "@oneli
 import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
 import { AuthenticationError } from "@onelink/entities/errros";
 import RssDiscoveryService from "./rss-discovery.service";
+import { escapeXml } from "../../helpers/xml";
 
 export default class FeedsService {
   constructor(
@@ -218,13 +219,4 @@ ${outlines}
     await this.repo.pruneCache(90);
     await this.repo.cleanupOldReadItems();
   }
-}
-
-function escapeXml(str: string): string {
-  return str
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;")
-    .replace(/"/g, "&quot;")
-    .replace(/'/g, "&apos;");
 }

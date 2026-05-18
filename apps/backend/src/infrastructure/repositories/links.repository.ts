@@ -4,6 +4,7 @@ import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 import logger from "../../helpers/logger";
 import { LinkSearchQueryBuilder, type SearchFilters } from "../search/link-search-query.builder";
+import type { GetLinksQuery } from "../../helpers/format-query";
 
 export class LinksRepository implements ILinkRepository {
   async getLinkById(
@@ -22,23 +23,13 @@ export class LinksRepository implements ILinkRepository {
   async getAllLinksOfCollection(
     parent_id: string | null,
     owner_id: string,
-    requestQuery: Record<string, any>,
+    query: GetLinksQuery,
   ): Promise<Link[] | undefined> {
-    const ALLOWED_FILTER_KEYS = new Set(["is_starred", "subscribed"]);
-    const dbParams: Record<string, any> = {};
-    for (const key of ALLOWED_FILTER_KEYS) {
-      if (key in requestQuery) {
-        dbParams[key] = requestQuery[key];
-      }
-    }
-    if (!requestQuery["is_starred"]) {
-      dbParams["parent_id"] = parent_id;
-    }
-    dbParams["owner_id"] = owner_id;
-    const links = await db("links")
-      .where({ ...dbParams })
-      .select("*");
-    return links;
+    const dbParams: Record<string, unknown> = { owner_id };
+    if (query.is_starred !== undefined) dbParams["is_starred"] = query.is_starred;
+    if (query.subscribed !== undefined) dbParams["subscribed"] = query.subscribed;
+    if (!query.is_starred) dbParams["parent_id"] = parent_id;
+    return db("links").where(dbParams).select("*");
   }
   async createLink(data: LinkInsert): Promise<Link> {
     const [link] = await db("links").insert(data).returning("*");

@@ -1,5 +1,6 @@
 import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import type { SearchFilters } from "../../infrastructure/search/link-search-query.builder";
+import type { GetLinksQuery } from "../../helpers/format-query";
 
 export interface ILinkRepository {
   createLink(data: LinkInsert): Promise<Link>;
@@ -7,7 +8,7 @@ export interface ILinkRepository {
   getAllLinksOfCollection(
     parent_id: string | null,
     owner_id: string,
-    requestQuery: Record<string, any>,
+    requestQuery: GetLinksQuery,
   ): Promise<Link[] | undefined>;
   getAllLinks(owner_id: string): Promise<Link[] | undefined>;
   deleteLink(link_id: string, owner_id: string): Promise<string>;

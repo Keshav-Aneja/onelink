@@ -1,13 +1,13 @@
-export function formatGetQueries(query: Record<string, any>) {
-  const formattedQuery: Record<string, any> = {};
+export interface GetLinksQuery {
+  is_starred?: boolean;
+  subscribed?: boolean;
+}
 
-  if (!query) {
-    return formattedQuery;
-  }
-
+export function formatGetQueries(query: Record<string, string>): GetLinksQuery {
+  const result: GetLinksQuery = {};
+  if (!query) return result;
   if ("starred" in query) {
-    formattedQuery["is_starred"] = Boolean(query["starred"]);
+    result.is_starred = query["starred"] === "true";
   }
-
-  return JSON.parse(JSON.stringify(formattedQuery));
+  return result;
 }

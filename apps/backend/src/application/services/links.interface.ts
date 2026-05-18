@@ -1,11 +1,12 @@
 import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import type { RSSFeed } from "@onelink/scraper/rss";
 import type { SearchFilters } from "../../infrastructure/search/link-search-query.builder";
+import type { GetLinksQuery } from "../../helpers/format-query";
 export default interface ILinksService {
   getAllChildLinks(
     parent_id: string | null,
     owner_id: string,
-    requestQuery: Record<string, any>,
+    requestQuery: GetLinksQuery,
   ): Promise<Link[] | undefined>;
   createLink(link: LinkInsert): Promise<Link>;
   getRSSFeed(

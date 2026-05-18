@@ -3,7 +3,7 @@ import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
 import { ActionResponse } from "@onelink/action";
 import logger from "../../helpers/logger";
-import { formatGetQueries } from "../../helpers/format-query";
+import { formatGetQueries, type GetLinksQuery } from "../../helpers/format-query";
 import { RssDiscoveryQueueRepository } from "../../infrastructure/repositories/rss-discovery-queue.repository";
 import { pathParam } from "../../helpers/request";
 
@@ -28,9 +28,7 @@ export default class LinkAdapter {
 
   static getLinks = asyncHandler(async (req: Request, res: Response) => {
     const collectionId = pathParam(req, "id") ?? null;
-    const requestQuery: Record<string, any> = formatGetQueries(
-      req.query as Record<string, string>,
-    );
+    const requestQuery: GetLinksQuery = formatGetQueries(req.query as Record<string, string>);
     const links = await linkService.getAllChildLinks(
       collectionId,
       req.session.user_id ?? "",

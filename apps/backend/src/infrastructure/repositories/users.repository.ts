@@ -4,44 +4,26 @@ import db from "@onelink/db";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 
 export class UsersRepository implements IUsersRepository {
-  /**
-   *
-   * @param id
-   * @returns User
-   */
-  async getUser(id: any): Promise<User | undefined> {
-    const [user] = await db("users").where({ id }).returning("*");
-    return user;
-  }
-  /**
-   *
-   * @param email
-   * @returns User
-   */
-  async getUserByEmail(email: string): Promise<User | undefined> {
-    const [user] = await db("users").where({ email }).returning("*");
+  async getUser(id: string): Promise<User | undefined> {
+    const [user] = await db("users").where({ id }).select("*");
     return user;
   }
 
-  /**
-   *
-   * @param input: UserInsert
-   * @returns User
-   */
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db("users").where({ email }).select("*");
+    return user;
+  }
+
   async createUser(input: UserInsert): Promise<User> {
     const [user] = await db("users").insert(input).returning("*");
-
     if (!user) {
       throw new DatabaseOperationError("Cannot create user");
     }
-
     return user;
   }
-  async getUserByProviderID(providerID: string): Promise<User | undefined> {
-    const [user] = await db("users")
-      .where({ provider_id: providerID })
-      .returning("*");
 
+  async getUserByProviderID(providerID: string): Promise<User | undefined> {
+    const [user] = await db("users").where({ provider_id: providerID }).select("*");
     return user;
   }
 

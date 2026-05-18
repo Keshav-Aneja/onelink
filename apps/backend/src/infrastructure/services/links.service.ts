@@ -20,6 +20,7 @@ import { RSSDTO } from "../dtos/rss.dto";
 import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
 import RssDiscoveryService from "./rss-discovery.service";
 import { getRedisClient } from "../../loaders/redis.loader";
+import type { GetLinksQuery } from "../../helpers/format-query";
 
 const RSS_FEED_CACHE_TTL_SECONDS = 3600 * 3;
 
@@ -37,7 +38,7 @@ export default class LinkService implements ILinksService {
   async getAllChildLinks(
     parentId: string | null,
     ownerId: string,
-    requestQuery: Record<string, any>,
+    requestQuery: GetLinksQuery,
   ): Promise<Link[] | undefined> {
     const data = getLinkSchema.parse({ parent_id: parentId, owner_id: ownerId });
     const links = await this.linkRepository.getAllLinksOfCollection(
