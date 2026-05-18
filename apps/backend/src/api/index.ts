@@ -11,7 +11,7 @@ import localAuth from "./routes/local-auth";
 
 export default function Routes() {
   const router = Router();
-  if (process.env.LOCAL_MODE === "true") {
+  if (process.env["LOCAL_MODE"] === "true") {
     localAuth(router);
   }
   authentication(router);

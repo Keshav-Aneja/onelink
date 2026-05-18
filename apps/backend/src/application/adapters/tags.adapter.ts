@@ -14,14 +14,14 @@ export default class TagsAdapter {
   });
 
   static getTagsForLink = asyncHandler(async (req: Request, res: Response) => {
-    const { linkId } = req.params;
+    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
     const tags = await tagsRepo.getTagsForLink(linkId);
     ActionResponse.success(res, tags, 200, "Tags fetched");
   });
 
   static getLinksByTag = asyncHandler(async (req: Request, res: Response) => {
     const ownerId = req.session.user_id!;
-    const { tagName } = req.params;
+    const tagName = typeof req.params["tagName"] === "string" ? req.params["tagName"] : "";
     const links = await tagsRepo.getLinksByTag(ownerId, tagName);
     const linkIds = links.map((l: any) => l.id);
     const allTags = await tagsRepo.getTagsForLinks(linkIds);
@@ -40,7 +40,7 @@ export default class TagsAdapter {
   });
 
   static addTagToLink = asyncHandler(async (req: Request, res: Response) => {
-    const { linkId } = req.params;
+    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
     const ownerId = req.session.user_id!;
     const { name } = req.body as { name: string };
     if (!name || typeof name !== "string" || name.trim().length === 0) {
@@ -53,13 +53,15 @@ export default class TagsAdapter {
   });
 
   static confirmTag = asyncHandler(async (req: Request, res: Response) => {
-    const { linkId, tagId } = req.params;
+    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
+    const tagId = typeof req.params["tagId"] === "string" ? req.params["tagId"] : "";
     await tagsRepo.confirmTag(linkId, tagId);
     ActionResponse.success(res, { linkId, tagId }, 200, "Tag confirmed");
   });
 
   static removeTag = asyncHandler(async (req: Request, res: Response) => {
-    const { linkId, tagId } = req.params;
+    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
+    const tagId = typeof req.params["tagId"] === "string" ? req.params["tagId"] : "";
     await tagsRepo.removeTagFromLink(linkId, tagId);
     ActionResponse.success(res, { linkId, tagId }, 200, "Tag removed");
   });

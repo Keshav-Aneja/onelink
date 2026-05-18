@@ -3,6 +3,7 @@ import type { ILinkRepository } from "../../application/repositories/links.repos
 import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
 import { DatabaseOperationError } from "@onelink/entities/errros";
 import logger from "../../helpers/logger";
+import { LinkSearchQueryBuilder, type SearchFilters } from "../search/link-search-query.builder";
 
 export class LinksRepository implements ILinkRepository {
   async getLinkById(
@@ -101,34 +102,8 @@ export class LinksRepository implements ILinkRepository {
     return parseInt(links["count"]);
   }
 
-  async getSearchLinks(owner_id: string, search_query: string): Promise<Link[] | undefined> {
-    const links = await db("links")
-      .select("*")
-      .where("owner_id", owner_id)
-      .andWhere(function () {
-        this.whereILike("name", `%${search_query}%`)
-          .orWhereILike("description", `%${search_query}%`)
-          .orWhereILike("site_description", `%${search_query}%`)
-          .orWhereILike("keywords", `%${search_query}%`)
-          .orWhereRaw("similarity(name, ?::text) > 0.2", [search_query])
-          .orWhereRaw("similarity(description, ?::text) > 0.2", [search_query])
-          .orWhereRaw("similarity(site_description, ?::text) > 0.2", [
-            search_query,
-          ])
-          .orWhereRaw("similarity(keywords, ?::text) > 0.2", [search_query]);
-      })
-      .orderByRaw(
-        `
-      GREATEST(
-        similarity(name, ?::text),
-        similarity(description, ?::text),
-        similarity(keywords, ?::text),
-        similarity(site_description, ?::text)
-      ) DESC
-      `,
-        [search_query, search_query, search_query, search_query],
-      );
-
-    return links;
+  async getSearchLinks(owner_id: string, search_query: string, filters?: SearchFilters): Promise<Link[] | undefined> {
+    const base = db("links").select("links.*").where("links.owner_id", owner_id);
+    return LinkSearchQueryBuilder.apply(base, search_query, filters);
   }
 }

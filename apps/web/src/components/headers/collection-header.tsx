@@ -1,11 +1,11 @@
 import NotificationBox from "@components/popover/notification-box";
 import ProfileBox from "@components/popover/profile-box";
-import Searchbar from "@components/search-bar";
+import CommandPalette from "@components/command-palette";
 
 const CollectionsHeader = () => {
   return (
     <header className="p-2 xxl:p-3 flex items-center gap-4">
-      <Searchbar />
+      <CommandPalette />
       <NotificationBox />
       <ProfileBox />
     </header>

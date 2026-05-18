@@ -5,6 +5,7 @@ import {
   type LinkInsert,
   type LinkUpdate,
 } from "@onelink/entities/models";
+import type { SearchFilters } from "../search/link-search-query.builder";
 import type ILinksService from "../../application/services/links.interface";
 import { LinksRepository } from "../repositories/links.repository";
 import { TagsRepository } from "../repositories/tags.repository";
@@ -236,8 +237,23 @@ export default class LinkService implements ILinksService {
     return linksCount;
   }
 
-  async searchLinks(owner_id: string, search_query: string): Promise<Link[] | undefined> {
-    const queriedLinks = await this.linkRepository.getSearchLinks(owner_id, search_query);
-    return queriedLinks;
+  async searchLinks(owner_id: string, search_query: string, filters?: SearchFilters): Promise<Link[] | undefined> {
+    const links = await this.linkRepository.getSearchLinks(owner_id, search_query, filters);
+    if (!links) return undefined;
+
+    const linkIds = links.map((l) => l.id);
+    const allTags = await this.tagsRepository.getTagsForLinks(linkIds);
+    const tagsByLink = new Map<string, typeof allTags>();
+    for (const tag of allTags) {
+      const arr = tagsByLink.get(tag.link_id) ?? [];
+      arr.push(tag);
+      tagsByLink.set(tag.link_id, arr);
+    }
+
+    return links.map((link) => {
+      const obj = LinkDTO.fromObject(link).toObject();
+      obj.tags = tagsByLink.get(link.id) ?? [];
+      return obj;
+    });
   }
 }

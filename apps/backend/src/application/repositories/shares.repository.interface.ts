@@ -1,4 +1,5 @@
 import type { Share, ShareInsert, ShareUpdate } from "@onelink/entities/models";
+import { ShareType } from "@onelink/entities";
 
 export interface ISharesRepository {
   shareCollection(data: ShareInsert): Promise<Share>;
@@ -7,6 +8,6 @@ export interface ISharesRepository {
   deleteShare(share_id: string, owner_id: string): Promise<string>;
   findByCollectionAndUser(collection_id: string, user_id: string): Promise<Share | undefined>;
   getCollectionInvitees(collection_id: string): Promise<Share[]>;
-  updateCollectionShareType(collection_id: string, owner_id: string, share_type: string): Promise<void>;
+  updateCollectionShareType(collection_id: string, owner_id: string, share_type: ShareType): Promise<void>;
   getSharedWithMe(user_id: string): Promise<Share[]>;
 }

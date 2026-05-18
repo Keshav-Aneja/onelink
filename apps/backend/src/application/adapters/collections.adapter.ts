@@ -19,7 +19,7 @@ export class CollectionAdapter {
 
   static getCollections = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const { id } = req.params;
+      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       const collectionId = id ? id : null;
       const collectionsService = new CollectionsService();
       const collections = await collectionsService.getAllChildCollections(
@@ -37,7 +37,7 @@ export class CollectionAdapter {
 
   static getCollectionStats = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const { id } = req.params;
+      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       const collectionId = id ? id : null;
       const collectionsService = new CollectionsService();
       const linksService = new LinkService();
@@ -61,7 +61,7 @@ export class CollectionAdapter {
 
   static verifyPassword = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const { id } = req.params;
+      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       const { password } = req.body;
       const collectionId = id ? id : null;
       const collectionsService = new CollectionsService();
@@ -76,7 +76,7 @@ export class CollectionAdapter {
 
   static deleteCollection = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const { id } = req.params;
+      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
       if (!id) {
         ActionResponse.error(res, "Collection ID is required", 400);
         return;

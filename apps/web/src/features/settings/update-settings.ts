@@ -33,7 +33,7 @@ export const useUpdateSettings = ({ mutationConfig }: UseUpdateSettingsOptions =
       if (context?.previous !== undefined) {
         queryClient.setQueryData(queryKey, context.previous);
       }
-      onError?.(err, vars, context);
+      (onError as ((e: Error, v: UserSettingsUpdate, c: any) => void) | undefined)?.(err, vars, context);
     },
     onSuccess: (...args) => {
       queryClient.invalidateQueries({ queryKey });

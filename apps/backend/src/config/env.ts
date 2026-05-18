@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const isLocalMode = process.env.LOCAL_MODE === "true";
+const isLocalMode = process.env["LOCAL_MODE"] === "true";
 
 const envSchema = z.object({
   PORT: z.coerce.number().min(1000),
@@ -50,10 +50,33 @@ const envSchema = z.object({
 
 const env = envSchema.parse(process.env);
 
-//Extend the global processEnv interface
+type EnvVars = z.infer<typeof envSchema>;
+
 declare global {
   namespace NodeJS {
-    interface ProcessEnv extends z.infer<typeof envSchema> {}
+    interface ProcessEnv {
+      [key: string]: string | undefined;
+      PORT?: string;
+      FRONTEND_URL?: string;
+      PG_CONNECTION?: string;
+      ENV?: "development" | "production" | "testing";
+      LOCAL_MODE?: string;
+      GOOGLE_CLIENT_ID?: string;
+      GOOGLE_CLIENT_SECRET?: string;
+      GOOGLE_REDIRECT_URL?: string;
+      GOOGLE_AUTH_URL?: string;
+      GITHUB_CLIENT_ID?: string;
+      GITHUB_CLIENT_SECRET?: string;
+      GITHUB_REDIRECT_URL?: string;
+      GITHUB_AUTH_URL?: string;
+      REDIS_PASSWORD?: string;
+      REDIS_URL?: string;
+      REDIS_PORT?: string;
+      REDIS_PREFIX?: string;
+      SESS_SECRET?: string;
+    }
   }
 }
+
+export type { EnvVars };
 export default env;

@@ -25,7 +25,7 @@ export class AuthenticationAdapter {
    */
   static async authenticateUser(req: Request, res: Response): Promise<void> {
     try {
-      const { provider } = req.params;
+      const provider = typeof req.params["provider"] === "string" ? req.params["provider"] : "";
       const { redirectTo } = req.query;
       const redirectToStr = typeof redirectTo === "string" ? redirectTo : "";
       const isRelativePath =
@@ -54,13 +54,14 @@ export class AuthenticationAdapter {
     res: Response,
   ): Promise<void> {
     try {
-      const { provider } = req.params;
+      const provider = typeof req.params["provider"] === "string" ? req.params["provider"] : "";
       const redirectTo = req.session.redirect_to;
       const authService = AuthenticationFactory(provider);
       const userService = new UserService();
       const sessionService = new SessionService();
       const code_verifier = req.session.code_verifier;
-      const { code, state } = req.query;
+      const code = typeof req.query["code"] === "string" ? req.query["code"] : undefined;
+      const state = typeof req.query["state"] === "string" ? req.query["state"] : undefined;
       const authCode = await authService.getAuthorizationCode(
         code,
         state,

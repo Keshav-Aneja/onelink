@@ -1,4 +1,5 @@
 import type { Link, LinkInsert, LinkUpdate } from "@onelink/entities/models";
+import type { SearchFilters } from "../../infrastructure/search/link-search-query.builder";
 
 export interface ILinkRepository {
   createLink(data: LinkInsert): Promise<Link>;
@@ -23,5 +24,5 @@ export interface ILinkRepository {
     owner_id: string,
     parent_id: string | null,
   ): Promise<number>;
-  getSearchLinks(owner_id: string, search_query: string): Promise<Link[] | undefined>;
+  getSearchLinks(owner_id: string, search_query: string, filters?: SearchFilters): Promise<Link[] | undefined>;
 }

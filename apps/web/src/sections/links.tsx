@@ -1,4 +1,5 @@
 import { useAppDispatch, useAppSelector } from "@store/store";
+import type { Link } from "@onelink/entities/models";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { useStoredLinks } from "@hooks/links";
 import { useViewPreferences } from "@hooks/view-preferences";

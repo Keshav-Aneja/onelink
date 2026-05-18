@@ -26,7 +26,7 @@ export default class LinkAdapter {
   });
 
   static getLinks = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
     const collectionId = id ? id : null;
     const requestQuery: Record<string, any> = formatGetQueries(
       req.query as Record<string, string>,
@@ -75,9 +75,9 @@ export default class LinkAdapter {
 
   static updateLink = asyncHandler(async (req: Request, res: Response) => {
     const data = req.body;
-    const { id } = req.params;
+    const id = typeof req.params["id"] === "string" ? req.params["id"] : "";
     const linkService = new LinkService();
-    const link = await linkService.updateLink(req.session.user_id!, id!, data);
+    const link = await linkService.updateLink(req.session.user_id!, id, data);
     ActionResponse.success(res, link, 200, "Link updated");
   });
 
@@ -94,21 +94,33 @@ export default class LinkAdapter {
   });
 
   static deleteLink = asyncHandler(async (req: Request, res: Response) => {
-    const { id } = req.params;
+    const id = typeof req.params["id"] === "string" ? req.params["id"] : "";
     const linkService = new LinkService();
-    const deletedId = await linkService.deleteLink(req.session.user_id!, id!);
+    const deletedId = await linkService.deleteLink(req.session.user_id!, id);
     ActionResponse.success(res, deletedId, 200, "Link Deleted");
   });
 
   static searchLinks = asyncHandler(async (req: Request, res: Response) => {
-    const { q: search_query } = req.query;
+    const { q: search_query, collection_id, tag, starred } = req.query;
     if (typeof search_query !== "string" || search_query.length === 0) {
       ActionResponse.error(res, "Invalid search query", 200, undefined);
       return;
     }
 
+    const filters = {
+      ...(collection_id !== undefined && {
+        collection_id: typeof collection_id === "string" ? collection_id : null,
+      }),
+      ...(typeof tag === "string" && tag.length > 0 && { tag }),
+      ...(starred === "true" && { starred: true }),
+    };
+
     const linkService = new LinkService();
-    const queriedLinks = await linkService.searchLinks(req.session.user_id!, search_query);
+    const queriedLinks = await linkService.searchLinks(
+      req.session.user_id!,
+      search_query,
+      Object.keys(filters).length > 0 ? filters : undefined,
+    );
     ActionResponse.success(
       res,
       queriedLinks,

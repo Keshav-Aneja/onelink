@@ -1,4 +1,5 @@
 import type { Share, ShareInsert, ShareUpdate } from "@onelink/entities/models";
+import { ShareType } from "@onelink/entities";
 import type { ISharesRepository } from "../../application/repositories/shares.repository.interface";
 import db from "@onelink/db";
 import { DatabaseOperationError } from "@onelink/entities/errros";
@@ -47,10 +48,10 @@ export class SharesRepository implements ISharesRepository {
     return db("shares").where({ collection_id }).select("*");
   }
 
-  async updateCollectionShareType(collection_id: string, owner_id: string, share_type: string): Promise<void> {
+  async updateCollectionShareType(collection_id: string, owner_id: string, share_type: ShareType): Promise<void> {
     await db("shares")
       .where({ collection_id, shared_by: owner_id })
-      .update({ share_type, updated_at: db.fn.now() });
+      .update({ share_type });
   }
 
   async getSharedWithMe(user_id: string): Promise<Share[]> {

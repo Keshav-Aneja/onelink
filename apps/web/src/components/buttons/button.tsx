@@ -8,7 +8,6 @@ type ButtonProps = {
   iconSize?: "sm" | "lg" | "xl";
   className?: string;
   loading?: boolean;
-  onClick?: () => void;
   Loader?: ReactNode;
   variant?: "default" | "primary";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;

@@ -1,9 +1,11 @@
 import type { Express } from "express";
-import { createClient, type RedisClientType } from "redis";
+import { createClient } from "redis";
 import { RedisStore } from "connect-redis";
 import session from "express-session";
 import env from "../config/env";
-let redisClient: RedisClientType | null = null;
+
+type RedisClient = ReturnType<typeof createClient>;
+let redisClient: RedisClient | null = null;
 
 export const initRedisClient = async () => {
   if (!redisClient) {

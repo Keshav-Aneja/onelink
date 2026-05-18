@@ -6,10 +6,10 @@ import { UserSchemaWithoutID, type User } from "@onelink/entities/models";
 import { UserDTO } from "../dtos/user.dto";
 import type { Session, SessionData } from "express-session";
 export class GithubOAuthService implements IAuthenticationService {
-  private readonly CLIENT_ID: string = env.GITHUB_CLIENT_ID;
-  private readonly REDIRECT_URI: string = env.GITHUB_REDIRECT_URL;
-  private readonly AUTH_URL: string = env.GITHUB_AUTH_URL;
-  private readonly CLIENT_SECRET: string = env.GITHUB_CLIENT_SECRET;
+  private readonly CLIENT_ID: string = env.GITHUB_CLIENT_ID!;
+  private readonly REDIRECT_URI: string = env.GITHUB_REDIRECT_URL!;
+  private readonly AUTH_URL: string = env.GITHUB_AUTH_URL!;
+  private readonly CLIENT_SECRET: string = env.GITHUB_CLIENT_SECRET!;
 
   constructor() {}
 

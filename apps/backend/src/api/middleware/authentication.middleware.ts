@@ -54,7 +54,7 @@ export const validateProvider = (
   res: Response,
   next: NextFunction,
 ) => {
-  const { provider } = req.params;
+  const provider = typeof req.params["provider"] === "string" ? req.params["provider"] : "";
   if (!provider || !isValidProvider(provider)) {
     res.status(400).send("Invalid provider");
     return;

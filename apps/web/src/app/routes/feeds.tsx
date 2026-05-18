@@ -162,7 +162,7 @@ const Feeds = () => {
             <button
               className="flex items-center gap-1.5 text-xs text-secondary_text hover:text-red-400 px-3 py-1.5 rounded-md hover:bg-red-500/10 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
               disabled={pruneInactiveMutation.isPending}
-              onClick={() => pruneInactiveMutation.mutate()}
+              onClick={() => pruneInactiveMutation.mutate(undefined)}
               title="Remove feeds with no items in the last 3 months"
             >
               <HiOutlineArchiveBoxXMark />
