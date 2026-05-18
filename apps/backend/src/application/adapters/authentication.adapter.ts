@@ -8,13 +8,14 @@ import { UsersRepository } from "../../infrastructure/repositories/users.reposit
 import { ActionResponse } from "@onelink/action";
 import { asyncHandler } from "../../helpers/async-handler";
 import logger from "../../helpers/logger";
+import { pathParam } from "../../helpers/request";
 
 const userService = new UserService();
 const sessionService = new SessionService();
 
 export class AuthenticationAdapter {
   static authenticateUser = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const provider = typeof req.params["provider"] === "string" ? req.params["provider"] : "";
+    const provider = pathParam(req, "provider") ?? "";
     const { redirectTo } = req.query;
     const redirectToStr = typeof redirectTo === "string" ? redirectTo : "";
     const isRelativePath = redirectToStr.startsWith("/") && !redirectToStr.startsWith("//");
@@ -25,7 +26,7 @@ export class AuthenticationAdapter {
   });
 
   static processOAuthCallback = asyncHandler(async (req: Request, res: Response): Promise<void> => {
-    const provider = typeof req.params["provider"] === "string" ? req.params["provider"] : "";
+    const provider = pathParam(req, "provider") ?? "";
     const redirectTo = req.session.redirect_to;
     const authService = AuthenticationFactory(provider);
     const code_verifier = req.session.code_verifier;

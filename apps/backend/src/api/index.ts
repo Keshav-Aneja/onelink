@@ -8,10 +8,11 @@ import tags from "./routes/tags";
 import feeds from "./routes/feeds";
 import userSettings from "./routes/user-settings";
 import localAuth from "./routes/local-auth";
+import env from "../config/env";
 
 export default function Routes() {
   const router = Router();
-  if (process.env["LOCAL_MODE"] === "true") {
+  if (env.LOCAL_MODE) {
     localAuth(router);
   }
   authentication(router);

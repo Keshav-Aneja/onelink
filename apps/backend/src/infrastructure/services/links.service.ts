@@ -19,6 +19,11 @@ import { RSS, type RSSFeed } from "@onelink/scraper/rss";
 import { RSSDTO } from "../dtos/rss.dto";
 import { RssSubscriptionsRepository } from "../repositories/rss-subscriptions.repository";
 import RssDiscoveryService from "./rss-discovery.service";
+
+const getLinkSchema = LinkSchema.pick({ owner_id: true, parent_id: true });
+const createLinkSchema = LinkSchema.omit({ id: true, tags: true });
+const deleteLinkSchema = LinkSchema.pick({ id: true, owner_id: true });
+
 export default class LinkService implements ILinksService {
   constructor(
     private readonly linkRepository = new LinksRepository(),
@@ -31,14 +36,7 @@ export default class LinkService implements ILinksService {
     ownerId: string,
     requestQuery: Record<string, any>,
   ): Promise<Link[] | undefined> {
-    const getLinkSchema = LinkSchema.pick({
-      owner_id: true,
-      parent_id: true,
-    });
-    const data = getLinkSchema.parse({
-      parent_id: parentId,
-      owner_id: ownerId,
-    });
+    const data = getLinkSchema.parse({ parent_id: parentId, owner_id: ownerId });
     const links = await this.linkRepository.getAllLinksOfCollection(
       data.parent_id,
       data.owner_id,
@@ -65,7 +63,7 @@ export default class LinkService implements ILinksService {
   async createLink(link: LinkInsert): Promise<Link> {
     const scraper = new Scraper(link.link);
     const { tags: userTags, ...linkData } = link;
-    const data = LinkSchema.omit({ id: true, tags: true }).parse(linkData);
+    const data = createLinkSchema.parse(linkData);
     const content = await scraper.scrape();
     let metadata = {} as WebsiteMetadata;
     if (content) {
@@ -108,7 +106,6 @@ export default class LinkService implements ILinksService {
     return result;
   }
   async deleteLink(ownerId: string, linkId: string): Promise<{ id: string }> {
-    const deleteLinkSchema = LinkSchema.pick({ id: true, owner_id: true });
     const data = deleteLinkSchema.parse({ owner_id: ownerId, id: linkId });
     const id = await this.linkRepository.deleteLink(data.id, data.owner_id);
     return { id };

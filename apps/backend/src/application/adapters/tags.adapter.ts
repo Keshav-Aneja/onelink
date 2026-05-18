@@ -3,25 +3,25 @@ import { asyncHandler } from "../../helpers/async-handler";
 import { TagsRepository } from "../../infrastructure/repositories/tags.repository";
 import { LinkDTO } from "../../infrastructure/dtos/links.dto";
 import { ActionResponse } from "@onelink/action";
+import { pathParam } from "../../helpers/request";
 
 const tagsRepo = new TagsRepository();
 
 export default class TagsAdapter {
   static getAllTags = asyncHandler(async (req: Request, res: Response) => {
-    const ownerId = req.session.user_id!;
-    const tags = await tagsRepo.getAllTagsForOwner(ownerId);
+    const tags = await tagsRepo.getAllTagsForOwner(req.session.user_id!);
     ActionResponse.success(res, tags, 200, "Tags fetched");
   });
 
   static getTagsForLink = asyncHandler(async (req: Request, res: Response) => {
-    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
+    const linkId = pathParam(req, "linkId") ?? "";
     const tags = await tagsRepo.getTagsForLink(linkId);
     ActionResponse.success(res, tags, 200, "Tags fetched");
   });
 
   static getLinksByTag = asyncHandler(async (req: Request, res: Response) => {
     const ownerId = req.session.user_id!;
-    const tagName = typeof req.params["tagName"] === "string" ? req.params["tagName"] : "";
+    const tagName = pathParam(req, "tagName") ?? "";
     const links = await tagsRepo.getLinksByTag(ownerId, tagName);
     const linkIds = links.map((l: any) => l.id);
     const allTags = await tagsRepo.getTagsForLinks(linkIds);
@@ -40,7 +40,7 @@ export default class TagsAdapter {
   });
 
   static addTagToLink = asyncHandler(async (req: Request, res: Response) => {
-    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
+    const linkId = pathParam(req, "linkId") ?? "";
     const ownerId = req.session.user_id!;
     const { name } = req.body as { name: string };
     if (!name || typeof name !== "string" || name.trim().length === 0) {
@@ -53,15 +53,15 @@ export default class TagsAdapter {
   });
 
   static confirmTag = asyncHandler(async (req: Request, res: Response) => {
-    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
-    const tagId = typeof req.params["tagId"] === "string" ? req.params["tagId"] : "";
+    const linkId = pathParam(req, "linkId") ?? "";
+    const tagId = pathParam(req, "tagId") ?? "";
     await tagsRepo.confirmTag(linkId, tagId);
     ActionResponse.success(res, { linkId, tagId }, 200, "Tag confirmed");
   });
 
   static removeTag = asyncHandler(async (req: Request, res: Response) => {
-    const linkId = typeof req.params["linkId"] === "string" ? req.params["linkId"] : "";
-    const tagId = typeof req.params["tagId"] === "string" ? req.params["tagId"] : "";
+    const linkId = pathParam(req, "linkId") ?? "";
+    const tagId = pathParam(req, "tagId") ?? "";
     await tagsRepo.removeTagFromLink(linkId, tagId);
     ActionResponse.success(res, { linkId, tagId }, 200, "Tag removed");
   });

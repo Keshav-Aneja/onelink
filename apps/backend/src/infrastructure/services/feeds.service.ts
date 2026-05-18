@@ -158,9 +158,7 @@ export default class FeedsService {
 
   async pruneInactiveSubscriptions(owner_id: string): Promise<{ removed: number }> {
     const inactive = await this.repo.getInactiveSubscriptions(owner_id, 90);
-    for (const sub of inactive) {
-      await this.repo.delete(sub.id, owner_id);
-    }
+    await this.repo.deleteByIds(inactive.map((s) => s.id), owner_id);
     return { removed: inactive.length };
   }
 
@@ -183,32 +181,18 @@ ${outlines}
   }
 
   async importOpml(owner_id: string, opmlXml: string): Promise<{ added: number }> {
-    let match: RegExpExecArray | null;
     const entries: Array<{ feed_url: string; site_url?: string; title?: string }> = [];
-
-    // Parse all outlines by scanning for xmlUrl
     const outlineRegex = /<outline[^>]+xmlUrl="([^"]+)"[^>]*>/g;
+    let match: RegExpExecArray | null;
     while ((match = outlineRegex.exec(opmlXml)) !== null) {
       const outerHtml = match[0];
       const feed_url = match[1] ?? "";
       if (!feed_url) continue;
       const htmlMatch = outerHtml.match(/htmlUrl="([^"]+)"/);
       const titleMatch = outerHtml.match(/(?:text|title)="([^"]+)"/);
-      entries.push({
-        feed_url,
-        site_url: htmlMatch?.[1],
-        title: titleMatch?.[1],
-      });
+      entries.push({ feed_url, site_url: htmlMatch?.[1], title: titleMatch?.[1] });
     }
-
-    let added = 0;
-    for (const entry of entries) {
-      const existing = await this.repo.getByFeedUrl(owner_id, entry.feed_url);
-      if (!existing) {
-        await this.repo.create({ owner_id, ...entry });
-        added++;
-      }
-    }
+    const added = await this.repo.createManyIfNotExists(owner_id, entries);
     return { added };
   }
 

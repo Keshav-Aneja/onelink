@@ -6,6 +6,7 @@ import { getRedisClient } from "../../loaders/redis.loader";
 import logger from "../../helpers/logger";
 import { formatGetQueries } from "../../helpers/format-query";
 import { RssDiscoveryQueueRepository } from "../../infrastructure/repositories/rss-discovery-queue.repository";
+import { pathParam } from "../../helpers/request";
 
 const linkService = new LinkService();
 const rssQueueRepo = new RssDiscoveryQueueRepository();
@@ -27,8 +28,7 @@ export default class LinkAdapter {
   });
 
   static getLinks = asyncHandler(async (req: Request, res: Response) => {
-    const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
-    const collectionId = id ? id : null;
+    const collectionId = pathParam(req, "id") ?? null;
     const requestQuery: Record<string, any> = formatGetQueries(
       req.query as Record<string, string>,
     );
@@ -64,9 +64,8 @@ export default class LinkAdapter {
   });
 
   static updateLink = asyncHandler(async (req: Request, res: Response) => {
-    const data = req.body;
-    const id = typeof req.params["id"] === "string" ? req.params["id"] : "";
-    const link = await linkService.updateLink(req.session.user_id!, id, data);
+    const id = pathParam(req, "id") ?? "";
+    const link = await linkService.updateLink(req.session.user_id!, id, req.body);
     ActionResponse.success(res, link, 200, "Link updated");
   });
 
@@ -76,7 +75,7 @@ export default class LinkAdapter {
   });
 
   static deleteLink = asyncHandler(async (req: Request, res: Response) => {
-    const id = typeof req.params["id"] === "string" ? req.params["id"] : "";
+    const id = pathParam(req, "id") ?? "";
     const deletedId = await linkService.deleteLink(req.session.user_id!, id);
     ActionResponse.success(res, deletedId, 200, "Link Deleted");
   });

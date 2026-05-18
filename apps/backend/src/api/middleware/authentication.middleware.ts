@@ -3,6 +3,7 @@ import { UserService } from "../../infrastructure/services/user.services";
 import { Provider } from "@onelink/entities";
 import { asyncHandler } from "../../helpers/async-handler";
 import { AuthenticationError } from "@onelink/entities/errros";
+import { pathParam } from "../../helpers/request";
 
 // Define a type for your session data
 interface SessionData {
@@ -54,7 +55,7 @@ export const validateProvider = (
   res: Response,
   next: NextFunction,
 ) => {
-  const provider = typeof req.params["provider"] === "string" ? req.params["provider"] : "";
+  const provider = pathParam(req, "provider") ?? "";
   if (!provider || !isValidProvider(provider)) {
     res.status(400).send("Invalid provider");
     return;

@@ -3,7 +3,7 @@ import type { Request, Response } from "express";
 import CollectionsService from "../../infrastructure/services/collections.service";
 import { asyncHandler } from "../../helpers/async-handler";
 import LinkService from "../../infrastructure/services/links.service";
-import logger from "../../helpers/logger";
+import { pathParam } from "../../helpers/request";
 
 const collectionsService = new CollectionsService();
 const linkService = new LinkService();
@@ -11,9 +11,8 @@ const linkService = new LinkService();
 export class CollectionAdapter {
   static createCollection = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const data = req.body;
       const collection = await collectionsService.createCollection({
-        ...data,
+        ...req.body,
         owner_id: req.session.user_id,
       });
       ActionResponse.success(res, collection, 201, "Collection created");
@@ -22,40 +21,31 @@ export class CollectionAdapter {
 
   static getCollections = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
-      const collectionId = id ? id : null;
+      const collectionId = pathParam(req, "id") ?? null;
       const collections = await collectionsService.getAllChildCollections(
         collectionId,
         req.session.user_id ?? "",
       );
-      ActionResponse.success(
-        res,
-        collections,
-        200,
-        "Collections fetched succesfully",
-      );
+      ActionResponse.success(res, collections, 200, "Collections fetched successfully");
     },
   );
 
   static getCollectionStats = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
-      const collectionId = id ? id : null;
+      const collectionId = pathParam(req, "id") ?? null;
       const user_id = req.session.user_id!;
       const [collectionsCount, linksCount] = await Promise.all([
         collectionsService.getCollectionsCount(user_id, collectionId),
         linkService.getLinksCount(user_id, collectionId),
       ]);
-      const data = { collections: collectionsCount, links: linksCount };
-      ActionResponse.success(res, data, 200, "Collection stats fetched");
+      ActionResponse.success(res, { collections: collectionsCount, links: linksCount }, 200, "Collection stats fetched");
     },
   );
 
   static verifyPassword = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
+      const collectionId = pathParam(req, "id") ?? null;
       const { password } = req.body;
-      const collectionId = id ? id : null;
       const verified = await collectionsService.verifyPassword(
         collectionId,
         req.session.user_id!,
@@ -67,21 +57,13 @@ export class CollectionAdapter {
 
   static deleteCollection = asyncHandler(
     async (req: Request, res: Response): Promise<void> => {
-      const id = typeof req.params["id"] === "string" ? req.params["id"] : undefined;
+      const id = pathParam(req, "id");
       if (!id) {
         ActionResponse.error(res, "Collection ID is required", 400);
         return;
       }
-      const result = await collectionsService.deleteCollection(
-        id,
-        req.session.user_id!,
-      );
-      ActionResponse.success(
-        res,
-        result,
-        200,
-        "Collection and all its contents deleted successfully",
-      );
+      const result = await collectionsService.deleteCollection(id, req.session.user_id!);
+      ActionResponse.success(res, result, 200, "Collection and all its contents deleted successfully");
     },
   );
 }

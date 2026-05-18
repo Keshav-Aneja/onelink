@@ -86,6 +86,25 @@ export class RssSubscriptionsRepository {
     return db("rss_feed_cache").where("published_date", "<", cutoff).delete();
   }
 
+  async createManyIfNotExists(
+    owner_id: string,
+    entries: Array<{ feed_url: string; site_url?: string; title?: string }>,
+  ): Promise<number> {
+    if (entries.length === 0) return 0;
+    const rows = entries.map((e) => ({ owner_id, ...e }));
+    const result = await db("rss_subscriptions")
+      .insert(rows)
+      .onConflict(["owner_id", "feed_url"])
+      .ignore()
+      .returning("id");
+    return result.length;
+  }
+
+  async deleteByIds(ids: string[], owner_id: string): Promise<void> {
+    if (ids.length === 0) return;
+    await db("rss_subscriptions").whereIn("id", ids).where({ owner_id }).delete();
+  }
+
   async getInactiveSubscriptions(owner_id: string, inactiveDays: number): Promise<RssSubscription[]> {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - inactiveDays);
