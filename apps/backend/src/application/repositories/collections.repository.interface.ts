@@ -27,5 +27,6 @@ export interface ICollectionRepository {
   ): Promise<Collection[] | undefined>;
   getAllDescendantIds(collection_id: string, owner_id: string): Promise<string[]>;
   deleteCollectionsByIds(ids: string[], owner_id: string): Promise<void>;
+  getCollectionByIdOnly(collection_id: string): Promise<Collection | undefined>;
   getAllDescendants(root_id: string, owner_id: string): Promise<Collection[]>;
 }

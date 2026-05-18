@@ -4,7 +4,7 @@ import { RequestError } from "@onelink/entities/errros";
 import { SharesRepository } from "../repositories/shares.repository";
 import { CollectionRepository } from "../repositories/collections.repository";
 import { UsersRepository } from "../repositories/users.repository";
-import db from "@onelink/db";
+import { LinksRepository } from "../repositories/links.repository";
 
 type InviteeInfo = {
   share_id: string;
@@ -26,11 +26,18 @@ type SharedCollectionItem = {
   shared_by_email: string;
 };
 
+type CollectionNode = {
+  collection: { id: string; name: string; color: string; description: string | null | undefined };
+  links: unknown[];
+  children: CollectionNode[];
+};
+
 export class UserSharesService {
   constructor(
-    private sharesRepo = new SharesRepository(),
-    private collectionsRepo = new CollectionRepository(),
-    private usersRepo = new UsersRepository(),
+    private readonly sharesRepo = new SharesRepository(),
+    private readonly collectionsRepo = new CollectionRepository(),
+    private readonly usersRepo = new UsersRepository(),
+    private readonly linksRepo = new LinksRepository(),
   ) {}
 
   async inviteByEmail(
@@ -42,7 +49,7 @@ export class UserSharesService {
     const collection = await this.collectionsRepo.getCollectionById(collection_id, owner_id);
     if (!collection) throw new RequestError("Collection not found or access denied", 403);
 
-    const owner = await this.usersRepo.getUser(owner_id as any);
+    const owner = await this.usersRepo.getUser(owner_id);
     if (owner?.email === email) throw new RequestError("You cannot invite yourself", 400);
 
     const invitee = await this.usersRepo.findByEmail(email);
@@ -73,7 +80,7 @@ export class UserSharesService {
     const shares = await this.sharesRepo.getCollectionInvitees(collection_id);
     const results: InviteeInfo[] = await Promise.all(
       shares.map(async (share) => {
-        const user = await this.usersRepo.getUser(share.shared_with as any);
+        const user = await this.usersRepo.getUser(share.shared_with);
         return {
           share_id: share.id,
           email: user?.email ?? "",
@@ -96,11 +103,12 @@ export class UserSharesService {
     const share = await this.sharesRepo.findByCollectionAndUser(collection_id, user_id);
     if (!share) throw new RequestError("You do not have access to this collection", 403);
 
-    const [collection] = await db("collections").where({ id: collection_id }).select("*");
+    const [collection, owner, rootLinks] = await Promise.all([
+      this.collectionsRepo.getCollectionById(collection_id, share.shared_by),
+      this.usersRepo.getUser(share.shared_by),
+      this.linksRepo.getLinksByParentId(collection_id),
+    ]);
     if (!collection) throw new RequestError("Collection not found", 404);
-
-    const owner = await this.usersRepo.getUser(share.shared_by as any);
-    const links = await db("links").where({ parent_id: collection_id }).select("*");
 
     const safeCollection = {
       id: collection.id,
@@ -110,55 +118,66 @@ export class UserSharesService {
     };
 
     if (share.share_type === ShareType.Shallow) {
-      return {
-        share_type: "SHALLOW",
-        collection: safeCollection,
-        links,
-        children: [],
-        shared_by_email: owner?.email ?? "",
-      };
+      return { share_type: "SHALLOW", collection: safeCollection, links: rootLinks, children: [], shared_by_email: owner?.email ?? "" };
     }
 
-    const children = await this.loadChildrenRecursive(collection_id);
-    return {
-      share_type: "DEEP",
-      collection: safeCollection,
-      links,
-      children,
-      shared_by_email: owner?.email ?? "",
-    };
-  }
+    const allDescendants = await this.collectionsRepo.getAllDescendants(collection_id, share.shared_by);
+    const descendantIds = allDescendants.map((c) => c.id);
+    const allLinks = descendantIds.length > 0 ? await this.linksRepo.getLinksByParentIds(descendantIds) : [];
 
-  private async loadChildrenRecursive(parent_id: string): Promise<any[]> {
-    const subs = await db("collections").where({ parent_id }).select("*");
-    return Promise.all(
-      subs.map(async (col: any) => ({
-        collection: { id: col.id, name: col.name, color: col.color, description: col.description },
-        links: await db("links").where({ parent_id: col.id }).select("*"),
-        children: await this.loadChildrenRecursive(col.id),
-      })),
-    );
+    const linksByParent = new Map<string, typeof allLinks>();
+    for (const link of allLinks) {
+      const arr = linksByParent.get(link.parent_id!) ?? [];
+      arr.push(link);
+      linksByParent.set(link.parent_id!, arr);
+    }
+
+    const childrenByParent = new Map<string, typeof allDescendants>();
+    for (const col of allDescendants) {
+      const arr = childrenByParent.get(col.parent_id!) ?? [];
+      arr.push(col);
+      childrenByParent.set(col.parent_id!, arr);
+    }
+
+    const buildNode = (col: (typeof allDescendants)[0]): CollectionNode => ({
+      collection: { id: col.id, name: col.name, color: col.color, description: col.description },
+      links: linksByParent.get(col.id) ?? [],
+      children: (childrenByParent.get(col.id) ?? []).map(buildNode),
+    });
+
+    const children = (childrenByParent.get(collection_id) ?? []).map(buildNode);
+    return { share_type: "DEEP", collection: safeCollection, links: rootLinks, children, shared_by_email: owner?.email ?? "" };
   }
 
   async sharedWithMe(user_id: string): Promise<SharedCollectionItem[]> {
     const shares = await this.sharesRepo.getSharedWithMe(user_id);
-    const results: SharedCollectionItem[] = await Promise.all(
-      shares.map(async (share) => {
-        const [collection] = await db("collections").where({ id: share.collection_id }).select("*");
-        const owner = await this.usersRepo.getUser(share.shared_by as any);
-        return {
-          collection: {
-            id: collection?.id ?? share.collection_id,
-            name: collection?.name ?? "",
-            color: collection?.color ?? "",
-            description: collection?.description ?? null,
-          },
-          share_id: share.id,
-          share_type: share.share_type,
-          shared_by_email: owner?.email ?? "",
-        };
-      }),
-    );
-    return results;
+    if (shares.length === 0) return [];
+
+    const collectionIds = [...new Set(shares.map((s) => s.collection_id))];
+    const ownerIds = [...new Set(shares.map((s) => s.shared_by))];
+
+    const [collections, owners] = await Promise.all([
+      Promise.all(collectionIds.map((id) => this.collectionsRepo.getCollectionByIdOnly(id))),
+      Promise.all(ownerIds.map((id) => this.usersRepo.getUser(id))),
+    ]);
+
+    const collectionById = new Map(collections.filter(Boolean).map((c) => [c!.id, c!]));
+    const ownerById = new Map(owners.filter(Boolean).map((o) => [o!.id, o!]));
+
+    return shares.map((share) => {
+      const collection = collectionById.get(share.collection_id);
+      const owner = ownerById.get(share.shared_by);
+      return {
+        collection: {
+          id: collection?.id ?? share.collection_id,
+          name: collection?.name ?? "",
+          color: collection?.color ?? "",
+          description: collection?.description ?? null,
+        },
+        share_id: share.id,
+        share_type: share.share_type,
+        shared_by_email: owner?.email ?? "",
+      };
+    });
   }
 }

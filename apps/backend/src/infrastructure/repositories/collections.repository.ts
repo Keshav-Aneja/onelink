@@ -111,6 +111,11 @@ export class CollectionRepository implements ICollectionRepository {
     await db("collections").whereIn("id", ids).where({ owner_id }).delete();
   }
 
+  async getCollectionByIdOnly(collection_id: string): Promise<Collection | undefined> {
+    const [collection] = await db("collections").where({ id: collection_id }).select("*");
+    return collection;
+  }
+
   async getAllDescendants(root_id: string, owner_id: string): Promise<Collection[]> {
     const rows: Collection[] = await db.raw(
       `
