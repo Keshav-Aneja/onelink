@@ -12,6 +12,7 @@ import {
   PiArrowsDownUp,
   PiFunnel,
   PiGlobe,
+  PiCheckSquare,
 } from "react-icons/pi";
 import { HiOutlineTag } from "react-icons/hi";
 
@@ -20,6 +21,8 @@ interface ViewToolbarProps {
   onUpdate: (updates: Partial<ViewPreferences>) => void;
   linkCount: number;
   availableTags?: string[];
+  selectionMode?: boolean;
+  onToggleSelectionMode?: () => void;
 }
 
 const VIEW_MODES: { mode: ViewMode; icon: React.ReactNode; label: string }[] = [
@@ -51,6 +54,8 @@ export default function ViewToolbar({
   onUpdate,
   linkCount,
   availableTags = [],
+  selectionMode = false,
+  onToggleSelectionMode,
 }: ViewToolbarProps) {
   const activeSortLabel =
     SORT_OPTIONS.find((o) => o.value === prefs.sortBy)?.label ?? "Sort";
@@ -90,6 +95,23 @@ export default function ViewToolbar({
 
         {/* Right: controls cluster */}
         <div className="flex items-center gap-2 flex-wrap">
+          {/* Select toggle */}
+          {onToggleSelectionMode && (
+            <button
+              title="Select multiple links"
+              onClick={onToggleSelectionMode}
+              className={cn(
+                "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border transition-all duration-150 cursor-pointer",
+                selectionMode
+                  ? "border-primary/60 bg-primary/10 text-white"
+                  : "border-white/10 bg-white/5 text-white/70 hover:text-white hover:border-white/30",
+              )}
+            >
+              <PiCheckSquare className="text-sm" />
+              <span className="hidden sm:inline">Select</span>
+              {selectionMode && <span className="w-1.5 h-1.5 rounded-full bg-primary" />}
+            </button>
+          )}
           {/* Sort dropdown */}
           <div className="relative group">
             <button className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-xs font-medium border border-white/10 bg-white/5 text-white/70 hover:text-white hover:border-white/30 transition-all duration-150 cursor-pointer">

@@ -65,4 +65,32 @@ export default class TagsAdapter {
     await tagsRepo.removeTagFromLink(linkId, tagId);
     ActionResponse.success(res, { linkId, tagId }, 200, "Tag removed");
   });
+
+  static bulkApplyTags = asyncHandler(async (req: Request, res: Response) => {
+    const ownerId = req.session.user_id!;
+    const { link_ids, add = [], remove = [] } = req.body as {
+      link_ids: string[];
+      add?: string[];
+      remove?: string[];
+    };
+    if (!Array.isArray(link_ids) || link_ids.length === 0) {
+      ActionResponse.error(res, "link_ids must be a non-empty array", 400, undefined);
+      return;
+    }
+    const normalize = (name: string) =>
+      name.trim().toLowerCase().replace(/\s+/g, "-").replace(/[^\w-]/g, "").slice(0, 40);
+
+    const toAdd = add.map(normalize).filter(Boolean);
+    const toRemove = remove.map(normalize).filter(Boolean);
+
+    // Get tag ids for removal
+    await Promise.all(
+      link_ids.flatMap((linkId) => [
+        toAdd.length > 0 ? tagsRepo.upsertTagsForLink(linkId, ownerId, toAdd, true) : Promise.resolve([]),
+        toRemove.length > 0 ? tagsRepo.removeTagNamesFromLink(linkId, ownerId, toRemove) : Promise.resolve(),
+      ]),
+    );
+
+    ActionResponse.success(res, { link_ids, added: toAdd, removed: toRemove }, 200, "Tags updated");
+  });
 }

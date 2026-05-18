@@ -215,6 +215,15 @@ export default class LinkService implements ILinksService {
     return linksCount;
   }
 
+  async bulkDeleteLinks(owner_id: string, link_ids: string[]): Promise<string[]> {
+    return this.linkRepository.bulkDeleteLinks(link_ids, owner_id);
+  }
+
+  async bulkUpdateLinks(owner_id: string, link_ids: string[], data: Partial<LinkUpdate>): Promise<Link[]> {
+    const rows = await this.linkRepository.bulkUpdateLinks(link_ids, owner_id, data);
+    return rows.map((link) => LinkDTO.fromObject(link).toObject());
+  }
+
   async searchLinks(owner_id: string, search_query: string, filters?: SearchFilters): Promise<Link[] | undefined> {
     const links = await this.linkRepository.getSearchLinks(owner_id, search_query, filters);
     if (!links) return undefined;

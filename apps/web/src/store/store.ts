@@ -12,10 +12,12 @@ import collectionReducer from "@store/slices/collections-slice";
 import appReducer from "@store/slices/application-slice";
 import linkReducer from "./slices/links-slice";
 import favouriteLinkReducer from "./slices/favourite-links-slice";
+import selectionReducer from "./slices/selection-slice";
+
 const persistConfig = {
   key: "onelink",
   storage,
-  blacklist: ["app"],
+  blacklist: ["app", "selection"],
 };
 
 const rootReducer = combineReducers({
@@ -24,6 +26,7 @@ const rootReducer = combineReducers({
   link: linkReducer,
   app: appReducer,
   favouriteLinks: favouriteLinkReducer,
+  selection: selectionReducer,
 });
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 

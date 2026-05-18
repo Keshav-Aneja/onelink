@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from "@store/store";
 import type { Link } from "@onelink/entities/models";
-import { Fragment, useEffect, useMemo } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useStoredLinks } from "@hooks/links";
 import { useViewPreferences } from "@hooks/view-preferences";
 import LinkCard from "@components/cards/link-card";
@@ -21,6 +21,20 @@ import {
 } from "@lib/utils/link-view";
 import { useSettings } from "@features/settings/get-settings";
 import getFaviconUrl from "@lib/utils/get-favicon-url";
+import {
+  clearSelection,
+  getSelectedIds,
+  selectAll,
+  setRangeSelection,
+  toggleSelection,
+  removeFromSelection,
+} from "@store/slices/selection-slice";
+import BulkActionBar from "@components/bulk/bulk-action-bar";
+import { BulkMoveModal } from "@components/bulk/bulk-move-modal";
+import { BulkTagPopover } from "@components/bulk/bulk-tag-popover";
+import { useBulkDeleteLinks, useBulkUpdateLinks } from "@features/links/bulk-links";
+import { useBulkApplyTags } from "@features/tags/bulk-tags";
+import { useToast } from "@components/ui/toast";
 
 interface LinksContent {
   pathId: string | null;
@@ -39,14 +53,36 @@ interface LinkGroupProps {
   gridClass: string;
   cardHeight: string;
   showOgImage: boolean;
+  selectedIds: string[];
+  onSelectLink: (id: string, e: React.MouseEvent) => void;
+  selectionMode: boolean;
 }
 
-function LinkGroup({ links, viewMode, gridClass, cardHeight, showOgImage }: LinkGroupProps) {
+function LinkGroup({
+  links,
+  viewMode,
+  gridClass,
+  cardHeight,
+  showOgImage,
+  selectedIds,
+  onSelectLink,
+  selectionMode,
+}: LinkGroupProps) {
+  const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds]);
+
   if (viewMode === "grid") {
     return (
       <div className={`w-full grid ${gridClass}`}>
         {links.map((link, i) => (
-          <LinkCard data={link} key={link.id} height={cardHeight} index={i} showOgImage={showOgImage} />
+          <LinkCard
+            data={link}
+            key={link.id}
+            height={cardHeight}
+            index={i}
+            showOgImage={showOgImage}
+            isSelected={selectedSet.has(link.id)}
+            onSelect={selectionMode ? (e) => onSelectLink(link.id, e) : undefined}
+          />
         ))}
       </div>
     );
@@ -55,7 +91,12 @@ function LinkGroup({ links, viewMode, gridClass, cardHeight, showOgImage }: Link
     return (
       <div className="w-full flex flex-col border border-white/8 rounded-md overflow-hidden">
         {links.map((link) => (
-          <LinkListItem data={link} key={link.id} />
+          <LinkListItem
+            data={link}
+            key={link.id}
+            isSelected={selectedSet.has(link.id)}
+            onSelect={selectionMode ? (e) => onSelectLink(link.id, e) : undefined}
+          />
         ))}
       </div>
     );
@@ -64,7 +105,12 @@ function LinkGroup({ links, viewMode, gridClass, cardHeight, showOgImage }: Link
   return (
     <div className="w-full flex flex-col border border-white/8 rounded-md overflow-hidden">
       {links.map((link) => (
-        <LinkCompactItem data={link} key={link.id} />
+        <LinkCompactItem
+          data={link}
+          key={link.id}
+          isSelected={selectedSet.has(link.id)}
+          onSelect={selectionMode ? (e) => onSelectLink(link.id, e) : undefined}
+        />
       ))}
     </div>
   );
@@ -78,8 +124,27 @@ const LinksContent = ({ pathId }: LinksContent) => {
   const { prefs, updatePrefs } = useViewPreferences(pathId);
   const { data: settingsData } = useSettings();
   const showOgImage = settingsData?.data?.show_og_image ?? true;
+  const { showToast } = useToast();
 
-  // Fetch only when Redux cache is empty for this path — no useState/useEffect cascade.
+  const selectedIds = useAppSelector(getSelectedIds);
+  const [selectionMode, setSelectionMode] = useState(false);
+  const [anchorId, setAnchorId] = useState<string | null>(null);
+  const [showMoveModal, setShowMoveModal] = useState(false);
+  const [showTagPopover, setShowTagPopover] = useState(false);
+
+  // Exit selection mode and clear when navigating away
+  useEffect(() => {
+    dispatch(clearSelection());
+    setSelectionMode(false);
+    setAnchorId(null);
+  }, [pathId, dispatch]);
+
+  // Auto-enter selection mode when something gets selected
+  useEffect(() => {
+    if (selectedIds.length > 0) setSelectionMode(true);
+  }, [selectedIds.length]);
+
+  // Fetch only when Redux cache is empty for this path
   const shouldFetch = !links || links.length === 0;
   const linkQuery = useLinks(shouldFetch, pathId);
 
@@ -113,8 +178,166 @@ const LinksContent = ({ pathId }: LinksContent) => {
     return Object.entries(byDomain).sort(([, a], [, b]) => b.length - a.length);
   }, [processedLinks, prefs.groupByDomain]);
 
-  const { gridClass, cardHeight } =
-    DENSITY_CONFIG[prefs.gridDensity] ?? DENSITY_CONFIG[6];
+  const { gridClass, cardHeight } = DENSITY_CONFIG[prefs.gridDensity] ?? DENSITY_CONFIG[6];
+
+  // Flat ordered list for range selection
+  const flatOrderedIds = useMemo(
+    () => processedLinks.map((l) => l.id),
+    [processedLinks],
+  );
+
+  // Bulk mutations
+  const bulkDelete = useBulkDeleteLinks({
+    mutationConfig: {
+      onSuccess: (data) => {
+        const deleted = data.data.ids;
+        dispatch(removeFromSelection(deleted));
+        showToast(`Deleted ${deleted.length} link${deleted.length !== 1 ? "s" : ""}`);
+        if (deleted.length === selectedIds.length) {
+          dispatch(clearSelection());
+          setSelectionMode(false);
+        }
+      },
+    },
+  });
+
+  const bulkUpdate = useBulkUpdateLinks({
+    mutationConfig: {
+      onSuccess: () => {
+        setShowMoveModal(false);
+        setShowTagPopover(false);
+      },
+    },
+  });
+
+  const bulkApplyTags = useBulkApplyTags({
+    mutationConfig: {
+      onSuccess: (data) => {
+        const { added, removed } = data.data;
+        const parts = [];
+        if (added.length > 0) parts.push(`added: ${added.join(", ")}`);
+        if (removed.length > 0) parts.push(`removed: ${removed.join(", ")}`);
+        showToast(`Tags updated — ${parts.join(" · ")}`);
+        setShowTagPopover(false);
+      },
+    },
+  });
+
+  // Selection handler — handles shift-click range and cmd/ctrl toggle
+  const handleSelectLink = useCallback(
+    (id: string, e: React.MouseEvent) => {
+      e.stopPropagation();
+      if (e.shiftKey && anchorId) {
+        const anchorIdx = flatOrderedIds.indexOf(anchorId);
+        const targetIdx = flatOrderedIds.indexOf(id);
+        if (anchorIdx !== -1 && targetIdx !== -1) {
+          const start = Math.min(anchorIdx, targetIdx);
+          const end = Math.max(anchorIdx, targetIdx);
+          const rangeIds = flatOrderedIds.slice(start, end + 1);
+          dispatch(setRangeSelection({ ids: rangeIds, anchorId: id }));
+          setAnchorId(id);
+          return;
+        }
+      }
+      dispatch(toggleSelection(id));
+      setAnchorId(id);
+    },
+    [anchorId, flatOrderedIds, dispatch],
+  );
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const tag = (e.target as HTMLElement).tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA") return;
+
+      if ((e.metaKey || e.ctrlKey) && e.key === "a") {
+        e.preventDefault();
+        if (processedLinks.length > 0) {
+          dispatch(selectAll(flatOrderedIds));
+          setSelectionMode(true);
+        }
+        return;
+      }
+
+      if (e.key === "Escape" && selectionMode) {
+        dispatch(clearSelection());
+        setSelectionMode(false);
+        return;
+      }
+
+      if (e.key === "Delete" || e.key === "Backspace") {
+        if (selectedIds.length > 0 && !showMoveModal && !showTagPopover) {
+          handleBulkDelete();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectionMode, selectedIds, flatOrderedIds, showMoveModal, showTagPopover, dispatch]);
+
+  const toggleSelectionMode = () => {
+    if (selectionMode) {
+      dispatch(clearSelection());
+      setSelectionMode(false);
+    } else {
+      setSelectionMode(true);
+    }
+  };
+
+  const handleBulkDelete = () => {
+    if (selectedIds.length === 0) return;
+    const confirmed = window.confirm(
+      `Delete ${selectedIds.length} link${selectedIds.length !== 1 ? "s" : ""}? This cannot be undone.`,
+    );
+    if (confirmed) {
+      bulkDelete.mutate({ ids: selectedIds });
+    }
+  };
+
+  const handleBulkStar = (star: boolean) => {
+    if (selectedIds.length === 0) return;
+    bulkUpdate.mutate(
+      { ids: selectedIds, data: { is_starred: star } },
+      {
+        onSuccess: () => {
+          showToast(`${star ? "Starred" : "Unstarred"} ${selectedIds.length} link${selectedIds.length !== 1 ? "s" : ""}`);
+        },
+      },
+    );
+  };
+
+  const handleBulkMove = (targetId: string | null) => {
+    if (selectedIds.length === 0) return;
+    bulkUpdate.mutate(
+      { ids: selectedIds, data: { parent_id: targetId } },
+      {
+        onSuccess: () => {
+          showToast(`Moved ${selectedIds.length} link${selectedIds.length !== 1 ? "s" : ""}`);
+          dispatch(clearSelection());
+          setSelectionMode(false);
+          setShowMoveModal(false);
+        },
+      },
+    );
+  };
+
+  const handleBulkTag = (toAdd: string[], toRemove: string[]) => {
+    if (toAdd.length === 0 && toRemove.length === 0) {
+      setShowTagPopover(false);
+      return;
+    }
+    bulkApplyTags.mutate({ link_ids: selectedIds, add: toAdd, remove: toRemove });
+  };
+
+  const handleCopyUrls = () => {
+    if (!links) return;
+    const selectedLinks = links.filter((l) => selectedIds.includes(l.id));
+    const text = selectedLinks.map((l) => l.link).join("\n");
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(`Copied ${selectedLinks.length} URL${selectedLinks.length !== 1 ? "s" : ""} to clipboard`);
+    });
+  };
 
   if (linkQuery.isLoading) {
     return (
@@ -145,6 +368,8 @@ const LinksContent = ({ pathId }: LinksContent) => {
           onUpdate={updatePrefs}
           linkCount={processedLinks.length}
           availableTags={availableTags}
+          selectionMode={selectionMode}
+          onToggleSelectionMode={toggleSelectionMode}
         />
       </div>
 
@@ -155,7 +380,6 @@ const LinksContent = ({ pathId }: LinksContent) => {
       )}
 
       {groupedLinks ? (
-        // Domain-grouped rendering
         <div className="w-full flex flex-col gap-6">
           {groupedLinks.map(([domain, domainLinks]) => (
             <div key={domain} className="flex flex-col gap-2">
@@ -182,18 +406,59 @@ const LinksContent = ({ pathId }: LinksContent) => {
                 gridClass={gridClass}
                 cardHeight={cardHeight}
                 showOgImage={showOgImage}
+                selectedIds={selectedIds}
+                onSelectLink={handleSelectLink}
+                selectionMode={selectionMode}
               />
             </div>
           ))}
         </div>
       ) : (
-        // Flat rendering
         <LinkGroup
           links={processedLinks}
           viewMode={prefs.viewMode}
           gridClass={gridClass}
           cardHeight={cardHeight}
           showOgImage={showOgImage}
+          selectedIds={selectedIds}
+          onSelectLink={handleSelectLink}
+          selectionMode={selectionMode}
+        />
+      )}
+
+      {/* Floating bulk action bar */}
+      {selectedIds.length > 0 && (
+        <BulkActionBar
+          selectedIds={selectedIds}
+          allLinks={links}
+          onClear={() => { dispatch(clearSelection()); setSelectionMode(false); }}
+          onDelete={handleBulkDelete}
+          onStar={() => handleBulkStar(true)}
+          onUnstar={() => handleBulkStar(false)}
+          onMove={() => setShowMoveModal(true)}
+          onTag={() => setShowTagPopover(true)}
+          onCopyUrls={handleCopyUrls}
+          isDeleting={bulkDelete.isPending}
+          isUpdating={bulkUpdate.isPending || bulkApplyTags.isPending}
+        />
+      )}
+
+      {showMoveModal && (
+        <BulkMoveModal
+          count={selectedIds.length}
+          onClose={() => setShowMoveModal(false)}
+          onMove={handleBulkMove}
+          isPending={bulkUpdate.isPending}
+        />
+      )}
+
+      {showTagPopover && (
+        <BulkTagPopover
+          selectedIds={selectedIds}
+          allLinks={links}
+          onClose={() => setShowTagPopover(false)}
+          onApplyTags={handleBulkTag}
+          isPending={bulkApplyTags.isPending}
         />
       )}
     </Fragment>

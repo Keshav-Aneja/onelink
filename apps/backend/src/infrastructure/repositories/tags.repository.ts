@@ -69,6 +69,20 @@ export class TagsRepository {
       .select("tags.*", "link_tags.confirmed", "link_tags.link_id");
   }
 
+  async removeTagNamesFromLink(linkId: string, ownerId: string, tagNames: string[]): Promise<void> {
+    if (tagNames.length === 0) return;
+    const tags = await db("tags")
+      .where("owner_id", ownerId)
+      .whereIn("name", tagNames)
+      .select("id");
+    const tagIds = tags.map((t: { id: string }) => t.id);
+    if (tagIds.length === 0) return;
+    await db("link_tags")
+      .where("link_id", linkId)
+      .whereIn("tag_id", tagIds)
+      .delete();
+  }
+
   async getLinksByTag(
     ownerId: string,
     tagName: string,

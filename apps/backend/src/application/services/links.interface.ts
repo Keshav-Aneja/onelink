@@ -25,4 +25,6 @@ export default interface ILinksService {
   getStarredLinks(owner_id: string): Promise<Link[] | undefined>;
   getLinksCount(owner_id: string, parent_id: string): Promise<number>;
   searchLinks(owner_id: string, search_query: string, filters?: SearchFilters): Promise<Link[] | undefined>;
+  bulkDeleteLinks(owner_id: string, link_ids: string[]): Promise<string[]>;
+  bulkUpdateLinks(owner_id: string, link_ids: string[], data: Partial<LinkUpdate>): Promise<Link[]>;
 }
