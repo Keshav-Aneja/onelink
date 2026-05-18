@@ -11,19 +11,37 @@ import { TbFolderShare } from "react-icons/tb";
 
 interface LinkCompactItemProps {
   data: Link;
+  isSelected?: boolean;
+  onSelect?: (e: React.MouseEvent) => void;
 }
 
-export default function LinkCompactItem({ data }: LinkCompactItemProps) {
+export default function LinkCompactItem({ data, isSelected, onSelect }: LinkCompactItemProps) {
   const domain = extractDomain(data.link);
   const faviconUrl = `https://www.google.com/s2/favicons?domain=${domain}&sz=16`;
   const [moveOpen, setMoveOpen] = useState(false);
+  const selectionMode = !!onSelect;
 
   return (
     <>
     <div
-      className="w-full flex items-center gap-3 px-3 py-2 border-b border-white/8 hover:bg-white/4 transition-colors duration-150 group cursor-pointer"
-      onDoubleClick={() => window.open(data.link, "_blank")}
+      className={`w-full flex items-center gap-3 px-3 py-2 border-b border-white/8 transition-colors duration-150 group cursor-pointer ${isSelected ? "bg-primary/8 border-l-2 border-l-primary" : "hover:bg-white/4"}`}
+      onDoubleClick={() => !selectionMode && window.open(data.link, "_blank")}
+      onClick={onSelect}
     >
+      {/* Checkbox in selection mode */}
+      {selectionMode && (
+        <span
+          className={`shrink-0 ${isSelected ? "opacity-100" : "opacity-0 group-hover:opacity-100"} transition-opacity duration-150`}
+          onClick={(e) => { e.stopPropagation(); onSelect?.(e); }}
+        >
+          <input
+            type="checkbox"
+            checked={!!isSelected}
+            onChange={() => {}}
+            className="w-3.5 h-3.5 accent-primary cursor-pointer"
+          />
+        </span>
+      )}
       {/* Favicon */}
       <img
         src={faviconUrl}
@@ -60,22 +78,24 @@ export default function LinkCompactItem({ data }: LinkCompactItemProps) {
         </span>
       )}
 
-      {/* Actions */}
-      <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-        <StarButton starred={data.is_starred ?? false} id={data.id} subtle />
-        <SubscribeButton subscribed={data.subscribed ?? false} id={data.id} subtle />
-        <button
-          className="text-sm cursor-pointer text-theme_secondary_white/40 hover:text-theme_secondary_white transition-colors"
-          title="Move to collection"
-          onClick={(e) => {
-            e.stopPropagation();
-            setMoveOpen(true);
-          }}
-        >
-          <TbFolderShare />
-        </button>
-        <DeleteLinkButton id={data.id} subtle />
-      </div>
+      {/* Actions — hidden in selection mode */}
+      {!selectionMode && (
+        <div className="flex items-center gap-1 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+          <StarButton starred={data.is_starred ?? false} id={data.id} subtle />
+          <SubscribeButton subscribed={data.subscribed ?? false} id={data.id} subtle />
+          <button
+            className="text-sm cursor-pointer text-theme_secondary_white/40 hover:text-theme_secondary_white transition-colors"
+            title="Move to collection"
+            onClick={(e) => {
+              e.stopPropagation();
+              setMoveOpen(true);
+            }}
+          >
+            <TbFolderShare />
+          </button>
+          <DeleteLinkButton id={data.id} subtle />
+        </div>
+      )}
     </div>
     {moveOpen && (
       <MoveToCollectionModal link={data} onClose={() => setMoveOpen(false)} />

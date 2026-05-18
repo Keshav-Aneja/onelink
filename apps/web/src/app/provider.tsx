@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { store, persistor } from "@store/store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ToastProvider } from "@components/ui/toast";
 type GlobalAppProviderProps = {
   children: ReactNode;
 };
@@ -19,7 +20,9 @@ export const GlobalAppProvider = ({ children }: GlobalAppProviderProps) => {
       <Provider store={store}>
         <PersistGate loading={null} persistor={persistor}>
           <QueryClientProvider client={queryClient}>
-            {children}
+            <ToastProvider>
+              {children}
+            </ToastProvider>
             <ReactQueryDevtools initialIsOpen={false} />
           </QueryClientProvider>
         </PersistGate>

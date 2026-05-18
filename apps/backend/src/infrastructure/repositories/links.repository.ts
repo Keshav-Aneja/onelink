@@ -111,4 +111,24 @@ export class LinksRepository implements ILinkRepository {
     if (parent_ids.length === 0) return [];
     return db("links").whereIn("parent_id", parent_ids).select("*");
   }
+
+  async bulkDeleteLinks(link_ids: string[], owner_id: string): Promise<string[]> {
+    if (link_ids.length === 0) return [];
+    const rows = await db("links")
+      .whereIn("id", link_ids)
+      .where({ owner_id })
+      .delete()
+      .returning("id");
+    return rows.map((r: { id: string }) => r.id);
+  }
+
+  async bulkUpdateLinks(link_ids: string[], owner_id: string, data: Partial<LinkUpdate>): Promise<Link[]> {
+    if (link_ids.length === 0) return [];
+    const rows = await db("links")
+      .whereIn("id", link_ids)
+      .where({ owner_id })
+      .update(data)
+      .returning("*");
+    return rows;
+  }
 }

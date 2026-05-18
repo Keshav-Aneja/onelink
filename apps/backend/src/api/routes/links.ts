@@ -12,6 +12,8 @@ export default (app: Router) => {
   route.post("/", LinkAdapter.createLink);
   route.post("/feed", LinkAdapter.getUpdatedFeed);
   route.get("/search", LinkAdapter.searchLinks);
+  route.post("/bulk-delete", LinkAdapter.bulkDeleteLinks);
+  route.patch("/bulk", LinkAdapter.bulkUpdateLinks);
   route.get("/:id?", LinkAdapter.getLinks);
   route.patch("/:id", LinkAdapter.updateLink);
   route.delete("/:id", LinkAdapter.deleteLink);

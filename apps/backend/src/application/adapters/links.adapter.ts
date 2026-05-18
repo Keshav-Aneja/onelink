@@ -65,6 +65,30 @@ export default class LinkAdapter {
     ActionResponse.success(res, deletedId, 200, "Link Deleted");
   });
 
+  static bulkDeleteLinks = asyncHandler(async (req: Request, res: Response) => {
+    const { ids } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      ActionResponse.error(res, "ids must be a non-empty array", 400, undefined);
+      return;
+    }
+    const deletedIds = await linkService.bulkDeleteLinks(req.session.user_id!, ids);
+    ActionResponse.success(res, { ids: deletedIds }, 200, "Links deleted");
+  });
+
+  static bulkUpdateLinks = asyncHandler(async (req: Request, res: Response) => {
+    const { ids, data } = req.body;
+    if (!Array.isArray(ids) || ids.length === 0) {
+      ActionResponse.error(res, "ids must be a non-empty array", 400, undefined);
+      return;
+    }
+    if (!data || typeof data !== "object") {
+      ActionResponse.error(res, "data must be an object", 400, undefined);
+      return;
+    }
+    const links = await linkService.bulkUpdateLinks(req.session.user_id!, ids, data);
+    ActionResponse.success(res, links, 200, "Links updated");
+  });
+
   static searchLinks = asyncHandler(async (req: Request, res: Response) => {
     const { q: search_query, collection_id, tag, starred } = req.query;
     if (typeof search_query !== "string" || search_query.length === 0) {

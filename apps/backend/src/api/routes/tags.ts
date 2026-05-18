@@ -11,6 +11,9 @@ export default (app: Router) => {
   // GET /tags — all tags for current user with link counts
   route.get("/", TagsAdapter.getAllTags);
 
+  // POST /tags/bulk — apply/remove tags across multiple links
+  route.post("/bulk", TagsAdapter.bulkApplyTags);
+
   // GET /tags/links/:tagName — all links for a given tag (cross-collection)
   route.get("/links/:tagName", TagsAdapter.getLinksByTag);
 

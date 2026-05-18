@@ -29,4 +29,6 @@ export interface ILinkRepository {
   deleteLinksByParentIds(parent_ids: string[], owner_id: string): Promise<void>;
   getLinksByParentId(parent_id: string): Promise<Link[]>;
   getLinksByParentIds(parent_ids: string[]): Promise<Link[]>;
+  bulkDeleteLinks(link_ids: string[], owner_id: string): Promise<string[]>;
+  bulkUpdateLinks(link_ids: string[], owner_id: string, data: Partial<LinkUpdate>): Promise<Link[]>;
 }
